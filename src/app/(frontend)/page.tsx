@@ -12,7 +12,7 @@ import { QuickLinks } from '@/components/QuickLinks'
 import { SectionHeading } from '@/components/SectionHeading'
 import { Paragraphs } from '@/components/Stars'
 import { Testimonials } from '@/components/Testimonials'
-import { defaultFacilities, defaultTestimonials, fallbackImages } from '@/content/defaults'
+import { defaultFacilities, defaultHeroToppers, defaultTestimonials, fallbackImages } from '@/content/defaults'
 import { getAdmissions, getAlbums, getFacilities, getHome, getNews, getNotices, getSettings, getTestimonials, getToppers } from '@/lib/data'
 import { formatDate, telHref } from '@/lib/format'
 import { fileUrl, img } from '@/lib/media'
@@ -54,11 +54,11 @@ export default async function HomePage() {
         schoolName={s.schoolName}
         logoUrl={logoUrl}
         established={s.established}
-        phone={s.phone}
         title={h.heroTitle!}
         points={(h.heroPoints ?? []).map((p) => p.text)}
         stats={h.stats ?? []}
-        toppers={heroToppers}
+        toppers={heroToppers.length ? heroToppers : defaultHeroToppers}
+        placeholder={heroToppers.length === 0}
         resultsYear={h.resultsYear}
         backgroundUrl={img(h.heroImage as Media)?.url ?? fallbackImages.campus}
       />

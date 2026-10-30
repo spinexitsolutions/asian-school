@@ -1,9 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { Fragment } from 'react'
-import { ArrowRight, CheckCircle, Medal, Phone } from '@phosphor-icons/react/dist/ssr'
-
-import { telHref } from '@/lib/format'
+import { ArrowRight, CheckCircle, Medal } from '@phosphor-icons/react/dist/ssr'
 
 export type HeroTopper = { name: string; score: string; className: string; photo?: string | null }
 
@@ -11,13 +9,14 @@ type Props = {
   schoolName: string
   logoUrl: string
   established?: string | null
-  phone?: string | null
   title: string
   points: string[]
   stats: { value: string; label: string }[]
   toppers: HeroTopper[]
   resultsYear?: string | null
   backgroundUrl: string
+  /** True while showing sample toppers (none chosen in the admin panel yet). */
+  placeholder?: boolean
 }
 
 /** "*word*" → blue, "_word_" → red. */
@@ -37,7 +36,7 @@ function HeroTitle({ text }: { text: string }) {
  * Homepage hero: school identity + headline on white, and a slanted blue
  * panel showcasing board toppers (or an admissions card when none are set).
  */
-export function Hero({ schoolName, logoUrl, established, phone, title, points, stats, toppers, resultsYear, backgroundUrl }: Props) {
+export function Hero({ schoolName, logoUrl, established, title, points, stats, toppers, resultsYear, backgroundUrl, placeholder }: Props) {
   const slant = '[clip-path:polygon(18%_0,100%_0,100%_100%,0_100%)]'
   return (
     <section className="relative overflow-hidden bg-white">
@@ -106,67 +105,47 @@ export function Hero({ schoolName, logoUrl, established, phone, title, points, s
             <p className="mb-5 border-b border-white/10 pb-4 text-center font-heading text-[12.5px] font-semibold uppercase tracking-[0.18em] text-white/70">
               {schoolName} · Chomu
             </p>
-            {toppers.length > 0 ? (
-              <>
-                <div className="flex items-center justify-between">
-                  <p className="flex items-center gap-2 font-heading text-[18px] font-semibold">
-                    <Medal size={24} weight="fill" className="text-flame-400" /> Board Toppers
-                  </p>
-                  {resultsYear && <span className="rounded-full bg-flame-400 px-3 py-1 text-[12px] font-bold text-brand-950">{resultsYear}</span>}
-                </div>
-                <div className={`mt-6 grid gap-4 ${toppers.length === 1 ? 'grid-cols-1' : toppers.length === 2 ? 'grid-cols-2' : 'grid-cols-3'}`}>
-                  {toppers.slice(0, 3).map((t, i) => (
-                    <div key={`${t.name}-${i}`} className={`text-center ${toppers.length === 3 ? (i === 0 ? '-mt-2' : 'mt-4') : ''}`}>
-                      <div className="relative mx-auto aspect-square w-full max-w-[140px]">
-                        <div className="absolute -inset-1 rounded-full bg-[conic-gradient(var(--color-flame-400),var(--color-laurel-500),var(--color-flame-400))]" />
-                        <div className="relative h-full w-full overflow-hidden rounded-full bg-brand-50 ring-4 ring-brand-800">
-                          {t.photo ? (
-                            <Image src={t.photo} alt={t.name} fill sizes="140px" className="object-cover object-top" />
-                          ) : (
-                            <div className="dots-bg flex h-full w-full items-center justify-center">
-                              <span className="font-heading text-4xl font-bold text-brand-300">{t.name.charAt(0)}</span>
-                            </div>
-                          )}
+            <div className="flex items-center justify-between">
+              <p className="flex items-center gap-2 font-heading text-[18px] font-semibold">
+                <Medal size={24} weight="fill" className="text-flame-400" /> Board Toppers
+              </p>
+              {resultsYear && <span className="rounded-full bg-flame-400 px-3 py-1 text-[12px] font-bold text-brand-950">{resultsYear}</span>}
+            </div>
+            <div className={`mt-6 grid gap-4 ${toppers.length === 1 ? 'grid-cols-1' : toppers.length === 2 ? 'grid-cols-2' : 'grid-cols-3'}`}>
+              {toppers.slice(0, 3).map((t, i) => (
+                <div key={`${t.name}-${i}`} className={`text-center ${toppers.length === 3 ? (i === 0 ? '-mt-2' : 'mt-4') : ''}`}>
+                  <div className="relative mx-auto aspect-square w-full max-w-[140px]">
+                    <div className="absolute -inset-1 rounded-full bg-[conic-gradient(var(--color-flame-400),var(--color-laurel-500),var(--color-flame-400))]" />
+                    <div className="relative h-full w-full overflow-hidden rounded-full bg-brand-50 ring-4 ring-brand-800">
+                      {t.photo ? (
+                        <Image src={t.photo} alt={t.name} fill sizes="140px" className="object-cover object-top" />
+                      ) : (
+                        <div className="dots-bg flex h-full w-full items-center justify-center">
+                          <Image src={logoUrl} alt="" width={56} height={56} className="opacity-30 mix-blend-multiply grayscale" />
                         </div>
-                        {i === 0 && (
-                          <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-flame-400 px-2 py-0.5 text-[11px] font-bold text-brand-950">#1</span>
-                        )}
-                      </div>
-                      <p className="mt-4 font-heading text-[clamp(1.2rem,2vw,1.7rem)] font-bold text-flame-400">{t.score}</p>
-                      <p className="text-[13px] font-semibold leading-tight">{t.name}</p>
-                      <p className="mt-0.5 text-[12px] text-white/60">{t.className}</p>
+                      )}
                     </div>
-                  ))}
+                    {i === 0 && (
+                      <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-flame-400 px-2 py-0.5 text-[11px] font-bold text-brand-950">#1</span>
+                    )}
+                  </div>
+                  <p className="mt-4 font-heading text-[clamp(1.2rem,2vw,1.7rem)] font-bold text-flame-400">{t.score}</p>
+                  <p className="text-[13px] font-semibold leading-tight">{t.name}</p>
+                  <p className="mt-0.5 text-[12px] text-white/60">{t.className}</p>
                 </div>
-                <Link href="/achievers" className="mt-6 flex items-center justify-center gap-2 rounded-2xl bg-white/10 px-4 py-3 text-[14px] font-semibold text-white/90 transition-colors hover:bg-white/15">
-                  View all achievers <ArrowRight size={14} weight="bold" />
-                </Link>
-              </>
+              ))}
+            </div>
+            {placeholder ? (
+              <p className="mt-6 rounded-2xl bg-white/10 px-4 py-3 text-center text-[13.5px] text-white/80">
+                Toppers&apos; photos &amp; results are updated from the admin panel every year.
+              </p>
             ) : (
-              <>
-                <div className="relative aspect-[16/9] overflow-hidden rounded-2xl">
-                  <Image src={backgroundUrl} alt={`${schoolName} campus`} fill sizes="(min-width:1024px) 40vw, 90vw" className="object-cover" />
-                  <span className="absolute left-3 top-3 flex items-center gap-2 rounded-full bg-white px-3 py-1.5 text-[12px] font-bold text-brand-700">
-                    <span className="h-2 w-2 animate-pulse rounded-full bg-leaf-500" /> Admissions Open
-                  </span>
-                </div>
-                <div className="mt-5 grid grid-cols-2 gap-3">
-                  {stats.slice(0, 4).map((s) => (
-                    <div key={s.label} className="rounded-2xl bg-white/10 p-4">
-                      <p className="font-heading text-2xl font-bold">{s.value}</p>
-                      <p className="text-[12px] text-white/65">{s.label}</p>
-                    </div>
-                  ))}
-                </div>
-                {phone && (
-                  <a href={telHref(phone)} className="mt-4 flex items-center justify-between rounded-2xl bg-flame-400 px-5 py-4 font-semibold text-brand-950">
-                    <span className="flex items-center gap-2">
-                      <Phone size={18} weight="fill" /> {phone}
-                    </span>
-                    <ArrowRight size={16} weight="bold" />
-                  </a>
-                )}
-              </>
+              <Link
+                href="/achievers"
+                className="mt-6 flex items-center justify-center gap-2 rounded-2xl bg-white/10 px-4 py-3 text-[14px] font-semibold text-white/90 transition-colors hover:bg-white/15"
+              >
+                View all achievers <ArrowRight size={14} weight="bold" />
+              </Link>
             )}
           </div>
         </div>

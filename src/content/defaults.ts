@@ -38,6 +38,13 @@ export const defaultSettings = {
     'The Asian International School, Chomu (Jaipur) — CBSE affiliated English medium school from Nursery to Class XII with Science, Arts & Commerce. Est. 2010.',
 }
 
+/** Shown in the hero until real toppers are marked "Show in homepage hero" in the admin panel. */
+export const defaultHeroToppers = [
+  { name: 'Topper Name', score: '96.2%', className: 'XII Science' },
+  { name: 'Topper Name', score: '95.4%', className: 'XII Commerce' },
+  { name: 'Topper Name', score: '95.0%', className: 'X' },
+]
+
 export const defaultHome = {
   heroTitle: 'Proud of our *achievers*, ready for _yours._',
   heroPoints: [
