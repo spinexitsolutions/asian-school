@@ -1,10 +1,11 @@
 'use client'
 
 import Image from 'next/image'
-import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import clsx from 'clsx'
-import { ArrowRight, CheckCircle, Phone, X } from '@phosphor-icons/react'
+import { CheckCircle, Phone, X } from '@phosphor-icons/react'
+
+import { EnquiryForm } from './EnquiryForm'
 
 const KEY = 'ais-popup-seen'
 
@@ -74,38 +75,47 @@ export function AdmissionPopup({ badge, title, text, imageUrl, phone }: Props) {
         <button onClick={close} aria-label="Close" className="absolute right-3 top-3 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-white/90 text-ink shadow-md hover:bg-white">
           <X size={18} weight="bold" />
         </button>
-        <div className="relative h-48 md:h-auto">
-          <Image src={imageUrl} alt="School campus" fill sizes="(min-width:768px) 384px, 100vw" className="object-cover" />
-          <div className="absolute inset-0 bg-gradient-to-t from-brand-950/80 via-brand-950/20 to-transparent md:bg-gradient-to-r" />
-          <div className="absolute bottom-4 left-4 flex gap-1.5">
-            <span className="h-1.5 w-8 rounded-full bg-brand-500" />
-            <span className="h-1.5 w-4 rounded-full bg-laurel-500" />
-            <span className="h-1.5 w-2 rounded-full bg-flame-400" />
+        {/* Left: photo with the admission message */}
+        <div className="relative hidden min-h-[460px] text-white md:block">
+          <Image src={imageUrl} alt="School campus" fill sizes="384px" className="object-cover" />
+          <div className="absolute inset-0 bg-gradient-to-t from-brand-950/95 via-brand-950/55 to-brand-950/10" />
+          <div className="absolute inset-x-0 bottom-0 p-7">
+            {badge && <span className="label-pill label-pill--light">{badge}</span>}
+            <h2 id="admission-popup-title" className="mt-3 font-heading text-[2rem] font-bold leading-tight">
+              {title || 'Admissions Open'}
+            </h2>
+            {text && <p className="mt-2 text-[14.5px] leading-relaxed text-white/80">{text}</p>}
+            <ul className="mt-4 space-y-1.5">
+              {['CBSE affiliated · English medium', 'Smart classes & experienced faculty', 'Safe campus & transport'].map((x) => (
+                <li key={x} className="flex items-center gap-2 text-[13.5px] font-medium text-white/90">
+                  <CheckCircle size={18} weight="fill" className="text-flame-400" /> {x}
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
-        <div className="p-7 sm:p-9">
-          {badge && <span className="label-pill">{badge}</span>}
-          <h2 id="admission-popup-title" className="heading-lg mt-4 !text-[clamp(1.8rem,3.2vw,2.4rem)]">
-            {title || 'Admissions Open'}
-          </h2>
-          {text && <p className="mt-3 text-[15.5px] leading-relaxed text-ink-2">{text}</p>}
-          <ul className="mt-5 space-y-2">
-            {['CBSE affiliated · English medium', 'Smart classes & experienced faculty', 'Safe campus & transport'].map((x) => (
-              <li key={x} className="flex items-center gap-2 text-[14.5px] font-medium">
-                <CheckCircle size={20} weight="fill" className="text-leaf-500" /> {x}
-              </li>
-            ))}
-          </ul>
-          <div className="mt-7 flex flex-wrap gap-3">
-            <Link href="/admissions#enquiry" onClick={close} className="btn btn-red">
-              Enquire Now <ArrowRight size={16} weight="bold" />
-            </Link>
-            {phone && (
-              <a href={`tel:${phone.replace(/[^\d+]/g, '')}`} className="btn btn-outline">
-                <Phone size={16} weight="fill" /> Call
-              </a>
-            )}
+
+        {/* Right: enquiry form */}
+        <div className="max-h-[85dvh] overflow-y-auto p-6 sm:p-8">
+          <div className="md:hidden">
+            {badge && <span className="label-pill">{badge}</span>}
+            <h2 className="heading-lg mt-3 !text-[1.7rem]">{title || 'Admissions Open'}</h2>
           </div>
+          <p className="font-heading text-[19px] font-bold text-ink max-md:mt-3">Admission Enquiry</p>
+          <p className="mt-1 text-[13.5px] text-mute">Fill the form — our team will call you back.</p>
+          <div className="tri-rule mt-3" aria-hidden>
+            <span />
+            <span />
+            <span />
+          </div>
+          <div className="mt-5">
+            <EnquiryForm type="admission" compact />
+          </div>
+          {phone && (
+            <a href={`tel:${phone.replace(/[^\d+]/g, '')}`} className="mt-4 flex items-center justify-center gap-2 text-[14px] font-semibold text-brand-600 hover:underline">
+              <Phone size={16} weight="fill" /> Or call {phone}
+            </a>
+          )}
         </div>
       </div>
     </div>

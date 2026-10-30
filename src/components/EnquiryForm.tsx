@@ -10,13 +10,13 @@ const classes = ['Nursery', 'LKG', 'UKG', 'Class I', 'Class II', 'Class III', 'C
 
 const initial: EnquiryState = { ok: false, message: '' }
 
-export function EnquiryForm({ type = 'admission' }: { type?: 'admission' | 'contact' }) {
+export function EnquiryForm({ type = 'admission', compact = false }: { type?: 'admission' | 'contact'; compact?: boolean }) {
   const [state, action, pending] = useActionState(submitEnquiry, initial)
   const err = state.errors ?? {}
 
   if (state.ok) {
     return (
-      <div className="flex flex-col items-center gap-4 rounded-2xl bg-leaf-500/10 px-6 py-12 text-center ring-1 ring-leaf-500/20">
+      <div className={clsx('flex flex-col items-center gap-4 rounded-2xl bg-leaf-500/10 px-6 text-center ring-1 ring-leaf-500/20', compact ? 'py-10' : 'py-12')}>
         <CheckCircle size={56} weight="fill" className="text-leaf-500" />
         <p className="font-heading text-xl font-semibold text-ink">{state.message}</p>
       </div>
@@ -25,7 +25,7 @@ export function EnquiryForm({ type = 'admission' }: { type?: 'admission' | 'cont
 
   const admission = type === 'admission'
   return (
-    <form action={action} className="grid gap-4 sm:grid-cols-2" noValidate>
+    <form action={action} className={clsx('grid', compact ? 'gap-3' : 'gap-4 sm:grid-cols-2')} noValidate>
       <input type="hidden" name="type" value={type} />
       <input type="text" name="company" tabIndex={-1} autoComplete="off" className="hidden" aria-hidden />
       <Field label={admission ? 'Student name *' : 'Your name *'} error={err.studentName}>
@@ -59,21 +59,23 @@ export function EnquiryForm({ type = 'admission' }: { type?: 'admission' | 'cont
           <input name="classApplying" className="input" placeholder="e.g. Transport, Fee, General" />
         </Field>
       )}
-      {admission && (
+      {admission && !compact && (
         <Field label="Email" error={err.email} className="sm:col-span-2">
           <input name="email" type="email" className="input" placeholder="you@example.com (optional)" />
         </Field>
       )}
+      {!compact && (
       <Field label="Message" className="sm:col-span-2">
         <textarea name="message" rows={4} className="input resize-none" placeholder={admission ? 'Any question about admission (optional)' : 'How can we help you?'} />
       </Field>
+      )}
       {state.message && !state.ok && (
         <p className="flex items-center gap-2 text-[14px] font-medium text-laurel-600 sm:col-span-2">
           <WarningCircle size={18} weight="fill" /> {state.message}
         </p>
       )}
       <div className="sm:col-span-2">
-        <button type="submit" disabled={pending} className={clsx('btn btn-primary w-full !py-4 sm:w-auto', pending && 'opacity-70')}>
+        <button type="submit" disabled={pending} className={clsx('btn w-full !py-4', compact ? 'btn-red' : 'btn-primary sm:w-auto', pending && 'opacity-70')}>
           {pending ? 'Sending…' : admission ? 'Submit Enquiry' : 'Send Message'} <PaperPlaneTilt size={18} weight="fill" />
         </button>
       </div>
