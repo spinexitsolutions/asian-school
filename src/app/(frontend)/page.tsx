@@ -1,444 +1,443 @@
+import Image from 'next/image'
 import Link from 'next/link'
-import { ArrowUpRight, Quotes, Phone } from '@phosphor-icons/react/dist/ssr'
+import { ArrowRight, CalendarBlank, CheckCircle, FilePdf, Quotes } from '@phosphor-icons/react/dist/ssr'
 
 import { CountUp } from '@/components/CountUp'
-import { Frame } from '@/components/Frame'
+import { Faq } from '@/components/Faq'
+import { HeroSlider, type Slide } from '@/components/HeroSlider'
 import { Icon } from '@/components/Icon'
-import { PillLink } from '@/components/PillLink'
-import { Section, SectionHead } from '@/components/Section'
+import { NoticeBoard } from '@/components/NoticeBoard'
+import { Photo } from '@/components/Photo'
+import { QuickLinks } from '@/components/QuickLinks'
+import { SectionHeading } from '@/components/SectionHeading'
+import { Paragraphs } from '@/components/Stars'
 import { Testimonials } from '@/components/Testimonials'
-import { Title } from '@/components/Title'
-import { defaultTestimonials } from '@/content/defaults'
-import { getAcademics, getAlbums, getHome, getNews, getPinnedNotices, getSettings, getTestimonials, getToppers } from '@/lib/data'
+import { defaultFacilities, defaultSlides, defaultTestimonials, fallbackImages } from '@/content/defaults'
+import { getAdmissions, getAlbums, getFacilities, getHome, getNews, getNotices, getSettings, getTestimonials, getToppers } from '@/lib/data'
 import { formatDate, telHref } from '@/lib/format'
+import { fileUrl, img } from '@/lib/media'
 import type { Media } from '@/payload-types'
 
 export default async function HomePage() {
-  const [s, h, academics, notices, toppers, albums, news, testimonials] = await Promise.all([
+  const [s, h, admissions, notices, news, toppers, facilities, albums, testimonials] = await Promise.all([
     getSettings(),
     getHome(),
-    getAcademics(),
-    getPinnedNotices(),
+    getAdmissions(),
+    getNotices(20),
+    getNews({ limit: 4 }),
     getToppers(true),
-    getAlbums(4),
-    getNews({ limit: 3 }),
+    getFacilities(),
+    getAlbums(8),
     getTestimonials(),
   ])
-  const heroImages = (h.heroImages ?? []) as Media[]
+
+  const logoUrl = img(s.logo)?.url ?? fallbackImages.logo
+  const cmsSlides: Slide[] = (h.slides ?? [])
+    .map((sl) => {
+      const image = img(sl.image as Media)
+      return image ? { ...sl, src: image.url, alt: image.alt } : null
+    })
+    .filter(Boolean) as Slide[]
+  const slides = cmsSlides.length
+    ? cmsSlides
+    : defaultSlides.map((d) => ({ ...d, src: d.image, alt: 'The Asian International School campus' }))
+
+  const facilityCards = facilities.docs.length
+    ? facilities.docs.map((f) => ({ title: f.title, summary: f.summary, icon: f.icon, image: f.image as Media | null }))
+    : defaultFacilities.map((f) => ({ ...f, image: null }))
+
+  const photos = albums.docs.flatMap((a) => ((a.photos ?? []) as Media[]).slice(0, 3).map((p) => ({ photo: p, album: a })))
   const quotes = testimonials.docs.length ? testimonials.docs : defaultTestimonials
+  const calendarImage = img(h.calendarImage as Media)
+  const calendarPdf = fileUrl(h.calendarFile)
+  const years = new Date().getFullYear() - Number(s.established || 2010)
 
   return (
     <>
-      {/* ───────────── Hero ───────────── */}
-      <section className="relative overflow-hidden pb-20 pt-36 sm:pt-44 lg:min-h-[100dvh] lg:pb-28">
-        <div className="grid-lines pointer-events-none absolute inset-0" aria-hidden />
-        <div className="pointer-events-none absolute -right-32 top-0 h-[640px] w-[640px] rounded-full bg-gold-soft/70 blur-[140px]" aria-hidden />
+      <HeroSlider slides={slides} stats={h.stats ?? []} schoolName={s.schoolName} logoUrl={logoUrl} established={s.established} />
+      <QuickLinks />
 
-        <div className="relative mx-auto grid max-w-[1280px] gap-16 px-5 sm:px-8 lg:grid-cols-12 lg:gap-8">
-          <div className="lg:col-span-7 lg:pt-10">
-            <p className="eyebrow" data-reveal>
-              {h.heroEyebrow}
-            </p>
-            <Title as="h1" text={h.heroTitle!} split className="t-hero mt-8 text-ink" />
-            <p className="lede mt-10 max-w-[34rem]" data-reveal style={{ ['--d' as string]: '450ms' }}>
-              {h.heroText}
-            </p>
-            <div className="mt-10 flex flex-wrap items-center gap-3" data-reveal style={{ ['--d' as string]: '600ms' }}>
-              <PillLink href="/admissions">Apply for admission</PillLink>
-              <PillLink href="/contact" variant="ghost">
-                Book a campus visit
-              </PillLink>
+      {/* ───────────── About ───────────── */}
+      <section className="py-20 md:py-28">
+        <div className="container-x grid items-center gap-14 lg:grid-cols-2 lg:gap-20">
+          <div className="relative" data-reveal="left">
+            <div className="absolute -left-4 -top-4 h-40 w-40 rounded-3xl bg-flame-100 sm:-left-6 sm:-top-6" aria-hidden />
+            <div className="dots-bg absolute -bottom-6 -right-2 h-40 w-48 rounded-3xl sm:-right-6" aria-hidden />
+            <Photo
+              media={h.aboutImage as Media}
+              fallback={fallbackImages.campus}
+              alt="School building"
+              className="relative aspect-[4/3.4] rounded-[2rem] shadow-[var(--shadow-lift)]"
+            />
+            <div className="absolute -bottom-8 left-6 flex items-center gap-4 rounded-2xl bg-white p-4 pr-6 shadow-[var(--shadow-lift)] ring-1 ring-line sm:left-10">
+              <span className="flex h-14 w-14 items-center justify-center rounded-xl bg-laurel-600 font-heading text-xl font-bold text-white">
+                {years}+
+              </span>
+              <div>
+                <p className="font-heading text-[15px] font-semibold leading-tight">Years of Excellence</p>
+                <p className="text-[12.5px] text-mute">Since {s.established || '2010'}</p>
+              </div>
             </div>
-            <dl className="mt-16 flex flex-wrap gap-x-10 gap-y-4 text-[13px] text-mute" data-reveal style={{ ['--d' as string]: '750ms' }}>
-              {['Nursery – Class XII', 'English medium', 'Co-educational'].map((x) => (
-                <div key={x} className="flex items-center gap-2">
-                  <span className="h-px w-5 bg-gold" /> {x}
-                </div>
-              ))}
-            </dl>
           </div>
-
-          {/* Z-axis cascade of arch frames */}
-          <div className="relative lg:col-span-5">
-            <div className="relative mx-auto aspect-[4/5] w-full max-w-[460px]" data-reveal="scale" style={{ ['--d' as string]: '200ms' }}>
-              <div className="shell arch h-full !p-2">
-                <Frame media={heroImages[0]} label="Campus" priority className="arch h-full w-full" sizes="(min-width:1024px) 40vw, 90vw" />
-              </div>
-              <div
-                className="absolute -left-6 bottom-10 hidden w-40 animate-float md:block lg:-left-16"
-                style={{ ['--r' as string]: '-4deg' }}
-              >
-                <div className="shell !rounded-[1.4rem] bg-white/70 !p-1.5 backdrop-blur-sm">
-                  <Frame media={heroImages[1]} label="Classrooms" className="aspect-[4/5] rounded-[1.1rem]" tone="ink" sizes="160px" />
-                </div>
-              </div>
-              <div
-                className="absolute -right-4 top-10 hidden w-36 animate-float md:block lg:-right-10"
-                style={{ ['--r' as string]: '5deg', animationDelay: '-3s' }}
-              >
-                <div className="shell !rounded-[1.4rem] bg-white/70 !p-1.5 backdrop-blur-sm">
-                  <Frame media={heroImages[2]} label="Sports" className="aspect-square rounded-[1.1rem]" sizes="150px" />
-                </div>
-              </div>
-              <div className="absolute -bottom-6 right-4 rounded-2xl bg-white px-5 py-4 shadow-[var(--shadow-lift)] ring-1 ring-ink/[0.05] sm:right-8">
-                <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-mute">Admissions</p>
-                <p className="mt-1 font-display text-xl tracking-[-0.02em]">
-                  Now <em className="text-gold">open</em>
-                </p>
-              </div>
+          <div className="pt-6 lg:pt-0">
+            <SectionHeading align="left" label="About Our School" title={h.aboutTitle!} className="!mb-6" />
+            <div className="space-y-4 text-[16px] leading-relaxed text-ink-2" data-reveal>
+              <Paragraphs text={h.aboutText} />
+            </div>
+            <ul className="mt-7 grid gap-3 sm:grid-cols-2" data-reveal>
+              {['CBSE Affiliated', 'Nursery to Class XII', 'Science, Arts & Commerce', 'Smart Classrooms'].map((x) => (
+                <li key={x} className="flex items-center gap-2.5 text-[15px] font-semibold text-ink">
+                  <CheckCircle size={22} weight="fill" className="text-leaf-500" /> {x}
+                </li>
+              ))}
+            </ul>
+            <div className="mt-9 flex flex-wrap gap-3" data-reveal>
+              <Link href="/about" className="btn btn-primary">
+                Learn More <ArrowRight size={16} weight="bold" />
+              </Link>
+              <Link href="/contact" className="btn btn-outline">
+                Visit Campus
+              </Link>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ───────────── Notice ticker ───────────── */}
-      {notices.docs.length > 0 && (
-        <div className="relative border-y border-line bg-bone">
-          <div className="mx-auto flex max-w-[1280px] items-stretch">
-            <Link
-              href="/notices"
-              className="relative z-10 flex shrink-0 items-center gap-2 bg-bone py-4 pl-5 pr-6 font-mono text-[10.5px] uppercase tracking-[0.22em] text-gold sm:pl-8"
-            >
-              Notices <ArrowUpRight size={12} weight="light" />
-            </Link>
-            <div className="relative flex-1 overflow-hidden [mask-image:linear-gradient(90deg,transparent,black_6%,black_94%,transparent)]">
-              <div className="flex w-max animate-marquee hover:[animation-play-state:paused]">
-                {[0, 1].map((dup) => (
-                  <ul key={dup} className="flex shrink-0 items-center" aria-hidden={dup === 1}>
-                    {notices.docs.map((n) => (
-                      <li key={n.id} className="flex items-center gap-4 whitespace-nowrap py-4 pr-12 text-[14px] text-ink-2">
-                        <span className="font-mono text-[11px] text-mute">{formatDate(n.date, { year: undefined })}</span>
-                        {n.title}
-                        <span className="text-gold-2">✦</span>
-                      </li>
-                    ))}
-                  </ul>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
       {/* ───────────── Numbers ───────────── */}
-      <section className="border-b border-line">
-        <div className="mx-auto grid max-w-[1280px] grid-cols-2 px-5 sm:px-8 lg:grid-cols-4">
-          {(h.stats ?? []).map((stat, i) => (
+      <section className="relative overflow-hidden bg-gradient-to-br from-brand-700 via-brand-600 to-brand-800 py-16 text-white">
+        <div className="pointer-events-none absolute -right-20 -top-20 h-72 w-72 rounded-full bg-flame-400/20 blur-3xl" />
+        <div className="pointer-events-none absolute -bottom-24 left-10 h-72 w-72 rounded-full bg-laurel-500/25 blur-3xl" />
+        <div className="container-x relative grid grid-cols-2 gap-y-10 lg:grid-cols-4">
+          {(h.stats ?? []).map((st, i) => (
             <div
-              key={i}
-              className="border-line py-12 pr-4 md:py-16 [&:nth-child(odd)]:border-r lg:border-r lg:pl-8 lg:first:pl-0 lg:last:border-r-0 [&:nth-child(n+3)]:border-t lg:[&:nth-child(n+3)]:border-t-0 [&:nth-child(even)]:pl-6"
+              key={st.label}
+              className="text-center lg:border-r lg:border-white/15 lg:last:border-r-0"
               data-reveal
               style={{ ['--d' as string]: `${i * 90}ms` }}
             >
-              <p className="display text-[clamp(2.6rem,5vw,4.5rem)] text-ink">
-                <CountUp value={stat.value} />
+              <p className="font-heading text-[clamp(2.4rem,4.5vw,3.6rem)] font-bold leading-none">
+                <CountUp value={st.value} />
               </p>
-              <p className="mt-3 text-[14px] text-mute">{stat.label}</p>
+              <p className="mt-3 text-[14px] font-medium uppercase tracking-[0.12em] text-white/75">{st.label}</p>
             </div>
           ))}
         </div>
       </section>
 
-      {/* ───────────── Introduction ───────────── */}
-      <Section>
-        <div className="grid gap-16 lg:grid-cols-12 lg:gap-10">
-          <div className="lg:col-span-5">
-            <div className="lg:sticky lg:top-32">
-              <div className="flex items-center gap-4" data-reveal>
-                <span className="index-num">(01)</span>
-                <span className="eyebrow">Who we are</span>
-              </div>
-              <Title text={h.introTitle!} split className="t-2 mt-6 text-ink" />
-              <p className="lede mt-8" data-reveal>
-                {h.introText}
-              </p>
-              <div className="mt-10" data-reveal>
-                <PillLink href="/about" variant="ghost">
-                  Our story
-                </PillLink>
-              </div>
-            </div>
-          </div>
-          <div className="lg:col-span-6 lg:col-start-7">
-            <div className="shell arch !p-2" data-reveal="scale">
-              <Frame media={h.introImage} label="Life at school" className="arch aspect-[4/5] w-full" />
-            </div>
-          </div>
-        </div>
-      </Section>
-
-      {/* ───────────── Pillars bento ───────────── */}
-      <Section tone="bone">
-        <SectionHead
-          index="02"
-          eyebrow="The Asian School way"
-          title="Six promises we keep to *every* child."
-          text="A balanced education that grows the mind, the body and the heart — together."
-        />
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-6 md:gap-5">
-          {(h.pillars ?? []).map((p, i) => {
-            const feature = i === 0
-            return (
-              <article
-                key={i}
-                data-reveal
-                style={{ ['--d' as string]: `${(i % 3) * 100}ms` }}
-                className={feature ? 'md:col-span-4 md:row-span-2' : i < 3 ? 'md:col-span-2' : 'md:col-span-2'}
-              >
-                <div className={feature ? 'shell shell--dark h-full bg-ink' : 'shell h-full'}>
-                  <div
-                    className={
-                      feature
-                        ? 'core core--dark relative flex h-full min-h-[340px] flex-col justify-between overflow-hidden p-8 text-white md:p-12'
-                        : 'core flex h-full flex-col justify-between gap-10 p-7'
-                    }
+      {/* ───────────── Why choose us ───────────── */}
+      <section className="bg-soft py-20 md:py-28">
+        <div className="container-x">
+          <SectionHeading label="Why Choose Us" title={h.whyTitle!} text={h.whyText} />
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {(h.pillars ?? []).map((p, i) => {
+              const tones = ['bg-brand-600', 'bg-laurel-600', 'bg-flame-500', 'bg-leaf-600']
+              return (
+                <article
+                  key={p.title}
+                  className="card card-hover group relative overflow-hidden p-7"
+                  data-reveal
+                  style={{ ['--d' as string]: `${(i % 3) * 90}ms` }}
+                >
+                  <span className="absolute right-6 top-6 font-heading text-5xl font-bold text-brand-50 transition-colors duration-500 group-hover:text-brand-100">
+                    {String(i + 1).padStart(2, '0')}
+                  </span>
+                  <span
+                    className={`relative flex h-14 w-14 items-center justify-center rounded-2xl ${tones[i % tones.length]} text-white shadow-lg transition-transform duration-500 ease-[var(--ease-spring)] group-hover:-translate-y-1 group-hover:rotate-[-6deg]`}
                   >
-                    {feature && (
-                      <div className="pointer-events-none absolute -right-20 -top-20 h-72 w-72 rounded-full bg-gold/25 blur-[90px]" />
-                    )}
-                    <div
-                      className={
-                        feature
-                          ? 'flex h-14 w-14 items-center justify-center rounded-full bg-white/10 text-gold-2 ring-1 ring-white/15'
-                          : 'flex h-12 w-12 items-center justify-center rounded-full bg-bone text-gold ring-1 ring-line'
-                      }
-                    >
-                      <Icon name={p.icon} size={feature ? 28 : 24} />
-                    </div>
-                    <div className="relative">
-                      <span className={feature ? 'index-num text-white/40' : 'index-num'}>0{i + 1}</span>
-                      <h3 className={feature ? 'display mt-3 text-[clamp(2rem,3.4vw,3.2rem)] text-white' : 'display t-3 mt-3'}>
-                        {p.title}
-                      </h3>
-                      <p className={feature ? 'mt-5 max-w-md text-[17px] leading-relaxed text-white/70' : 'mt-3 text-[15px] leading-relaxed text-ink-2'}>
-                        {p.text}
-                      </p>
-                    </div>
-                  </div>
+                    <Icon name={p.icon} size={28} />
+                  </span>
+                  <h3 className="heading-md relative mt-6">{p.title}</h3>
+                  <p className="relative mt-3 text-[15px] leading-relaxed text-ink-2">{p.text}</p>
+                </article>
+              )
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* ───────────── Director's message ───────────── */}
+      <section className="py-20 md:py-28" id="message">
+        <div className="container-x grid items-center gap-16 lg:grid-cols-12">
+          <div className="relative mx-auto w-full max-w-md lg:col-span-5" data-reveal="left">
+            <div className="absolute inset-0 translate-x-4 translate-y-4 rounded-[2rem] bg-brand-600" aria-hidden />
+            <Photo
+              media={h.messagePhoto as Media}
+              fallback={fallbackImages.director}
+              alt={h.messageName ?? ''}
+              className="relative aspect-[4/5] rounded-[2rem]"
+              sizes="(min-width:1024px) 420px, 90vw"
+            />
+            <div className="absolute -bottom-6 left-1/2 w-[85%] -translate-x-1/2 rounded-2xl bg-white px-5 py-4 text-center shadow-[var(--shadow-lift)] ring-1 ring-line">
+              <p className="font-heading text-[17px] font-bold text-brand-800">{h.messageName}</p>
+              <p className="text-[13px] text-mute">{h.messageRole}</p>
+            </div>
+          </div>
+          <div className="lg:col-span-7">
+            <SectionHeading align="left" label={h.messageHeading ?? 'Message'} title="A Message from Our *Director*" className="!mb-6" />
+            <div className="text-flame-400" data-reveal>
+              <Quotes size={52} weight="fill" />
+            </div>
+            <div className="mt-3 space-y-4 text-[16px] leading-relaxed text-ink-2" data-reveal>
+              <Paragraphs text={h.messageText} />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ───────────── Notice board + Activities ───────────── */}
+      <section className="bg-soft py-20 md:py-28">
+        <div className="container-x">
+          <SectionHeading
+            label="Stay Updated"
+            title="Notices & *Activities*"
+            text="Important announcements, events and happenings at The Asian International School."
+          />
+          <div className="grid gap-6 lg:grid-cols-12">
+            <div className="lg:col-span-5" data-reveal>
+              <NoticeBoard
+                notices={notices.docs.map((n) => ({
+                  id: String(n.id),
+                  title: n.title,
+                  date: n.date,
+                  category: n.category,
+                  details: n.details,
+                  fileUrl: fileUrl(n.attachment),
+                }))}
+              />
+            </div>
+            <div className="lg:col-span-7" data-reveal style={{ ['--d' as string]: '120ms' }}>
+              <div className="card flex h-full flex-col overflow-hidden">
+                <div className="flex items-center justify-between bg-laurel-600 px-6 py-4 text-white">
+                  <h3 className="text-[19px] font-bold">News & Activities</h3>
+                  <Link href="/news" className="inline-flex items-center gap-1 text-[13px] font-semibold text-white/85 hover:text-white">
+                    View all <ArrowRight size={14} weight="bold" />
+                  </Link>
                 </div>
-              </article>
-            )
-          })}
-        </div>
-      </Section>
-
-      {/* ───────────── Academic journey ───────────── */}
-      <Section>
-        <SectionHead
-          index="03"
-          eyebrow="Academics"
-          title="A journey from *first words* to final exams."
-          aside={
-            <PillLink href="/academics" variant="ghost">
-              Explore academics
-            </PillLink>
-          }
-        />
-        <ol className="relative grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-          <span className="pointer-events-none absolute left-0 right-0 top-[34px] hidden h-px bg-gradient-to-r from-gold/0 via-gold/40 to-gold/0 lg:block" />
-          {(academics.stages ?? []).map((stage, i) => (
-            <li key={i} data-reveal style={{ ['--d' as string]: `${i * 110}ms` }} className="group relative">
-              <div className="relative z-10 mb-8 flex h-[68px] w-[68px] items-center justify-center rounded-full bg-white font-display text-2xl text-gold ring-1 ring-line transition-all duration-700 ease-[var(--ease-spring)] group-hover:bg-ink group-hover:text-gold-2">
-                {String(i + 1).padStart(2, '0')}
-              </div>
-              <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-mute">{stage.classes}</p>
-              <h3 className="display t-3 mt-3">{stage.name}</h3>
-              <p className="mt-4 text-[15px] leading-relaxed text-ink-2">{stage.text}</p>
-            </li>
-          ))}
-        </ol>
-      </Section>
-
-      {/* ───────────── Principal's message ───────────── */}
-      <Section tone="ink" className="overflow-hidden">
-        <div className="pointer-events-none absolute -left-40 top-1/3 h-[520px] w-[520px] rounded-full bg-gold/15 blur-[140px]" />
-        <div className="relative grid items-center gap-16 lg:grid-cols-12">
-          <div className="lg:col-span-4" data-reveal="scale">
-            <div className="shell shell--dark arch mx-auto max-w-[360px] !p-2">
-              <Frame media={h.principalPhoto} label="Principal" tone="ink" className="arch aspect-[3/4] w-full" sizes="360px" />
-            </div>
-          </div>
-          <div className="lg:col-span-7 lg:col-start-6">
-            <div className="flex items-center gap-4" data-reveal>
-              <span className="index-num text-white/40">(04)</span>
-              <span className="eyebrow eyebrow--dark">From the Principal’s desk</span>
-            </div>
-            <div className="mt-10 text-gold-2" data-reveal>
-              <Quotes size={56} weight="light" />
-            </div>
-            <blockquote className="display mt-6 text-[clamp(1.6rem,2.8vw,2.6rem)] leading-[1.2] text-white" data-reveal>
-              {h.principalMessage}
-            </blockquote>
-            <div className="mt-10 flex items-center gap-4" data-reveal>
-              <span className="h-px w-12 bg-gold-2" />
-              <div>
-                <p className="font-display text-xl">{h.principalName}</p>
-                <p className="text-[13px] text-white/55">{h.principalRole}</p>
+                {news.docs.length === 0 ? (
+                  <div className="flex flex-1 flex-col items-center justify-center gap-4 p-6 text-center">
+                    <Photo fallback={fallbackImages.campus} className="aspect-[16/8] w-full rounded-2xl" />
+                    <p className="text-[14px] text-mute">School activities and events will appear here.</p>
+                  </div>
+                ) : (
+                  <div className="grid flex-1 gap-5 p-5 sm:grid-cols-2">
+                    {news.docs.map((n, i) => (
+                      <Link key={n.id} href={`/news/${n.slug}`} className={`group block ${i === 0 ? 'sm:col-span-2' : ''}`}>
+                        <Photo
+                          media={n.cover as Media}
+                          size="card"
+                          label={n.category}
+                          className={`rounded-2xl ${i === 0 ? 'aspect-[16/7]' : 'aspect-[16/10]'}`}
+                          imgClassName="transition-transform duration-[1.2s] ease-[var(--ease-out-expo)] group-hover:scale-105"
+                        />
+                        <p className="mt-3 flex items-center gap-1.5 text-[12.5px] font-semibold uppercase tracking-wide text-laurel-600">
+                          <CalendarBlank size={14} weight="bold" /> {formatDate(n.date)} · {n.category}
+                        </p>
+                        <h4 className="mt-1.5 font-heading text-[17px] font-semibold leading-snug group-hover:text-brand-600">{n.title}</h4>
+                      </Link>
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
           </div>
         </div>
-      </Section>
+      </section>
 
       {/* ───────────── Achievers ───────────── */}
       {toppers.docs.length > 0 && (
-        <Section>
-          <SectionHead
-            index="05"
-            eyebrow="Hall of fame"
-            title="Our *achievers* make us proud."
-            aside={
-              <PillLink href="/achievers" variant="ghost">
-                All achievers
-              </PillLink>
-            }
-          />
-          <div className="no-scrollbar -mx-5 flex snap-x gap-4 overflow-x-auto px-5 pb-4 sm:-mx-8 sm:px-8">
-            {toppers.docs.map((t, i) => (
-              <article
-                key={t.id}
-                className="shell w-[240px] shrink-0 snap-start sm:w-[260px]"
-                data-reveal
-                style={{ ['--d' as string]: `${Math.min(i, 5) * 80}ms` }}
-              >
-                <div className="core overflow-hidden">
-                  <Frame media={t.photo} label={t.year} size="card" className="aspect-[4/5] rounded-t-[calc(2rem-6px)]" sizes="260px" />
-                  <div className="p-5">
-                    <p className="display text-[2.2rem] text-gold">{t.score}</p>
-                    <p className="mt-2 font-medium">{t.name}</p>
-                    <p className="text-[13px] text-mute">
-                      {t.className} · {t.year}
-                    </p>
+        <section className="relative overflow-hidden bg-gradient-to-br from-brand-900 via-brand-800 to-brand-700 py-20 text-white md:py-28">
+          <div className="pointer-events-none absolute left-1/2 top-0 h-80 w-[60%] -translate-x-1/2 rounded-full bg-flame-400/20 blur-3xl" />
+          <div className="container-x relative">
+            <SectionHeading
+              light
+              label="Achievements & Awards"
+              title="Our *Shining Stars*"
+              text="Students who made the school proud with their hard work and dedication."
+            />
+            <div className="grid grid-cols-2 gap-x-4 gap-y-10 sm:grid-cols-3 lg:grid-cols-5">
+              {toppers.docs.slice(0, 10).map((t, i) => (
+                <article key={t.id} className="text-center" data-reveal style={{ ['--d' as string]: `${(i % 5) * 80}ms` }}>
+                  <div className="relative mx-auto w-[78%]">
+                    <div className="absolute -inset-1.5 rounded-full bg-[conic-gradient(var(--color-flame-400),var(--color-laurel-500),var(--color-flame-400))]" />
+                    <Photo media={t.photo as Media} size="thumb" label="Photo" className="relative aspect-square rounded-full ring-4 ring-brand-900" sizes="200px" />
                   </div>
+                  <p className="mt-5 font-heading text-[clamp(1.5rem,2.6vw,2rem)] font-bold text-flame-400">{t.score}</p>
+                  <p className="mx-auto mt-1 w-max max-w-full truncate rounded-full bg-white px-3 py-1 text-[12.5px] font-bold uppercase text-brand-900">
+                    {t.name}
+                  </p>
+                  <p className="mt-2 text-[12.5px] text-white/70">
+                    {t.className} · {t.year}
+                  </p>
+                </article>
+              ))}
+            </div>
+            <div className="mt-12 text-center">
+              <Link href="/achievers" className="btn btn-gold">
+                View All Achievements <ArrowRight size={16} weight="bold" />
+              </Link>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* ───────────── Facilities ───────────── */}
+      <section className="py-20 md:py-28">
+        <div className="container-x">
+          <SectionHeading
+            label="School Facilities"
+            title="Modern Infrastructure for *Better Learning*"
+            text="State-of-the-art facilities that support academic excellence, innovation and the overall development of every student."
+          />
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            {facilityCards.slice(0, 8).map((f, i) => (
+              <article
+                key={f.title}
+                className="card card-hover group overflow-hidden"
+                data-reveal
+                style={{ ['--d' as string]: `${(i % 4) * 80}ms` }}
+              >
+                {f.image ? (
+                  <Photo
+                    media={f.image}
+                    size="card"
+                    className="aspect-[16/11]"
+                    imgClassName="transition-transform duration-[1.2s] ease-[var(--ease-out-expo)] group-hover:scale-105"
+                    sizes="(min-width:1024px) 25vw, 50vw"
+                  />
+                ) : (
+                  <div className="dots-bg flex aspect-[16/9] items-center justify-center bg-gradient-to-br from-brand-50 to-white">
+                    <span className="flex h-16 w-16 items-center justify-center rounded-2xl bg-white text-brand-600 shadow-[var(--shadow-card)] ring-1 ring-line transition-transform duration-500 ease-[var(--ease-spring)] group-hover:scale-110">
+                      <Icon name={f.icon} size={32} />
+                    </span>
+                  </div>
+                )}
+                <div className="p-6">
+                  <h3 className="heading-md">{f.title}</h3>
+                  <p className="mt-2 text-[14.5px] leading-relaxed text-ink-2">{f.summary}</p>
                 </div>
               </article>
             ))}
           </div>
-        </Section>
-      )}
-
-      {/* ───────────── Gallery preview ───────────── */}
-      <Section tone="bone">
-        <SectionHead
-          index="06"
-          eyebrow="Life at school"
-          title="Moments that *stay* with us."
-          aside={
-            <PillLink href="/gallery" variant="ghost">
-              Open gallery
-            </PillLink>
-          }
-        />
-        <div className="grid auto-rows-[180px] grid-cols-2 gap-3 md:auto-rows-[220px] md:grid-cols-4 md:gap-4">
-          {Array.from({ length: 4 }).map((_, i) => {
-            const album = albums.docs[i]
-            const cover = album ? ((album.cover as Media) ?? (album.photos?.[0] as Media)) : null
-            const spans = ['col-span-2 row-span-2', 'col-span-1 row-span-1', 'col-span-1 row-span-1', 'col-span-2 row-span-1']
-            const labels = ['Annual day', 'Sports meet', 'Science fair', 'Celebrations']
-            const content = (
-              <Frame
-                media={cover}
-                label={album?.title ?? labels[i]}
-                size="card"
-                tone={i % 2 ? 'ink' : 'warm'}
-                className="h-full w-full rounded-[1.5rem] transition-transform duration-[1.2s] ease-[var(--ease-out-expo)] group-hover:scale-[1.04]"
-                sizes="(min-width:768px) 33vw, 50vw"
-              />
-            )
-            return (
-              <div key={i} className={`group relative overflow-hidden rounded-[1.5rem] ${spans[i]}`} data-reveal="scale" style={{ ['--d' as string]: `${i * 80}ms` }}>
-                {album ? (
-                  <Link href={`/gallery/${album.slug}`} className="block h-full">
-                    {content}
-                    <span className="absolute inset-x-3 bottom-3 rounded-full bg-white/85 px-4 py-2 text-[13px] font-medium text-ink opacity-0 backdrop-blur transition-all duration-500 group-hover:opacity-100">
-                      {album.title}
-                    </span>
-                  </Link>
-                ) : (
-                  <Link href="/gallery" className="block h-full">
-                    {content}
-                  </Link>
-                )}
-              </div>
-            )
-          })}
-        </div>
-      </Section>
-
-      {/* ───────────── News ───────────── */}
-      {news.docs.length > 0 && (
-        <Section>
-          <SectionHead
-            index="07"
-            eyebrow="News & events"
-            title="What’s happening on *campus*."
-            aside={
-              <PillLink href="/news" variant="ghost">
-                All news
-              </PillLink>
-            }
-          />
-          <div className="grid gap-5 md:grid-cols-3">
-            {news.docs.map((n, i) => (
-              <Link key={n.id} href={`/news/${n.slug}`} className="group block" data-reveal style={{ ['--d' as string]: `${i * 100}ms` }}>
-                <div className="shell h-full">
-                  <div className="core h-full overflow-hidden">
-                    <div className="overflow-hidden rounded-t-[calc(2rem-6px)]">
-                      <Frame
-                        media={n.cover}
-                        label={n.category}
-                        size="card"
-                        className="aspect-[16/11] transition-transform duration-[1.2s] ease-[var(--ease-out-expo)] group-hover:scale-[1.05]"
-                        sizes="(min-width:768px) 33vw, 100vw"
-                      />
-                    </div>
-                    <div className="p-6">
-                      <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-mute">
-                        {n.category} · {formatDate(n.date)}
-                      </p>
-                      <h3 className="display t-3 mt-3 transition-colors group-hover:text-gold">{n.title}</h3>
-                      {n.excerpt && <p className="mt-3 line-clamp-2 text-[15px] text-ink-2">{n.excerpt}</p>}
-                    </div>
-                  </div>
-                </div>
-              </Link>
-            ))}
+          <div className="mt-12 text-center" data-reveal>
+            <Link href="/facilities" className="btn btn-primary">
+              View All Facilities <ArrowRight size={16} weight="bold" />
+            </Link>
           </div>
-        </Section>
+        </div>
+      </section>
+
+      {/* ───────────── Gallery ───────────── */}
+      {photos.length > 0 && (
+        <section className="bg-soft py-20 md:py-28">
+          <div className="container-x">
+            <SectionHeading label="School Gallery" title="Moments That Define *Our Journey*" />
+            <div className="grid auto-rows-[160px] grid-cols-2 gap-3 md:auto-rows-[200px] md:grid-cols-4">
+              {photos.slice(0, 8).map(({ photo, album }, i) => (
+                <Link
+                  key={`${album.id}-${i}`}
+                  href={`/gallery/${album.slug}`}
+                  className={`group relative overflow-hidden rounded-2xl ${i === 0 ? 'col-span-2 row-span-2' : ''}`}
+                  data-reveal="zoom"
+                  style={{ ['--d' as string]: `${(i % 4) * 70}ms` }}
+                >
+                  <Photo
+                    media={photo}
+                    size="card"
+                    className="h-full w-full"
+                    imgClassName="transition-transform duration-[1.2s] ease-[var(--ease-out-expo)] group-hover:scale-110"
+                    sizes="(min-width:768px) 25vw, 50vw"
+                  />
+                  <span className="absolute inset-0 flex items-end bg-gradient-to-t from-brand-950/75 via-transparent p-4 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
+                    <span className="text-[14px] font-semibold text-white">{album.title}</span>
+                  </span>
+                </Link>
+              ))}
+            </div>
+            <div className="mt-12 text-center">
+              <Link href="/gallery" className="btn btn-primary">
+                View Full Gallery <ArrowRight size={16} weight="bold" />
+              </Link>
+            </div>
+          </div>
+        </section>
       )}
 
       {/* ───────────── Testimonials ───────────── */}
-      <Section tone={news.docs.length > 0 ? 'bone' : 'paper'}>
-        <SectionHead index="08" eyebrow="Voices" title="Words from our *families*." />
-        <Testimonials items={quotes.map((q) => ({ quote: q.quote, name: q.name, relation: q.relation ?? '' }))} />
-      </Section>
+      <section className={photos.length > 0 ? 'py-20 md:py-28' : 'bg-soft py-20 md:py-28'}>
+        <div className="container-x">
+          <SectionHeading label="Testimonials" title="What *Parents* Say About Us" />
+          <Testimonials items={quotes.map((q) => ({ quote: q.quote, name: q.name, relation: q.relation }))} />
+        </div>
+      </section>
 
-      {/* ───────────── CTA ───────────── */}
-      <section className="px-3 pb-3 sm:px-5 sm:pb-5">
-        <div className="relative overflow-hidden rounded-[2.5rem] bg-ink px-6 py-24 text-white sm:px-12 md:py-32">
-          <div className="pointer-events-none absolute -right-20 -top-32 h-[560px] w-[560px] rounded-full bg-gold/25 blur-[130px]" />
-          <svg className="pointer-events-none absolute -bottom-10 right-[-6%] hidden h-[115%] text-white/[0.05] md:block" viewBox="0 0 200 260" aria-hidden>
-            <path d="M10 260V110C10 50 50 10 100 10s90 40 90 100v150" fill="none" stroke="currentColor" strokeWidth="1" />
-            <path d="M30 260V115c0-48 31-82 70-82s70 34 70 82v145" fill="none" stroke="currentColor" strokeWidth="1" />
-            <path d="M50 260V120c0-36 22-62 50-62s50 26 50 62v140" fill="none" stroke="currentColor" strokeWidth="1" />
-          </svg>
-          <div className="relative mx-auto max-w-[1180px]">
-            <span className="eyebrow eyebrow--dark" data-reveal>
-              Admissions open
-            </span>
-            <Title text={h.ctaTitle!} split className="t-1 mt-8 max-w-[16ch] text-white" />
-            <p className="mt-8 max-w-xl text-[17px] leading-relaxed text-white/70" data-reveal>
-              {h.ctaText}
-            </p>
-            <div className="mt-12 flex flex-wrap items-center gap-4" data-reveal>
-              <PillLink href="/admissions" variant="gold">
-                Start your enquiry
-              </PillLink>
-              {s.phone && (
-                <a href={telHref(s.phone)} className="inline-flex items-center gap-3 rounded-full px-5 py-3 text-white/80 ring-1 ring-white/15 transition-colors hover:text-white hover:ring-white/30">
-                  <Phone size={18} weight="light" /> {s.phone}
-                </a>
-              )}
+      {/* ───────────── Calendar + FAQ ───────────── */}
+      <section className={photos.length > 0 ? 'bg-soft py-20 md:py-28' : 'py-20 md:py-28'}>
+        <div className="container-x grid gap-12 lg:grid-cols-12">
+          <div className="lg:col-span-5">
+            <SectionHeading
+              align="left"
+              label="School Calendar"
+              title="Plan Ahead With Our *Calendar*"
+              text="Important dates, examinations, holidays and celebrations for every month."
+              className="!mb-8"
+            />
+            {calendarImage ? (
+              <a href={calendarImage.url} target="_blank" rel="noreferrer" className="card card-hover block overflow-hidden p-2" data-reveal>
+                <Image
+                  src={calendarImage.url}
+                  alt={calendarImage.alt || 'School calendar'}
+                  width={calendarImage.width}
+                  height={calendarImage.height}
+                  className="h-auto w-full rounded-2xl"
+                />
+              </a>
+            ) : (
+              <div className="card flex items-center gap-5 p-6" data-reveal>
+                <span className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-laurel-600 text-white">
+                  <CalendarBlank size={32} weight="duotone" />
+                </span>
+                <div>
+                  <p className="font-heading text-lg font-semibold">Academic Session {admissions.session}</p>
+                  <p className="text-[14px] text-mute">The monthly calendar will be published here.</p>
+                </div>
+              </div>
+            )}
+            {calendarPdf && (
+              <a href={calendarPdf} target="_blank" rel="noreferrer" className="btn btn-red mt-6">
+                <FilePdf size={18} weight="fill" /> Download Full Calendar
+              </a>
+            )}
+          </div>
+          <div className="lg:col-span-7">
+            <SectionHeading align="left" label="FAQ" title="Frequently Asked *Questions*" className="!mb-8" />
+            <Faq items={admissions.faqs ?? []} />
+          </div>
+        </div>
+      </section>
+
+      {/* ───────────── Admission CTA ───────────── */}
+      <section className="pb-20 pt-4 md:pb-24">
+        <div className="container-x">
+          <div className="relative overflow-hidden rounded-[2rem] bg-brand-700 px-6 py-14 text-white sm:px-12 md:py-16" data-reveal="zoom">
+            <Image src={fallbackImages.campus} alt="" fill sizes="100vw" className="object-cover opacity-15" />
+            <div className="absolute inset-0 bg-gradient-to-r from-brand-800 via-brand-700/95 to-brand-600/70" />
+            <div className="pointer-events-none absolute -right-10 -top-10 h-60 w-60 rounded-full bg-flame-400/30 blur-3xl" />
+            <div className="relative grid items-center gap-10 lg:grid-cols-12">
+              <div className="lg:col-span-8">
+                <span className="label-pill label-pill--light">Admissions Open {admissions.session}</span>
+                <h2 className="heading-lg mt-5 max-w-2xl">{h.ctaTitle}</h2>
+                <p className="mt-4 max-w-2xl text-[16.5px] leading-relaxed text-white/80">{h.ctaText}</p>
+              </div>
+              <div className="flex flex-col gap-3 sm:flex-row lg:col-span-4 lg:flex-col lg:items-end">
+                <Link href="/admissions#enquiry" className="btn btn-gold !py-4">
+                  Apply For Admission <ArrowRight size={16} weight="bold" />
+                </Link>
+                {s.phone && (
+                  <a href={telHref(s.phone)} className="btn btn-glass !py-4">
+                    Call {s.phone}
+                  </a>
+                )}
+              </div>
             </div>
           </div>
         </div>

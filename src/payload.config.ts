@@ -21,6 +21,7 @@ import {
   Pages,
   Testimonials,
   Toppers,
+  TransferCertificates,
   Users,
 } from './collections'
 import { AboutPage, AcademicsPage, AdmissionsPage, Disclosure, HomePage, SiteSettings } from './globals'
@@ -40,8 +41,8 @@ export default buildConfig({
     user: Users.slug,
     importMap: { baseDir: path.resolve(dirname) },
     meta: {
-      titleSuffix: ' · The Asian School Admin',
-      icons: [{ rel: 'icon', type: 'image/svg+xml', url: '/crest.svg' }],
+      titleSuffix: ' · Asian International School Admin',
+      icons: [{ rel: 'icon', type: 'image/png', url: '/images/logo.png' }],
     },
     components: {
       graphics: {
@@ -61,6 +62,7 @@ export default buildConfig({
     Testimonials,
     Facilities,
     Careers,
+    TransferCertificates,
     Pages,
     Media,
     Documents,
@@ -78,7 +80,7 @@ export default buildConfig({
   email: process.env.SMTP_HOST
     ? nodemailerAdapter({
         defaultFromAddress: process.env.EMAIL_FROM || process.env.SMTP_USER || '',
-        defaultFromName: 'The Asian School Website',
+        defaultFromName: 'The Asian International School Website',
         transportOptions: {
           host: process.env.SMTP_HOST,
           port: Number(process.env.SMTP_PORT || 465),
@@ -99,7 +101,7 @@ export default buildConfig({
       collections: ['news', 'pages'],
       uploadsCollection: 'media',
       tabbedUI: true,
-      generateTitle: ({ doc }) => `${(doc as { title?: string })?.title ?? ''} · The Asian School, Chomu`,
+      generateTitle: ({ doc }) => `${(doc as { title?: string })?.title ?? ''} · The Asian International School, Chomu`,
       generateDescription: ({ doc }) => (doc as { excerpt?: string; intro?: string })?.excerpt ?? (doc as { intro?: string })?.intro ?? '',
     }),
   ],

@@ -1,73 +1,74 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import clsx from 'clsx'
-import { ArrowLeft, ArrowRight } from '@phosphor-icons/react'
+import { CaretLeft, CaretRight, Quotes, Star } from '@phosphor-icons/react'
 
-type Item = { quote: string; name: string; relation: string }
+type Item = { quote: string; name: string; relation?: string | null; photo?: string | null }
 
+/** Horizontal card slider with snap scrolling; arrows scroll one card at a time. */
 export function Testimonials({ items }: { items: Item[] }) {
-  const [active, setActive] = useState(0)
-  const [paused, setPaused] = useState(false)
+  const track = useRef<HTMLDivElement>(null)
+  const [atStart, setAtStart] = useState(true)
+  const [atEnd, setAtEnd] = useState(false)
 
-  useEffect(() => {
-    if (paused || items.length < 2) return
-    const t = setTimeout(() => setActive((a) => (a + 1) % items.length), 7000)
-    return () => clearTimeout(t)
-  }, [active, paused, items.length])
+  const update = () => {
+    const el = track.current
+    if (!el) return
+    setAtStart(el.scrollLeft < 8)
+    setAtEnd(el.scrollLeft + el.clientWidth > el.scrollWidth - 8)
+  }
 
-  const go = (d: number) => setActive((a) => (a + d + items.length) % items.length)
+  useEffect(update, [])
+
+  const scroll = (d: number) => {
+    const el = track.current
+    if (!el) return
+    const card = el.querySelector('article')
+    el.scrollBy({ left: d * ((card?.clientWidth ?? 360) + 20), behavior: 'smooth' })
+  }
 
   return (
-    <div
-      className="grid gap-10 lg:grid-cols-12"
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
-      data-reveal
-    >
-      <div className="relative min-h-[260px] lg:col-span-9 md:min-h-[230px]">
-        {items.map((item, i) => (
-          <figure
-            key={i}
-            aria-hidden={i !== active}
-            className={clsx(
-              'absolute inset-0 transition-all duration-[900ms] ease-[var(--ease-out-expo)]',
-              i === active ? 'translate-y-0 opacity-100 blur-0' : 'pointer-events-none translate-y-6 opacity-0 blur-sm',
-            )}
-          >
-            <blockquote className="display text-[clamp(1.6rem,3vw,2.8rem)] leading-[1.2] text-ink">“{item.quote}”</blockquote>
-            <figcaption className="mt-8 flex items-center gap-4">
-              <span className="flex h-11 w-11 items-center justify-center rounded-full bg-gold-soft font-display text-lg text-gold">
-                {item.name.charAt(0)}
-              </span>
-              <span>
-                <span className="block font-medium">{item.name}</span>
-                <span className="block text-[13px] text-mute">{item.relation}</span>
-              </span>
-            </figcaption>
-          </figure>
+    <div>
+      <div ref={track} onScroll={update} className="no-scrollbar -mx-4 flex snap-x snap-mandatory gap-5 overflow-x-auto px-4 pb-6 sm:-mx-6 sm:px-6">
+        {items.map((t, i) => (
+          <article key={i} className="card card-hover relative w-[86%] shrink-0 snap-start p-7 sm:w-[420px]" data-reveal style={{ ['--d' as string]: `${Math.min(i, 3) * 90}ms` }}>
+            <Quotes size={44} weight="fill" className="text-brand-100" />
+            <div className="mt-2 flex gap-0.5 text-flame-500">
+              {Array.from({ length: 5 }).map((_, k) => (
+                <Star key={k} size={16} weight="fill" />
+              ))}
+            </div>
+            <p className="mt-4 text-[16px] leading-relaxed text-ink-2">“{t.quote}”</p>
+            <div className="mt-6 flex items-center gap-3 border-t border-line pt-5">
+              <span className="flex h-11 w-11 items-center justify-center rounded-full bg-brand-600 font-heading text-lg font-bold text-white">{t.name.charAt(0)}</span>
+              <div>
+                <p className="font-semibold">{t.name}</p>
+                {t.relation && <p className="text-[13px] text-mute">{t.relation}</p>}
+              </div>
+            </div>
+          </article>
         ))}
       </div>
-      <div className="flex items-end justify-between gap-6 lg:col-span-3 lg:flex-col lg:items-end">
-        <p className="font-mono text-[12px] tracking-[0.2em] text-mute">
-          {String(active + 1).padStart(2, '0')} / {String(items.length).padStart(2, '0')}
-        </p>
-        <div className="flex gap-2">
-          {[
-            { d: -1, Icon: ArrowLeft, label: 'Previous' },
-            { d: 1, Icon: ArrowRight, label: 'Next' },
-          ].map(({ d, Icon, label }) => (
-            <button
-              key={label}
-              type="button"
-              aria-label={label}
-              onClick={() => go(d)}
-              className="flex h-14 w-14 items-center justify-center rounded-full ring-1 ring-ink/15 transition-all duration-500 ease-[var(--ease-spring)] hover:bg-ink hover:text-white active:scale-95"
-            >
-              <Icon size={20} weight="light" />
-            </button>
-          ))}
-        </div>
+      <div className="mt-2 flex justify-center gap-3">
+        {[
+          { d: -1, Icon: CaretLeft, label: 'Previous', disabled: atStart },
+          { d: 1, Icon: CaretRight, label: 'Next', disabled: atEnd },
+        ].map(({ d, Icon, label, disabled }) => (
+          <button
+            key={label}
+            type="button"
+            aria-label={label}
+            disabled={disabled}
+            onClick={() => scroll(d)}
+            className={clsx(
+              'flex h-12 w-12 items-center justify-center rounded-full ring-1 transition-all duration-300',
+              disabled ? 'text-mute/50 ring-line' : 'bg-brand-600 text-white ring-brand-600 hover:bg-brand-700',
+            )}
+          >
+            <Icon size={18} weight="bold" />
+          </button>
+        ))}
       </div>
     </div>
   )

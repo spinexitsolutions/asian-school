@@ -1,37 +1,66 @@
-export const primaryLinks = [
-  { href: '/about', label: 'About' },
-  { href: '/academics', label: 'Academics' },
-  { href: '/facilities', label: 'Campus' },
-  { href: '/gallery', label: 'Gallery' },
-  { href: '/news', label: 'News' },
+export type NavItem = { label: string; href: string; children?: { label: string; href: string }[] }
+
+export const navItems: NavItem[] = [
+  { label: 'Home', href: '/' },
+  {
+    label: 'About',
+    href: '/about',
+    children: [
+      { label: 'About School', href: '/about' },
+      { label: "Director's Message", href: '/about#message' },
+      { label: 'Our Faculty', href: '/faculty' },
+      { label: 'Careers', href: '/careers' },
+    ],
+  },
+  { label: 'Academics', href: '/academics' },
+  { label: 'Facilities', href: '/facilities' },
+  { label: 'Gallery', href: '/gallery' },
+  { label: 'Achievements', href: '/achievers' },
+  {
+    label: 'CBSE Corner',
+    href: '/mandatory-disclosure',
+    children: [
+      { label: 'Mandatory Public Disclosure', href: '/mandatory-disclosure' },
+      { label: 'Transfer Certificates', href: '/transfer-certificates' },
+      { label: 'Information of the School', href: '/information-of-the-school' },
+      { label: 'Affiliation Details', href: '/affiliation-details' },
+    ],
+  },
+  { label: 'Admissions', href: '/admissions' },
+  {
+    label: 'Notices',
+    href: '/notices',
+    children: [
+      { label: 'Notice Board', href: '/notices' },
+      { label: 'News & Events', href: '/news' },
+    ],
+  },
+  { label: 'Contact', href: '/contact' },
 ]
 
-export const menuGroups = [
+export const footerGroups = [
   {
-    title: 'Discover',
+    title: 'Quick Links',
     links: [
-      { href: '/about', label: 'About the School' },
-      { href: '/academics', label: 'Academics' },
-      { href: '/facilities', label: 'Campus & Facilities' },
-      { href: '/faculty', label: 'Our Faculty' },
+      { label: 'About School', href: '/about' },
+      { label: 'Academics', href: '/academics' },
+      { label: 'Admissions', href: '/admissions' },
+      { label: 'Facilities', href: '/facilities' },
+      { label: 'Gallery', href: '/gallery' },
+      { label: 'Achievements', href: '/achievers' },
+      { label: 'Contact Us', href: '/contact' },
     ],
   },
   {
-    title: 'Life at School',
+    title: 'CBSE Corner',
     links: [
-      { href: '/gallery', label: 'Gallery' },
-      { href: '/news', label: 'News & Events' },
-      { href: '/achievers', label: 'Achievers' },
-      { href: '/notices', label: 'Notice Board' },
-    ],
-  },
-  {
-    title: 'Connect',
-    links: [
-      { href: '/admissions', label: 'Admissions' },
-      { href: '/contact', label: 'Contact & Visit' },
-      { href: '/careers', label: 'Careers' },
-      { href: '/mandatory-disclosure', label: 'Public Disclosure' },
+      { label: 'Mandatory Public Disclosure', href: '/mandatory-disclosure' },
+      { label: 'Transfer Certificates', href: '/transfer-certificates' },
+      { label: 'Information of the School', href: '/information-of-the-school' },
+      { label: 'Affiliation Details', href: '/affiliation-details' },
+      { label: 'Notice Board', href: '/notices' },
+      { label: 'News & Events', href: '/news' },
+      { label: 'Careers', href: '/careers' },
     ],
   },
 ]

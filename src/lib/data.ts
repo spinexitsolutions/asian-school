@@ -37,7 +37,7 @@ export const getPayloadClient = cache(() => getPayload({ config }))
  * null/undefined, a blank string, or an empty array.
  */
 function withDefaults<T extends object, D extends object>(data: T | null | undefined, defaults: D): D & T {
-  const out: Record<string, unknown> = { ...defaults }
+  const out = { ...defaults } as Record<string, unknown>
   if (data) {
     for (const [key, value] of Object.entries(data)) {
       const empty =

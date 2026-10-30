@@ -15,24 +15,24 @@ export const SiteSettings: GlobalConfig = {
         {
           label: 'School',
           fields: [
-            { name: 'schoolName', type: 'text', required: true, defaultValue: 'The Asian School' },
-            { name: 'location', type: 'text', defaultValue: 'Chomu, Jaipur' },
-            { name: 'tagline', type: 'text', defaultValue: 'Rooted in values. Ready for the world.' },
-            { name: 'logo', type: 'upload', relationTo: 'media', admin: { description: 'Square PNG/SVG works best. A crest is shown if empty.' } },
-            { name: 'affiliation', type: 'text', admin: { description: 'e.g. Affiliated to CBSE, New Delhi · Affiliation No. 17XXXXX' } },
-            { name: 'established', type: 'text', admin: { description: 'Year founded, e.g. 2005' } },
+            { name: 'schoolName', type: 'text', required: true, defaultValue: 'The Asian International School' },
+            { name: 'location', type: 'text', defaultValue: 'Radha Swami Bagh, Chomu, Jaipur' },
+            { name: 'tagline', type: 'text', defaultValue: 'Nurturing bright minds for a better tomorrow.' },
+            { name: 'logo', type: 'upload', relationTo: 'media', admin: { description: 'Square PNG works best. The default school logo is shown if empty.' } },
+            { name: 'affiliation', type: 'text', defaultValue: 'CBSE Affiliated', admin: { description: 'e.g. Affiliated to CBSE, New Delhi · Affiliation No. 17XXXXX' } },
+            { name: 'established', type: 'text', defaultValue: '2010', admin: { description: 'Year founded, e.g. 2005' } },
           ],
         },
         {
           label: 'Contact',
           fields: [
-            { name: 'phone', type: 'text', defaultValue: '+91 90000 00000' },
-            { name: 'altPhone', type: 'text' },
-            { name: 'whatsapp', type: 'text', admin: { description: 'Number with country code, digits only, e.g. 919000000000' } },
-            { name: 'email', type: 'email', defaultValue: 'info@asianschoolchomu.in' },
+            { name: 'phone', type: 'text', defaultValue: '+91 98297 51651' },
+            { name: 'altPhone', type: 'text', defaultValue: '+91 99296 05547' },
+            { name: 'whatsapp', type: 'text', defaultValue: '919829751651', admin: { description: 'Number with country code, digits only, e.g. 919000000000' } },
+            { name: 'email', type: 'email', defaultValue: 'asianchomu@gmail.com' },
             { name: 'notificationEmail', type: 'email', admin: { description: 'New enquiries are emailed here (falls back to the email above).' } },
-            { name: 'address', type: 'textarea', defaultValue: 'Chomu, Jaipur District, Rajasthan 303702' },
-            { name: 'officeHours', type: 'text', defaultValue: 'Mon – Sat · 8:00 AM – 2:30 PM' },
+            { name: 'address', type: 'textarea', defaultValue: 'Near Barala Hospital, Radha Swami Bagh, Chomu, Rajasthan – 303704' },
+            { name: 'officeHours', type: 'text', defaultValue: 'Mon – Sat · 8:00 AM – 3:00 PM' },
             {
               name: 'mapEmbedUrl',
               type: 'text',
@@ -51,8 +51,9 @@ export const SiteSettings: GlobalConfig = {
           ],
         },
         {
-          label: 'Announcement',
+          label: 'Top bar & announcement',
           fields: [
+            { name: 'topbarText', type: 'text', defaultValue: 'Your Search Will End Here!', label: 'Top bar slogan' },
             { name: 'announcementEnabled', type: 'checkbox', label: 'Show announcement bar', defaultValue: true },
             { name: 'announcementText', type: 'text', defaultValue: 'Admissions open for session 2027–28 · Nursery to Class XI' },
             { name: 'announcementLink', type: 'text', defaultValue: '/admissions' },
@@ -65,7 +66,7 @@ export const SiteSettings: GlobalConfig = {
               name: 'metaDescription',
               type: 'textarea',
               defaultValue:
-                'The Asian School, Chomu — a progressive English-medium school nurturing curious, confident and kind learners from Nursery to Class XII.',
+                'The Asian International School, Chomu (Jaipur) — CBSE affiliated English medium school from Nursery to Class XII with Science, Arts & Commerce. Est. 2010.',
             },
             { name: 'ogImage', type: 'upload', relationTo: 'media', label: 'Share image (for WhatsApp / Facebook previews)' },
           ],

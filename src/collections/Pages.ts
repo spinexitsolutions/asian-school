@@ -17,6 +17,23 @@ export const Pages: CollectionConfig = {
   fields: [
     { name: 'title', type: 'text', required: true },
     { name: 'intro', type: 'textarea' },
+    {
+      name: 'infoRows',
+      type: 'array',
+      label: 'Information table',
+      labels: { singular: 'Row', plural: 'Rows' },
+      admin: { description: 'Optional two-column table (e.g. Affiliation No. → 17XXXXX).' },
+      fields: [
+        {
+          type: 'row',
+          fields: [
+            { name: 'label', type: 'text', required: true },
+            { name: 'value', type: 'text' },
+          ],
+        },
+        { name: 'file', type: 'upload', relationTo: 'documents' },
+      ],
+    },
     { name: 'content', type: 'richText' },
     slugField(),
   ],

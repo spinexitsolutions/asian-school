@@ -76,6 +76,7 @@ export interface Config {
     testimonials: Testimonial;
     facilities: Facility;
     careers: Career;
+    'transfer-certificates': TransferCertificate;
     pages: Page;
     media: Media;
     documents: Document;
@@ -96,6 +97,7 @@ export interface Config {
     testimonials: TestimonialsSelect<false> | TestimonialsSelect<true>;
     facilities: FacilitiesSelect<false> | FacilitiesSelect<true>;
     careers: CareersSelect<false> | CareersSelect<true>;
+    'transfer-certificates': TransferCertificatesSelect<false> | TransferCertificatesSelect<true>;
     pages: PagesSelect<false> | PagesSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     documents: DocumentsSelect<false> | DocumentsSelect<true>;
@@ -443,6 +445,22 @@ export interface Career {
   createdAt: string;
 }
 /**
+ * Parents can search and download TCs on the website by admission number.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "transfer-certificates".
+ */
+export interface TransferCertificate {
+  id: string;
+  studentName: string;
+  admissionNo: string;
+  tcNo?: string | null;
+  issueDate?: string | null;
+  file: string | Document;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * Create additional simple pages (e.g. Privacy Policy, Rules & Regulations). They open at /your-slug.
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -452,6 +470,17 @@ export interface Page {
   id: string;
   title: string;
   intro?: string | null;
+  /**
+   * Optional two-column table (e.g. Affiliation No. → 17XXXXX).
+   */
+  infoRows?:
+    | {
+        label: string;
+        value?: string | null;
+        file?: (string | null) | Document;
+        id?: string | null;
+      }[]
+    | null;
   content?: {
     root: {
       type: string;
@@ -570,6 +599,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'careers';
         value: string | Career;
+      } | null)
+    | ({
+        relationTo: 'transfer-certificates';
+        value: string | TransferCertificate;
       } | null)
     | ({
         relationTo: 'pages';
@@ -779,11 +812,32 @@ export interface CareersSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "transfer-certificates_select".
+ */
+export interface TransferCertificatesSelect<T extends boolean = true> {
+  studentName?: T;
+  admissionNo?: T;
+  tcNo?: T;
+  issueDate?: T;
+  file?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "pages_select".
  */
 export interface PagesSelect<T extends boolean = true> {
   title?: T;
   intro?: T;
+  infoRows?:
+    | T
+    | {
+        label?: T;
+        value?: T;
+        file?: T;
+        id?: T;
+      };
   content?: T;
   slug?: T;
   meta?:
@@ -930,29 +984,48 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
  */
 export interface HomePage {
   id: string;
-  heroEyebrow?: string | null;
   /**
-   * Wrap a word in *stars* to show it in gold italics, e.g. Where curious minds *bloom*
+   * Large banner slider at the top of the homepage. Use wide photos (1920×900 or bigger).
    */
-  heroTitle?: string | null;
-  heroText?: string | null;
-  /**
-   * Up to 3 photos (main arch + two small)
-   */
-  heroImages?: (string | Media)[] | null;
+  slides?:
+    | {
+        image: string | Media;
+        /**
+         * Tick this for designed posters such as topper results or admission banners.
+         */
+        bannerOnly?: boolean | null;
+        /**
+         * Small label, e.g. CBSE Affiliated · Est. 2010
+         */
+        badge?: string | null;
+        /**
+         * Wrap words in *stars* to colour them, e.g. Nurturing *Bright* Minds
+         */
+        title?: string | null;
+        text?: string | null;
+        buttonLabel?: string | null;
+        buttonLink?: string | null;
+        id?: string | null;
+      }[]
+    | null;
   stats?:
     | {
         /**
-         * e.g. 1200+
+         * e.g. 2400+
          */
         value: string;
         label: string;
         id?: string | null;
       }[]
     | null;
-  introTitle?: string | null;
-  introText?: string | null;
-  introImage?: (string | null) | Media;
+  aboutTitle?: string | null;
+  /**
+   * Separate paragraphs with an empty line.
+   */
+  aboutText?: string | null;
+  aboutImage?: (string | null) | Media;
+  whyTitle?: string | null;
+  whyText?: string | null;
   pillars?:
     | {
         title: string;
@@ -980,10 +1053,19 @@ export interface HomePage {
         id?: string | null;
       }[]
     | null;
-  principalName?: string | null;
-  principalRole?: string | null;
-  principalPhoto?: (string | null) | Media;
-  principalMessage?: string | null;
+  /**
+   * e.g. Director's Message
+   */
+  messageHeading?: string | null;
+  messageName?: string | null;
+  messageRole?: string | null;
+  messagePhoto?: (string | null) | Media;
+  /**
+   * Separate paragraphs with an empty line.
+   */
+  messageText?: string | null;
+  calendarImage?: (string | null) | Media;
+  calendarFile?: (string | null) | Document;
   ctaTitle?: string | null;
   ctaText?: string | null;
   updatedAt?: string | null;
@@ -1181,7 +1263,7 @@ export interface SiteSetting {
   location?: string | null;
   tagline?: string | null;
   /**
-   * Square PNG/SVG works best. A crest is shown if empty.
+   * Square PNG works best. The default school logo is shown if empty.
    */
   logo?: (string | null) | Media;
   /**
@@ -1213,6 +1295,7 @@ export interface SiteSetting {
   instagram?: string | null;
   youtube?: string | null;
   x?: string | null;
+  topbarText?: string | null;
   announcementEnabled?: boolean | null;
   announcementText?: string | null;
   announcementLink?: string | null;
@@ -1226,10 +1309,18 @@ export interface SiteSetting {
  * via the `definition` "home-page_select".
  */
 export interface HomePageSelect<T extends boolean = true> {
-  heroEyebrow?: T;
-  heroTitle?: T;
-  heroText?: T;
-  heroImages?: T;
+  slides?:
+    | T
+    | {
+        image?: T;
+        bannerOnly?: T;
+        badge?: T;
+        title?: T;
+        text?: T;
+        buttonLabel?: T;
+        buttonLink?: T;
+        id?: T;
+      };
   stats?:
     | T
     | {
@@ -1237,9 +1328,11 @@ export interface HomePageSelect<T extends boolean = true> {
         label?: T;
         id?: T;
       };
-  introTitle?: T;
-  introText?: T;
-  introImage?: T;
+  aboutTitle?: T;
+  aboutText?: T;
+  aboutImage?: T;
+  whyTitle?: T;
+  whyText?: T;
   pillars?:
     | T
     | {
@@ -1248,10 +1341,13 @@ export interface HomePageSelect<T extends boolean = true> {
         icon?: T;
         id?: T;
       };
-  principalName?: T;
-  principalRole?: T;
-  principalPhoto?: T;
-  principalMessage?: T;
+  messageHeading?: T;
+  messageName?: T;
+  messageRole?: T;
+  messagePhoto?: T;
+  messageText?: T;
+  calendarImage?: T;
+  calendarFile?: T;
   ctaTitle?: T;
   ctaText?: T;
   updatedAt?: T;
@@ -1425,6 +1521,7 @@ export interface SiteSettingsSelect<T extends boolean = true> {
   instagram?: T;
   youtube?: T;
   x?: T;
+  topbarText?: T;
   announcementEnabled?: T;
   announcementText?: T;
   announcementLink?: T;

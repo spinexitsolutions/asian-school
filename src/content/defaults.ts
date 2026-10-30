@@ -3,192 +3,184 @@
  * in the admin panel; these values only fill gaps (fresh install, empty field,
  * or the database being briefly unreachable). The seed script also uses them.
  *
- * NOTE: numbers, names and dates below are placeholders — replace them from
- * the admin panel with the school's real details.
+ * Contact details, director's message and numbers come from the school's
+ * existing site. Items marked "To be updated" need real data from the school.
  */
 
+export const fallbackImages = {
+  logo: '/images/logo.png',
+  campus: '/images/campus.webp',
+  director: '/images/director.webp',
+}
+
 export const defaultSettings = {
-  schoolName: 'The Asian School',
-  location: 'Chomu, Jaipur',
-  tagline: 'Rooted in values. Ready for the world.',
-  affiliation: '',
-  established: '',
-  phone: '+91 90000 00000',
-  altPhone: '',
-  whatsapp: '',
-  email: 'info@asianschoolchomu.in',
-  address: 'Chomu, Jaipur District, Rajasthan 303702',
-  officeHours: 'Mon – Sat · 8:00 AM – 2:30 PM',
+  schoolName: 'The Asian International School',
+  location: 'Radha Swami Bagh, Chomu, Jaipur',
+  tagline: 'Nurturing bright minds for a better tomorrow.',
+  affiliation: 'CBSE Affiliated',
+  established: '2010',
+  phone: '+91 98297 51651',
+  altPhone: '+91 99296 05547',
+  whatsapp: '919829751651',
+  email: 'asianchomu@gmail.com',
+  address: 'Near Barala Hospital, Radha Swami Bagh, Chomu, Rajasthan – 303704',
+  officeHours: 'Mon – Sat · 8:00 AM – 3:00 PM',
   mapEmbedUrl: '',
   facebook: '',
   instagram: '',
   youtube: '',
   x: '',
+  topbarText: 'Your Search Will End Here!',
   announcementEnabled: true,
   announcementText: 'Admissions open for session 2027–28 · Nursery to Class XI',
   announcementLink: '/admissions',
   metaDescription:
-    'The Asian School, Chomu — a progressive English-medium school nurturing curious, confident and kind learners from Nursery to Class XII.',
+    'The Asian International School, Chomu (Jaipur) — CBSE affiliated English medium school from Nursery to Class XII with Science, Arts & Commerce. Est. 2010.',
 }
 
+export const defaultSlides = [
+  {
+    badge: 'CBSE Affiliated · Est. 2010',
+    title: 'Nurturing *Bright* Minds for a *Better* Tomorrow',
+    text: 'Empowering students with quality education, strong values, and modern learning experiences to achieve academic and personal excellence.',
+    buttonLabel: 'Apply for Admission',
+    buttonLink: '/admissions',
+    image: fallbackImages.campus,
+  },
+  {
+    badge: 'Admissions Open 2027–28',
+    title: 'Give your child the *best start* for a bright future',
+    text: 'Nursery to Class XII · Science, Arts & Commerce · Smart classrooms · Safe & secure campus.',
+    buttonLabel: 'Enquire Now',
+    buttonLink: '/admissions#enquiry',
+    image: fallbackImages.campus,
+  },
+]
+
 export const defaultHome = {
-  heroEyebrow: 'Admissions open · Session 2027–28',
-  heroTitle: 'Where curious minds *bloom* into confident leaders.',
-  heroText:
-    'A school in the heart of Chomu where rigorous academics, joyful discovery and timeless Indian values come together — so every child leaves ready for the world, and rooted at home.',
   stats: [
-    { value: '1,200+', label: 'Learners on campus' },
-    { value: '80+', label: 'Dedicated educators' },
-    { value: '100%', label: 'Board results, every year' },
-    { value: '25:1', label: 'Student–teacher ratio' },
+    { value: '2400+', label: 'Students' },
+    { value: '98%', label: 'Board Results' },
+    { value: '150+', label: 'Faculty Members' },
+    { value: '15+', label: 'Years of Excellence' },
   ],
-  introTitle: 'An education that sees the *whole* child.',
-  introText:
-    'At The Asian School we believe a great school is measured not only by marks, but by the curiosity it sparks and the character it shapes. Our classrooms are bright, our teachers are mentors, and our campus is a place where children feel safe enough to ask big questions — and brave enough to chase the answers.',
+  aboutTitle: 'Building Future Leaders Through Quality Education',
+  aboutText:
+    'At The Asian International School, we are committed to providing a nurturing and inspiring learning environment where every student is encouraged to discover their true potential. As a CBSE-affiliated English Medium School, we focus on academic excellence while promoting creativity, critical thinking, discipline, and strong moral values.\n\nWe believe that education goes beyond textbooks. Through modern teaching methodologies, smart classrooms, experienced faculty, co-curricular activities, sports, cultural programs, and a safe campus environment, we ensure the holistic development of every child.',
+  whyTitle: 'Why Parents Trust The Asian International School',
+  whyText:
+    'A safe, inspiring and student-focused environment where every child develops academically, socially and emotionally.',
   pillars: [
-    {
-      title: 'Academic Excellence',
-      text: 'A concept-first curriculum, smart classrooms and regular assessments that build deep understanding — not rote learning.',
-      icon: 'book',
-    },
-    {
-      title: 'Values & Character',
-      text: 'Respect, honesty and empathy are woven into daily life through assemblies, mentoring and community service.',
-      icon: 'heart',
-    },
-    {
-      title: 'Sports & Fitness',
-      text: 'Spacious grounds, trained coaches and inter-school competitions keep young bodies active and spirits strong.',
-      icon: 'trophy',
-    },
-    {
-      title: 'Arts & Expression',
-      text: 'Music, dance, theatre and visual arts give every child a stage to discover their voice.',
-      icon: 'palette',
-    },
-    {
-      title: 'Future Skills',
-      text: 'Computer labs, robotics, public speaking and life skills prepare learners for a fast-changing world.',
-      icon: 'computer',
-    },
-    {
-      title: 'Safe Campus',
-      text: 'CCTV coverage, GPS-enabled transport and caring staff ensure peace of mind for every parent.',
-      icon: 'shield',
-    },
+    { title: 'CBSE Curriculum', text: 'Structured CBSE curriculum designed to build strong academic foundations and conceptual understanding.', icon: 'book' },
+    { title: 'Qualified Faculty', text: "Experienced and passionate educators dedicated to every student's academic and personal growth.", icon: 'users' },
+    { title: 'Smart Learning', text: 'Modern digital classrooms equipped with smart technology for interactive and effective learning.', icon: 'computer' },
+    { title: 'Safe & Secure Campus', text: 'A disciplined campus with CCTV surveillance, safety measures and a positive learning environment.', icon: 'shield' },
+    { title: 'Sports & Activities', text: 'Excellent sports facilities and co-curricular activities that encourage teamwork and leadership.', icon: 'trophy' },
+    { title: 'Holistic Development', text: 'Equal focus on academics, life skills, values, creativity and personality development.', icon: 'heart' },
   ],
-  principalName: 'Principal’s Name',
-  principalRole: 'Principal, The Asian School',
-  principalMessage:
-    'Every child who walks through our gates carries a unique spark. Our role is to protect that spark, feed it with knowledge and give it direction through values. We are proud to partner with parents in raising young people who are capable, compassionate and confident — and who never stop learning.',
-  ctaTitle: 'Give your child a *beginning* worth remembering.',
-  ctaText: 'Visit our campus, meet our teachers and see the difference for yourself. Our admissions team will be happy to guide you.',
+  messageHeading: "Director's Message",
+  messageName: 'Shri Kaajod Mal Revar',
+  messageRole: 'Director, The Asian International School',
+  messageText:
+    'Welcome to The Asian International School. We believe that every child is unique and has the ability to achieve excellence when guided with the right values, knowledge and opportunities. Our aim is to provide an inspiring learning environment where students develop confidence, creativity, discipline and a lifelong love for learning.\n\nAt our school, education goes beyond academics. We focus on the overall development of every child by nurturing intellectual, physical, emotional and moral growth. Through experienced teachers, modern infrastructure and value-based education, we prepare our students to become responsible citizens and future leaders.\n\nI sincerely thank all parents for their trust and support. Together, let us continue to inspire young minds, encourage excellence and build a brighter future for every child.',
+  ctaTitle: 'Give Your Child The Best Start For A Bright Future',
+  ctaText:
+    'Join The Asian International School and provide your child with quality education, modern facilities and holistic development opportunities.',
 }
 
 export const defaultAbout = {
-  title: 'A school with *roots* and wings.',
+  title: 'About Our School',
   intro:
-    'Founded with a simple belief — that children from Chomu deserve a world-class education close to home — The Asian School has grown into one of the region’s most trusted names in learning.',
+    'The Asian International School, Chomu is a CBSE-affiliated English medium school established in 2010, offering education from Nursery to Class XII in Science, Arts and Commerce.',
   story:
-    'What began as a small school with a handful of classrooms has grown into a vibrant campus that welcomes over a thousand learners each year. Through every stage of that growth, one thing has stayed constant: our promise to know every child by name and nurture them as our own.\n\nToday our students learn in smart classrooms, experiment in well-equipped laboratories, read in a spacious library and play on expansive grounds. Yet the heart of the school remains its people — teachers who mentor, parents who partner, and students who inspire us every day.',
-  vision:
-    'To be a centre of excellence that nurtures globally competent, ethically grounded and joyful learners who contribute meaningfully to society.',
+    'Since 2010, The Asian International School has been committed to providing a nurturing and inspiring learning environment where every student is encouraged to discover their true potential. Today more than 2,400 students learn on our campus at Radha Swami Bagh, Chomu.\n\nAs a CBSE-affiliated English Medium School, we focus on academic excellence while promoting creativity, critical thinking, discipline and strong moral values. Our goal is to empower students with the knowledge, confidence and life skills required to become responsible global citizens and future leaders.\n\nThrough modern teaching methodologies, smart classrooms, experienced faculty, co-curricular activities, sports, cultural programmes and a safe campus, we ensure the holistic development of every child — creating lifelong learners prepared to meet an ever-changing world with confidence, integrity and compassion.',
+  vision: 'To empower young minds to be lifelong learners and responsible global citizens.',
   mission:
-    'To provide a stimulating, safe and inclusive environment where every child is encouraged to think critically, act responsibly, and grow academically, socially and emotionally.',
+    'To provide quality, value-based education in a safe and inspiring environment where every child grows academically, socially, emotionally and morally.',
   values: [
-    { title: 'Curiosity', text: 'We ask questions, explore ideas and love learning for its own sake.' },
-    { title: 'Integrity', text: 'We are honest in word and deed, even when no one is watching.' },
-    { title: 'Respect', text: 'We value every person, every culture and our shared environment.' },
-    { title: 'Excellence', text: 'We give our best effort and keep raising our own bar.' },
+    { title: 'Excellence', text: 'We give our best in academics, sports and every activity.' },
+    { title: 'Discipline', text: 'Good habits and self-control shape strong character.' },
+    { title: 'Integrity', text: 'We are honest in word and deed.' },
+    { title: 'Respect', text: 'We value every person, every culture and our environment.' },
   ],
   timeline: [
-    { year: 'Year 1', title: 'The first bell', text: 'The school opens its doors with a small, determined family of students and teachers.' },
-    { year: 'Year 5', title: 'Growing up', text: 'New academic block, science laboratories and a dedicated library are added.' },
-    { year: 'Year 10', title: 'Senior wing', text: 'Senior secondary classes introduced with Science, Commerce and Humanities streams.' },
-    { year: 'Year 15', title: 'Smart campus', text: 'Every classroom becomes a smart classroom; transport fleet fully GPS-enabled.' },
-    { year: 'Today', title: 'Looking ahead', text: 'A thriving community of 1,200+ learners, and the journey has only just begun.' },
+    { year: '2010', title: 'Foundation', text: 'The Asian International School opens its doors in Chomu.' },
+    { year: 'CBSE', title: 'Affiliation', text: 'Affiliated to the Central Board of Secondary Education, New Delhi.' },
+    { year: 'XII', title: 'Senior Secondary', text: 'Science, Arts and Commerce streams introduced up to Class XII.' },
+    { year: 'Today', title: '2400+ students', text: 'A thriving community of students, teachers and parents.' },
   ],
   leaders: [
     {
-      name: 'Chairperson’s Name',
-      role: 'Chairperson',
-      message: 'Education is the most powerful gift we can give a child. We are committed to making that gift exceptional.',
-    },
-    {
-      name: 'Director’s Name',
+      name: 'Shri Kaajod Mal Revar',
       role: 'Director',
-      message: 'We blend modern pedagogy with Indian values so our children grow with both roots and wings.',
-    },
-    {
-      name: 'Principal’s Name',
-      role: 'Principal',
-      message: 'Our doors, and our hearts, are always open to every child and every parent.',
+      message:
+        'Every child is unique and has the ability to achieve excellence when guided with the right values, knowledge and opportunities.',
     },
   ],
 }
 
 export const defaultAcademics = {
-  title: 'Learning that goes *deeper*.',
+  title: 'Academics',
   intro:
-    'From the first scribble to the final board exam, our curriculum is designed in stages — each one building on the last, each one tuned to how children actually learn at that age.',
+    'We follow the CBSE curriculum from Nursery to Class XII, with Science, Arts and Commerce streams at the senior secondary level.',
   stages: [
     {
-      name: 'Foundational Years',
+      name: 'Pre-Primary',
       classes: 'Nursery – UKG',
-      text: 'Play-based, activity-rich learning that builds language, numeracy, motor skills and — above all — a love for school.',
-      focus: [{ text: 'Phonics & storytelling' }, { text: 'Montessori-inspired play' }, { text: 'Music & movement' }],
+      text: 'Play-way and activity-based learning that builds language, numbers, motor skills and a love for school.',
+      focus: [{ text: 'Phonics & rhymes' }, { text: 'Activity-based learning' }, { text: 'Art, music & play' }],
     },
     {
-      name: 'Primary Years',
+      name: 'Primary',
       classes: 'Class I – V',
-      text: 'Strong fundamentals in English, Hindi, Mathematics and EVS with hands-on projects that make concepts stick.',
-      focus: [{ text: 'Concept-based maths' }, { text: 'Reading programme' }, { text: 'Computer literacy' }],
+      text: 'Strong foundations in English, Hindi, Mathematics and EVS with projects that make concepts clear.',
+      focus: [{ text: 'Reading & writing skills' }, { text: 'Concept-based maths' }, { text: 'Computer basics' }],
     },
     {
-      name: 'Middle Years',
+      name: 'Middle',
       classes: 'Class VI – VIII',
-      text: 'Subject specialists, lab work and inquiry projects help students think independently and connect ideas.',
-      focus: [{ text: 'Science labs' }, { text: 'Third language' }, { text: 'Coding & robotics' }],
+      text: 'Subject teachers, lab work and projects help students think independently and understand deeply.',
+      focus: [{ text: 'Science labs' }, { text: 'Sanskrit / third language' }, { text: 'Computer & coding' }],
     },
     {
-      name: 'Senior Years',
+      name: 'Secondary & Senior Secondary',
       classes: 'Class IX – XII',
-      text: 'Focused board preparation with Science, Commerce and Humanities streams, career guidance and competitive-exam support.',
-      focus: [{ text: 'Board-exam mentoring' }, { text: 'Career counselling' }, { text: 'JEE / NEET foundation' }],
+      text: 'Focused CBSE board preparation with Science, Arts and Commerce streams and career guidance.',
+      focus: [{ text: 'Board exam preparation' }, { text: 'Science · Arts · Commerce' }, { text: 'Career counselling' }],
     },
   ],
   approach: [
-    { title: 'Smart Classrooms', text: 'Interactive digital boards bring every lesson to life.', icon: 'computer' },
-    { title: 'Experiential Learning', text: 'Projects, experiments and field trips over memorisation.', icon: 'flask' },
-    { title: 'Personal Mentoring', text: 'Small groups and regular parent–teacher conversations.', icon: 'users' },
-    { title: 'Continuous Assessment', text: 'Frequent, low-stress checks that guide teaching.', icon: 'cap' },
+    { title: 'Smart Classrooms', text: 'Digital boards make every lesson visual and interactive.', icon: 'computer' },
+    { title: 'Practical Learning', text: 'Labs, projects and activities over rote learning.', icon: 'flask' },
+    { title: 'Personal Attention', text: 'Regular tests and parent–teacher meetings.', icon: 'users' },
+    { title: 'Values Education', text: 'Discipline, manners and moral values every day.', icon: 'heart' },
   ],
   cocurricular: [
-    { name: 'Classical & Western Dance' },
-    { name: 'Vocal & Instrumental Music' },
-    { name: 'Theatre & Dramatics' },
+    { name: 'Dance' },
+    { name: 'Music' },
     { name: 'Art & Craft' },
-    { name: 'Debate & Public Speaking' },
-    { name: 'Robotics Club' },
-    { name: 'Yoga & Meditation' },
-    { name: 'Eco Club' },
-    { name: 'Quiz Club' },
+    { name: 'Debate & Elocution' },
+    { name: 'Yoga' },
+    { name: 'Quiz' },
+    { name: 'Science Exhibition' },
     { name: 'Athletics' },
-    { name: 'Cricket & Football' },
+    { name: 'Cricket' },
+    { name: 'Football' },
+    { name: 'Kabaddi' },
     { name: 'Chess' },
   ],
 }
 
 export const defaultAdmissions = {
-  title: 'Begin your child’s *journey* with us.',
+  title: 'Admissions',
   intro:
-    'We welcome applications from families who share our belief in curious, value-driven education. The process is simple, transparent and personal.',
+    'Admissions are open from Nursery to Class XI. Fill the enquiry form and our admission team will call you back.',
   session: '2027–28',
   steps: [
-    { title: 'Enquire', text: 'Fill the online enquiry form below or visit the school office.' },
-    { title: 'Campus visit', text: 'Tour the campus and meet our admissions counsellor.' },
-    { title: 'Interaction', text: 'A friendly interaction / assessment appropriate to the class.' },
-    { title: 'Confirmation', text: 'Submit documents and fees to confirm the seat.' },
+    { title: 'Enquiry', text: 'Fill the online enquiry form or visit the school office.' },
+    { title: 'Campus Visit', text: 'Visit the campus and meet our admission counsellor.' },
+    { title: 'Interaction / Test', text: 'A simple interaction or test as per the class.' },
+    { title: 'Admission', text: 'Submit the documents and fee to confirm the seat.' },
   ],
   eligibility: [
     { className: 'Nursery', age: '3+ years' },
@@ -197,146 +189,129 @@ export const defaultAdmissions = {
     { className: 'Class I', age: '6+ years' },
   ],
   documentsRequired: [
-    { text: 'Birth certificate (copy)' },
+    { text: 'Birth certificate' },
     { text: 'Aadhaar card of student and parents' },
-    { text: 'Four passport-size photographs of the student' },
-    { text: 'Transfer certificate (Class II onwards)' },
-    { text: 'Report card of the previous class' },
+    { text: '4 passport-size photographs of the student' },
+    { text: 'Transfer Certificate (Class II onwards)' },
+    { text: 'Previous class report card' },
   ],
   faqs: [
-    {
-      question: 'When do admissions open?',
-      answer: 'Admissions for the new session usually open in November. Seats are limited, so we recommend enquiring early.',
-    },
-    {
-      question: 'Is school transport available?',
-      answer: 'Yes. Our GPS-enabled buses cover Chomu and nearby villages with trained drivers and attendants.',
-    },
-    {
-      question: 'Do you offer sibling or merit concessions?',
-      answer: 'Please contact the admissions office for current concession policies.',
-    },
+    { question: 'Which board is the school affiliated to?', answer: 'The school is affiliated to CBSE, New Delhi, and follows the CBSE curriculum.' },
+    { question: 'Which classes are available?', answer: 'Nursery to Class XII. Class XI and XII offer Science, Arts and Commerce streams.' },
+    { question: 'Is school transport available?', answer: 'Yes, school buses cover Chomu and nearby areas. Please contact the office for routes.' },
+    { question: 'What are the school timings?', answer: 'Monday to Saturday, 8:00 AM to 3:00 PM (office hours).' },
   ],
 }
 
 export const defaultFacilities = [
-  {
-    title: 'Smart Classrooms',
-    summary: 'Airy, well-lit classrooms with interactive digital boards that make every lesson visual and engaging.',
-    icon: 'computer',
-    points: ['Interactive panels', 'Ergonomic furniture', 'Natural ventilation'],
-  },
-  {
-    title: 'Science Laboratories',
-    summary: 'Fully equipped Physics, Chemistry and Biology labs where students learn by doing.',
-    icon: 'flask',
-    points: ['Separate labs for each science', 'Safety-first design', 'Regular practicals'],
-  },
-  {
-    title: 'Library',
-    summary: 'A calm reading space with thousands of books, magazines and reference titles for every age.',
-    icon: 'library',
-    points: ['Reading programme', 'Reference section', 'Periodicals'],
-  },
-  {
-    title: 'Computer Lab',
-    summary: 'Modern computers and high-speed internet for coding, research and digital literacy.',
-    icon: 'computer',
-    points: ['1:1 systems', 'Coding & robotics', 'Supervised internet'],
-  },
-  {
-    title: 'Sports Grounds',
-    summary: 'Expansive outdoor fields and courts for cricket, football, athletics, basketball and more.',
-    icon: 'trophy',
-    points: ['Trained coaches', 'Annual sports meet', 'Indoor games'],
-  },
-  {
-    title: 'Safe Transport',
-    summary: 'GPS-enabled buses with trained drivers and attendants covering Chomu and nearby areas.',
-    icon: 'bus',
-    points: ['GPS tracking', 'Female attendants', 'Wide route network'],
-  },
-  {
-    title: 'Music & Arts Studio',
-    summary: 'Dedicated spaces for music, dance and visual arts where creativity takes centre stage.',
-    icon: 'music',
-    points: ['Instruments', 'Dance studio', 'Art room'],
-  },
-  {
-    title: 'Security & Care',
-    summary: 'CCTV coverage, controlled entry and an infirmary for complete peace of mind.',
-    icon: 'shield',
-    points: ['CCTV campus', 'First-aid room', 'Visitor management'],
-  },
+  { title: 'Smart Classrooms', summary: 'Spacious classrooms with digital smart boards for interactive learning.', icon: 'computer', points: ['Digital boards', 'Comfortable furniture', 'Well ventilated'] },
+  { title: 'Science Labs', summary: 'Well-equipped Physics, Chemistry and Biology laboratories for practical learning.', icon: 'flask', points: ['Physics lab', 'Chemistry lab', 'Biology lab'] },
+  { title: 'Computer Lab', summary: 'Modern computer laboratories with the latest technology and high-speed internet.', icon: 'computer', points: ['Latest systems', 'Internet', 'Coding classes'] },
+  { title: 'Library', summary: 'A rich library with books, journals, magazines and digital learning resources.', icon: 'library', points: ['Reference books', 'Magazines', 'Reading room'] },
+  { title: 'Sports Ground', summary: 'Large playground for cricket, football, athletics and many more games.', icon: 'trophy', points: ['Outdoor games', 'Indoor games', 'Annual sports meet'] },
+  { title: 'Transport', summary: 'Safe school buses covering Chomu and nearby villages with trained staff.', icon: 'bus', points: ['Wide routes', 'Trained drivers', 'Attendants'] },
+  { title: 'CCTV Security', summary: 'Complete campus under CCTV surveillance for safety of every child.', icon: 'camera', points: ['CCTV campus', 'Guarded entry', 'Visitor register'] },
+  { title: 'Music & Dance', summary: 'Dedicated activity rooms for music, dance and cultural programmes.', icon: 'music', points: ['Instruments', 'Dance room', 'Annual function'] },
 ]
 
 export const defaultTestimonials = [
-  {
-    quote:
-      'The teachers genuinely know my daughter — her strengths and the things she finds hard. That personal attention has made all the difference in her confidence.',
-    name: 'Parent',
-    relation: 'Parent of a Class IV student',
-  },
-  {
-    quote:
-      'From the annual day to science exhibitions, my son gets a stage to try everything. He comes home excited about school every single day.',
-    name: 'Parent',
-    relation: 'Parent of a Class VII student',
-  },
-  {
-    quote:
-      'The school prepared me not just for boards but for life — public speaking, discipline and the habit of asking questions.',
-    name: 'Alumnus',
-    relation: 'Class XII graduate',
-  },
+  { quote: 'The teachers give personal attention to every child. My son’s confidence and results have improved a lot.', name: 'Parent', relation: 'Parent of a Class VI student' },
+  { quote: 'Clean campus, smart classes and very caring staff. We are very happy with the school.', name: 'Parent', relation: 'Parent of a Class II student' },
+  { quote: 'Discipline and values along with studies — this is what we wanted for our daughter.', name: 'Parent', relation: 'Parent of a Class IX student' },
 ]
 
 export const defaultDisclosure = {
   enabled: true,
   sections: [
     {
-      heading: 'General Information',
+      heading: 'A. General Information',
       rows: [
-        { label: 'Name of the school', value: 'The Asian School' },
-        { label: 'Affiliation number', value: 'To be updated' },
-        { label: 'School code', value: 'To be updated' },
-        { label: 'Complete address with pin code', value: 'Chomu, Jaipur District, Rajasthan 303702' },
+        { label: 'Name of the school', value: 'The Asian International School' },
+        { label: 'Affiliation No. (if applicable)', value: 'To be updated' },
+        { label: 'School code (if applicable)', value: 'To be updated' },
+        { label: 'Complete address with pin code', value: 'Near Barala Hospital, Radha Swami Bagh, Chomu, Rajasthan – 303704' },
         { label: 'Principal name & qualification', value: 'To be updated' },
-        { label: 'School email ID', value: 'info@asianschoolchomu.in' },
-        { label: 'Contact details', value: '+91 90000 00000' },
+        { label: 'School email ID', value: 'asianchomu@gmail.com' },
+        { label: 'Contact details (landline / mobile)', value: '+91 98297 51651, +91 99296 05547' },
       ],
     },
     {
-      heading: 'Documents and Information',
+      heading: 'B. Documents and Information',
       rows: [
-        { label: 'Copies of affiliation / upgradation letter', value: 'To be uploaded' },
-        { label: 'Society / Trust registration certificate', value: 'To be uploaded' },
-        { label: 'No Objection Certificate (NOC)', value: 'To be uploaded' },
-        { label: 'Recognition certificate under RTE Act', value: 'To be uploaded' },
-        { label: 'Building safety certificate', value: 'To be uploaded' },
-        { label: 'Fire safety certificate', value: 'To be uploaded' },
-        { label: 'Water, health and sanitation certificates', value: 'To be uploaded' },
+        { label: 'Copies of affiliation / upgradation letter and recent extension of affiliation', value: 'To be uploaded' },
+        { label: 'Copies of societies / trust / company registration / renewal certificate', value: 'To be uploaded' },
+        { label: 'Copy of No Objection Certificate (NOC) issued by the state government / UT', value: 'To be uploaded' },
+        { label: 'Copies of recognition certificate under RTE Act, 2009', value: 'To be uploaded' },
+        { label: 'Copy of valid building safety certificate as per the national building code', value: 'To be uploaded' },
+        { label: 'Copy of valid fire safety certificate issued by the competent authority', value: 'To be uploaded' },
+        { label: 'Copy of the DEO certificate submitted by the school for affiliation / upgradation', value: 'To be uploaded' },
+        { label: 'Copies of valid water, health and sanitation certificates', value: 'To be uploaded' },
       ],
     },
     {
-      heading: 'Staff (Teaching)',
+      heading: 'C. Result and Academics',
       rows: [
-        { label: 'Principal', value: '1' },
-        { label: 'Total number of teachers', value: 'To be updated' },
-        { label: 'Teacher–student ratio', value: 'To be updated' },
+        { label: 'Fee structure of the school', value: 'To be uploaded' },
+        { label: 'Annual academic calendar', value: 'To be uploaded' },
+        { label: 'List of School Management Committee (SMC)', value: 'To be uploaded' },
+        { label: 'List of Parents Teachers Association (PTA) members', value: 'To be uploaded' },
+        { label: 'Last three-year result of the board examination', value: 'To be uploaded' },
+      ],
+    },
+    {
+      heading: 'D. Staff (Teaching)',
+      rows: [
+        { label: 'Principal', value: 'To be updated' },
+        { label: 'Total no. of teachers (PGT / TGT / PRT)', value: 'To be updated' },
+        { label: 'Teachers section ratio', value: 'To be updated' },
         { label: 'Details of special educator', value: 'To be updated' },
+        { label: 'Details of counsellor and wellness teacher', value: 'To be updated' },
       ],
     },
     {
-      heading: 'School Infrastructure',
+      heading: 'E. School Infrastructure',
       rows: [
-        { label: 'Total campus area (sq. m.)', value: 'To be updated' },
-        { label: 'Number and size of classrooms', value: 'To be updated' },
-        { label: 'Number and size of laboratories', value: 'To be updated' },
+        { label: 'Total campus area of the school (in sq. mtr.)', value: 'To be updated' },
+        { label: 'No. and size of the classrooms (in sq. mtr.)', value: 'To be updated' },
+        { label: 'No. and size of laboratories including computer labs (in sq. mtr.)', value: 'To be updated' },
         { label: 'Internet facility', value: 'Yes' },
-        { label: 'Number of girls’ toilets', value: 'To be updated' },
-        { label: 'Number of boys’ toilets', value: 'To be updated' },
+        { label: 'No. of girls toilets', value: 'To be updated' },
+        { label: 'No. of boys toilets', value: 'To be updated' },
+        { label: 'Link of YouTube video of the inspection of school covering the infrastructure', value: 'To be updated' },
       ],
     },
   ],
 }
+
+/** Extra pages created by the seed script (editable in admin → Extra Pages). */
+export const defaultPages = [
+  {
+    title: 'Information of the School',
+    slug: 'information-of-the-school',
+    intro: 'Key information about The Asian International School, Chomu.',
+    rows: [
+      ['Name of the school', 'The Asian International School'],
+      ['Board', 'Central Board of Secondary Education (CBSE), New Delhi'],
+      ['Medium', 'English'],
+      ['Classes', 'Nursery to Class XII'],
+      ['Streams (XI–XII)', 'Science, Arts & Commerce'],
+      ['Established', '2010'],
+      ['Type', 'Co-educational'],
+      ['Address', 'Near Barala Hospital, Radha Swami Bagh, Chomu, Rajasthan – 303704'],
+      ['Phone', '+91 98297 51651, +91 99296 05547'],
+      ['Email', 'asianchomu@gmail.com'],
+    ],
+  },
+  {
+    title: 'Affiliation Details',
+    slug: 'affiliation-details',
+    intro: 'Affiliation details of The Asian International School with CBSE, New Delhi.',
+    rows: [
+      ['Affiliated to', 'Central Board of Secondary Education, New Delhi'],
+      ['Affiliation No.', 'To be updated'],
+      ['School Code', 'To be updated'],
+      ['Status of affiliation', 'To be updated'],
+      ['Affiliation valid up to', 'To be updated'],
+    ],
+  },
+]

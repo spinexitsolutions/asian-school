@@ -9,3 +9,4 @@ next-env.d.ts
 /public/media
 .DS_Store
 .ferretdb
+/hero-options-preview

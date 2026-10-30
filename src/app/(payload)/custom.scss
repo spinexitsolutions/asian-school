@@ -1,13 +1,13 @@
 /* Admin panel theme — navy & gold to match the website. */
 :root {
-  --theme-success-500: #b07d2b;
+  --theme-success-500: #f5a524;
 }
 
 .asian-welcome {
   margin-bottom: 2.5rem;
   padding: 2rem;
   border-radius: 20px;
-  background: linear-gradient(135deg, #0e1a33 0%, #1c2c52 100%);
+  background: linear-gradient(135deg, #123a8f 0%, #1d4fd1 100%);
   color: #fff;
 
   &__eyebrow {
@@ -15,12 +15,12 @@
     font-size: 12px;
     letter-spacing: 0.2em;
     text-transform: uppercase;
-    color: #e2c58a;
+    color: #ffd166;
   }
   &__title {
     margin: 0.4rem 0 1.5rem;
-    font-family: Georgia, serif;
-    font-weight: 400;
+    font-family: inherit;
+    font-weight: 700;
     color: #fff;
   }
   &__grid {
@@ -56,7 +56,7 @@
     font-size: 13px;
     opacity: 0.75;
     a {
-      color: #e2c58a;
+      color: #ffd166;
     }
   }
 }
