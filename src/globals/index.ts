@@ -1,6 +1,0 @@
-export { SiteSettings } from './SiteSettings'
-export { HomePage } from './HomePage'
-export { AboutPage } from './AboutPage'
-export { AcademicsPage } from './AcademicsPage'
-export { AdmissionsPage } from './AdmissionsPage'
-export { Disclosure } from './Disclosure'

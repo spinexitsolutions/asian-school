@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation'
-import { RichText } from '@payloadcms/richtext-lexical/react'
+import { cleanHtml } from '@/cms/normalize'
 import { FilePdf } from '@phosphor-icons/react/dist/ssr'
 
 import { PageBanner } from '@/components/PageBanner'
@@ -64,7 +64,7 @@ export default async function ExtraPage({ params }: Args) {
           )}
           {page.content && (
             <div className="prose-school" data-reveal>
-              <RichText data={page.content} />
+              <div dangerouslySetInnerHTML={{ __html: cleanHtml(page.content) }} />
             </div>
           )}
         </div>

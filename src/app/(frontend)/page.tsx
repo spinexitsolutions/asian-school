@@ -16,7 +16,7 @@ import { defaultFacilities, defaultHeroToppers, defaultTestimonials, fallbackIma
 import { getAdmissions, getAlbums, getFacilities, getHome, getNews, getNotices, getSettings, getTestimonials, getToppers } from '@/lib/data'
 import { formatDate, telHref } from '@/lib/format'
 import { fileUrl, img } from '@/lib/media'
-import type { Media } from '@/payload-types'
+import type { Media } from '@/cms/types'
 
 export default async function HomePage() {
   const [s, h, admissions, notices, news, toppers, facilities, albums, testimonials] = await Promise.all([

@@ -3,9 +3,9 @@
 Public website and content management system (CMS) for The Asian International School, Chomu (Jaipur).
 
 - **Website:** Next.js 16 (React), Tailwind CSS v4
-- **Admin panel / CMS:** Payload CMS 3, served at `/admin` from the same app
+- **Admin panel / CMS:** custom-built admin panel at `/admin` (login, roles, editor, uploads), same app
 - **Database:** MongoDB Atlas (free M0 cluster)
-- **Images & PDFs:** Cloudinary (free plan), or the server disk when Cloudinary isn't configured
+- **Images & PDFs:** Cloudinary (free plan), or the `uploads/` folder on the server when Cloudinary isn't configured
 - **Hosting:** Hostinger Business Web Hosting (Node.js app)
 
 ## What staff can edit in `/admin`
@@ -15,16 +15,20 @@ Public website and content management system (CMS) for The Asian International S
 | **Inbox → Enquiries** | Admission and contact form submissions. **Download all as Excel (CSV)** button at the top. |
 | **Updates → Notices** | Notice Board: date, category, optional PDF. "Pinned" shows it on the homepage. |
 | **Updates → News & Events** | Posts with cover photo, rich text and draft/publish. |
-| **Updates → Gallery Albums** | Photo albums (multi-upload) and YouTube videos. |
+| **Updates → Gallery** | Photo albums (multi-upload, reorder, first photo = cover) and YouTube videos. |
+| **Updates → Media Library** | Every uploaded photo/PDF, drag & drop upload, copy link. |
 | **School → Faculty / Achievers & Toppers / Testimonials / Facilities / Job Openings** | The matching website sections. Tick **Show in homepage hero** and set **Rank** 1–3 on toppers for the homepage Board Toppers panel. |
-| **School → Transfer Certificates** | Upload TCs. Parents search them by admission number at `/transfer-certificates`. |
+| **CBSE Corner → Transfer Certificates** | Upload TCs. Parents search them by admission number at `/transfer-certificates`. |
 | **Pages → Home / About / Academics / Admissions** | All text, numbers, photos, Director's message, calendar, fee PDF, FAQs. |
-| **Pages → Mandatory Public Disclosure** | CBSE Appendix-IX tables, with document links. |
-| **Pages → Extra Pages** | Any extra page at `/your-slug` (e.g. Information of the School, Affiliation Details). |
-| **Settings → Site Settings** | Logo, phones, email, address, WhatsApp, Google Map, social links, top-bar slogan, SEO. |
-| **Settings → Staff Users** | Admin (everything) and Editor (content only) accounts. |
+| **CBSE Corner → Mandatory Disclosure** | CBSE Appendix-IX tables, with document links. |
+| **CBSE Corner → Extra Pages** | Any extra page at `/your-slug` (e.g. Information of the School, Affiliation Details). |
+| **Settings → Site Settings** | Logo, phones, email, address, WhatsApp, Google Map, social links, **admission popup**, top-bar slogan, SEO. |
+| **Settings → Staff Users** | Admin (everything) and Editor (content only) accounts. Only admins see this. |
 
-Changes appear on the website within seconds.
+The dashboard shows new enquiries, counts and quick actions. Each user can change their password under **My account** (click your name in the sidebar).
+
+Changes appear on the website within seconds. While a section is still empty, the website shows
+sample content (e.g. sample notices, "Topper Name") so no page looks blank.
 
 ## Run locally (no MongoDB Atlas needed)
 
@@ -33,7 +37,7 @@ If `DATABASE_URI` is empty it automatically connects to `mongodb://127.0.0.1:270
 
 ```bash
 npm install
-cp .env.example .env    # already points to the local database; just set PAYLOAD_SECRET
+cp .env.example .env    # already points to the local database; just set AUTH_SECRET
 ```
 
 **Terminal 1** starts a local MongoDB. Nothing extra to install: the first run downloads the
@@ -52,13 +56,14 @@ npm run dev             # http://localhost:3000  and  http://localhost:3000/admi
 Already have MongoDB Community Server installed and running? Skip `npm run db:local`, because it
 uses the same port (27017).
 
-On first visit to `/admin` you will be asked to create the first admin user.
+On first visit to `/admin` you will be asked to create the first admin user. Creating it also loads the
+school's starting content (settings, page text, sample notices/news/toppers) so everything is editable.
 
 **Switching to Atlas later:** put the Atlas link in `DATABASE_URI` in `.env` (or in Hostinger's
 environment variables) and restart. Local data is not copied automatically; run `npm run seed`
 on the new database, or copy it with `mongodump` / `mongorestore`.
 
-To fill the CMS with the school's starting content (settings, home/about/academics/admissions text, facilities, CBSE pages):
+To load the starting content without the admin page (e.g. on a new database):
 
 ```bash
 npm run seed
@@ -87,7 +92,7 @@ The seed only fills things that are still empty, so it is safe to run again.
    - Build command: `npm run build`
    - Start command: `npm start`
 4. Add environment variables (from `.env.example`):
-   `DATABASE_URI`, `PAYLOAD_SECRET` (long random text), `NEXT_PUBLIC_SERVER_URL` (e.g. `https://asianschoolchomu.in`),
+   `DATABASE_URI`, `AUTH_SECRET` (long random text), `NEXT_PUBLIC_SERVER_URL` (e.g. `https://asianschoolchomu.in`),
    `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET`.
 5. Deploy. Then open `https://your-domain/admin` and create the admin account.
 6. Optional email alerts for new enquiries: create a mailbox in Hostinger (e.g. `info@your-domain`) and set
@@ -97,9 +102,8 @@ The seed only fills things that are still empty, so it is safe to run again.
 ## Useful commands
 
 ```bash
-npm run generate:types   # after changing collections/globals
-npx payload generate:importmap   # after adding admin components
-npx tsc --noEmit         # type-check
+npm run typecheck        # type-check
+npm run build            # production build
 ```
 
 ## Project structure
@@ -107,12 +111,14 @@ npx tsc --noEmit         # type-check
 ```
 src/
   app/(frontend)/      public website pages
-  app/(payload)/       admin panel + REST/GraphQL API (generated by Payload)
-  collections/         CMS collections (notices, news, gallery, toppers…)
-  globals/             single-page settings (home, about, admissions…)
-  components/          website UI components
+  app/(admin)/admin/   admin panel (login, dashboard, lists, forms, server actions)
+  app/api/admin/       upload, media library and Excel export endpoints
+  app/media/           serves uploaded files (local storage mode)
+  cms/schema.ts        every admin section and its fields — add a field here and it appears in the form
+  components/          website UI; components/admin/ = admin UI
   content/defaults.ts  starting content and fallbacks
-  lib/                 data access, enquiry server action, helpers
-  seed/                one-time content seeding script
+  lib/                 database, auth, uploads, data access, enquiry action
+  proxy.ts             redirects logged-out visitors from /admin to the login page
+  seed/                content seeding script
 public/images/         logo, campus and director photos
 ```

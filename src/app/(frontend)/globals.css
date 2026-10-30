@@ -95,7 +95,7 @@
   .container-x {
     margin-inline: auto;
     width: 100%;
-    max-width: 1240px;
+    max-width: 1320px;
     padding-inline: 1rem;
   }
   @media (min-width: 640px) {
@@ -398,5 +398,52 @@ html.lenis body {
   scroll-behavior: auto !important;
 }
 .lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+/* ───────────────────────── Intro animation ───────────────────────── */
+@keyframes intro-pop {
+  from {
+    transform: scale(0.6);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+@keyframes intro-rise {
+  from {
+    transform: translateY(18px);
+    opacity: 0;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+@keyframes intro-fill {
+  from {
+    flex-grow: 0;
+  }
+  to {
+    flex-grow: 1;
+  }
+}
+.intro-logo {
+  animation: intro-pop 0.9s var(--ease-spring) both;
+}
+.intro-line {
+  animation: intro-rise 0.8s var(--ease-out-expo) both;
+}
+.intro-bar {
+  flex: 0 1 0%;
+  animation: intro-fill 0.5s var(--ease-out-expo) both;
+}
+/* Repeat visits in the same session: never show the intro, even for a frame. */
+html.intro-seen .intro {
+  display: none;
+}
+html.intro-playing body {
   overflow: hidden;
 }

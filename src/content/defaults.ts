@@ -31,6 +31,10 @@ export const defaultSettings = {
   youtube: '',
   x: '',
   topbarText: 'Your Search Will End Here!',
+  popupEnabled: true,
+  popupBadge: 'Session 2027–28',
+  popupTitle: 'Admissions Open',
+  popupText: 'Nursery to Class XI · Science, Arts & Commerce. Limited seats — enquire today and our team will call you back.',
   announcementEnabled: true,
   announcementText: 'Admissions open for session 2027–28 · Nursery to Class XI',
   announcementLink: '/admissions',
@@ -310,3 +314,96 @@ export const defaultPages = [
     ],
   },
 ]
+
+/* ───────────── Sample records ─────────────
+   Shown on the website until staff add their own in the admin panel
+   (and inserted by `npm run seed` so they can be edited). */
+
+const campusPhoto = { url: fallbackImages.campus, alt: 'The Asian International School campus', width: 1920, height: 1080 }
+
+export const defaultNotices = [
+  { id: 'n1', title: 'Admissions open for session 2027–28 (Nursery to Class XI)', date: '2026-10-28T00:00:00.000Z', category: 'admissions', details: 'Admission forms are available at the school office and online. Limited seats.', pinned: true },
+  { id: 'n2', title: 'Half-yearly examinations schedule released', date: '2026-10-20T00:00:00.000Z', category: 'exams', details: 'Students can collect the date sheet from their class teachers.', pinned: true },
+  { id: 'n3', title: 'School closed for Diwali holidays', date: '2026-10-15T00:00:00.000Z', category: 'holidays', details: 'The school will reopen after the Diwali break as per the academic calendar.', pinned: true },
+  { id: 'n4', title: 'Parent–Teacher Meeting on Saturday', date: '2026-10-10T00:00:00.000Z', category: 'general', details: 'Parents are requested to attend the PTM between 9:00 AM and 12:00 PM.', pinned: false },
+]
+
+export const defaultNews = [
+  {
+    id: 'p1',
+    slug: 'admissions-open-2027-28',
+    title: 'Admissions Open for Session 2027–28',
+    category: 'news',
+    date: '2026-10-28T00:00:00.000Z',
+    cover: campusPhoto,
+    excerpt: 'Admissions are now open from Nursery to Class XI with Science, Arts and Commerce streams.',
+    content:
+      '<p>The Asian International School, Chomu invites applications for the academic session 2027–28 from Nursery to Class XI.</p><h2>How to apply</h2><ul><li>Fill the online enquiry form on the Admissions page</li><li>Visit the campus and meet our admission counsellor</li><li>Complete the interaction and document verification</li></ul><p>For more details call +91 98297 51651.</p>',
+  },
+  {
+    id: 'p2',
+    slug: 'smart-classrooms-on-campus',
+    title: 'Smart Classrooms for Interactive Learning',
+    category: 'news',
+    date: '2026-09-15T00:00:00.000Z',
+    cover: campusPhoto,
+    excerpt: 'Every classroom is equipped with digital boards that make lessons visual and engaging.',
+    content: '<p>Our smart classrooms bring lessons to life with digital boards, videos and interactive activities, helping students understand concepts better.</p>',
+  },
+  {
+    id: 'p3',
+    slug: 'annual-sports-meet',
+    title: 'Annual Sports Meet',
+    category: 'event',
+    date: '2026-12-12T00:00:00.000Z',
+    venue: 'School Ground',
+    cover: campusPhoto,
+    excerpt: 'Students will compete in athletics, team games and fun events. Parents are welcome.',
+    content: '<p>The Annual Sports Meet celebrates fitness, teamwork and sportsmanship. Events include athletics, relay races, kabaddi, kho-kho and fun races for the little ones.</p>',
+  },
+]
+
+export const defaultAlbums = [
+  { id: 'g1', slug: 'our-campus', title: 'Our Campus', category: 'campus', date: '2026-10-01T00:00:00.000Z', photos: [campusPhoto], videos: [] },
+]
+
+export const defaultFaculty = [
+  {
+    id: 'f1',
+    name: 'Shri Kaajod Mal Revar',
+    designation: 'Director',
+    department: 'Management',
+    photo: { url: fallbackImages.director, alt: 'Shri Kaajod Mal Revar', width: 800, height: 982 },
+    order: 1,
+  },
+]
+
+export const defaultToppers = defaultHeroToppers.map((t, i) => ({
+  id: `t${i + 1}`,
+  ...t,
+  year: '2025–26',
+  featured: true,
+  inHero: true,
+  rank: i + 1,
+}))
+
+export const defaultCareers = [
+  {
+    id: 'c1',
+    title: 'Teachers (PRT / TGT / PGT) — all subjects',
+    department: 'Academics',
+    type: 'full-time',
+    requirements: 'Graduate / Post-graduate with B.Ed. Good communication in English. Freshers with passion for teaching may also apply.',
+    open: true,
+  },
+]
+
+/** Form defaults for each settings page in the admin panel. */
+export const globalDefaults: Record<string, Record<string, unknown>> = {
+  'site-settings': defaultSettings,
+  'home-page': defaultHome,
+  'about-page': defaultAbout,
+  'academics-page': defaultAcademics,
+  'admissions-page': defaultAdmissions,
+  disclosure: defaultDisclosure,
+}

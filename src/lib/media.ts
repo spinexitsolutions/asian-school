@@ -1,24 +1,24 @@
-import type { Document, Media } from '@/payload-types'
+import type { FileRef, Media } from '@/cms/types'
 
-type Upload = Media | Document | string | null | undefined
+type Upload = Media | FileRef | null | undefined
 
-/** Resolve an upload relation (populated doc or bare id) to something renderable. */
-export function img(upload: Upload, size?: 'thumb' | 'card') {
-  if (!upload || typeof upload === 'string') return null
-  const media = upload as Media
-  const sized = size ? media.sizes?.[size]?.url : null
-  const url = sized || media.url
-  if (!url) return null
+/** Resolve an uploaded image to something renderable (size 'thumb'/'card' → small version). */
+export function img(upload: Upload | unknown, size?: 'thumb' | 'card') {
+  if (!upload || typeof upload !== 'object' || !('url' in upload) || !upload.url) return null
+  const m = upload as Media
+  const url = size && m.thumb ? m.thumb : m.url
+  const small = Boolean(size && m.thumb)
+  const ratio = m.width && m.height ? m.height / m.width : 0.66
   return {
     url,
-    alt: (media as Media).alt ?? '',
-    width: (size && media.sizes?.[size]?.width) || media.width || 1600,
-    height: (size && media.sizes?.[size]?.height) || media.height || 1200,
-    focal: media.focalX != null ? `${media.focalX}% ${media.focalY}%` : undefined,
+    alt: m.alt ?? '',
+    width: small ? 640 : m.width || 1600,
+    height: small ? Math.round(640 * ratio) : m.height || 1060,
+    focal: undefined as string | undefined,
   }
 }
 
-export function fileUrl(upload: Upload) {
-  if (!upload || typeof upload === 'string') return null
-  return upload.url ?? null
+export function fileUrl(upload: Upload | unknown) {
+  if (!upload || typeof upload !== 'object' || !('url' in upload)) return null
+  return (upload as FileRef).url || null
 }

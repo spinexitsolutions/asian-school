@@ -6,7 +6,7 @@ import { PageBanner } from '@/components/PageBanner'
 import { Photo } from '@/components/Photo'
 import { getNews } from '@/lib/data'
 import { formatDate } from '@/lib/format'
-import type { Media } from '@/payload-types'
+import type { Media } from '@/cms/types'
 
 export const metadata = { title: 'News & Events' }
 

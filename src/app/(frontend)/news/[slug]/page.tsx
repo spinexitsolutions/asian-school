@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { RichText } from '@payloadcms/richtext-lexical/react'
+import { cleanHtml } from '@/cms/normalize'
 import { ArrowLeft, CalendarBlank, MapPin } from '@phosphor-icons/react/dist/ssr'
 
 import { PageBanner } from '@/components/PageBanner'
@@ -8,7 +8,7 @@ import { Photo } from '@/components/Photo'
 import { getNewsBySlug } from '@/lib/data'
 import { formatDate } from '@/lib/format'
 import { img } from '@/lib/media'
-import type { Media } from '@/payload-types'
+import type { Media } from '@/cms/types'
 
 type Args = { params: Promise<{ slug: string }> }
 
@@ -47,7 +47,7 @@ export default async function NewsPost({ params }: Args) {
           {post.excerpt && <p className="mb-6 text-[19px] leading-relaxed text-ink">{post.excerpt}</p>}
           {post.content && (
             <div className="prose-school">
-              <RichText data={post.content} />
+              <div dangerouslySetInnerHTML={{ __html: cleanHtml(post.content) }} />
             </div>
           )}
           <Link href="/news" className="btn btn-outline mt-12">

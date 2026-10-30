@@ -5,7 +5,7 @@ import { PageBanner } from '@/components/PageBanner'
 import { getAlbumBySlug } from '@/lib/data'
 import { formatDate, youtubeId } from '@/lib/format'
 import { img } from '@/lib/media'
-import type { Media } from '@/payload-types'
+import type { Media } from '@/cms/types'
 
 type Args = { params: Promise<{ slug: string }> }
 

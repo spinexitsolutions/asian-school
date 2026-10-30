@@ -7,7 +7,7 @@ import { SectionHeading } from '@/components/SectionHeading'
 import { Paragraphs } from '@/components/Stars'
 import { fallbackImages } from '@/content/defaults'
 import { getAbout, getHome } from '@/lib/data'
-import type { Media } from '@/payload-types'
+import type { Media } from '@/cms/types'
 
 export const metadata = { title: 'About Us' }
 

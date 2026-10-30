@@ -6,8 +6,10 @@ import './globals.css'
 
 import type { Metadata, Viewport } from 'next'
 
+import { AdmissionPopup } from '@/components/AdmissionPopup'
 import { Footer } from '@/components/Footer'
 import { Header } from '@/components/Header'
+import { Intro } from '@/components/Intro'
 import { RevealObserver } from '@/components/RevealObserver'
 import { SmoothScroll } from '@/components/SmoothScroll'
 import { WhatsAppButton } from '@/components/WhatsAppButton'
@@ -62,8 +64,14 @@ export default async function FrontendLayout({ children }: { children: React.Rea
   }
 
   return (
-    <html lang="en-IN">
+    <html lang="en-IN" suppressHydrationWarning>
       <body className="min-h-[100dvh]">
+        <script
+          dangerouslySetInnerHTML={{
+            __html: "try{if(sessionStorage.getItem('ais-intro-seen'))document.documentElement.classList.add('intro-seen')}catch(e){}",
+          }}
+        />
+        <Intro schoolName={s.schoolName} logoUrl={logoUrl} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
         <Header
           schoolName={s.schoolName}
@@ -78,6 +86,15 @@ export default async function FrontendLayout({ children }: { children: React.Rea
         <main>{children}</main>
         <Footer s={s} logoUrl={logoUrl} />
         <WhatsAppButton number={s.whatsapp} />
+        {s.popupEnabled && (
+          <AdmissionPopup
+            badge={s.popupBadge}
+            title={s.popupTitle}
+            text={s.popupText}
+            phone={s.phone}
+            imageUrl={img(s.popupImage)?.url ?? fallbackImages.campus}
+          />
+        )}
         <RevealObserver />
         <SmoothScroll />
       </body>

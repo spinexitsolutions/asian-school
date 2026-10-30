@@ -1,0 +1,181 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-brand-50: #f2f6ff;
+  --color-brand-100: #e2ebff;
+  --color-brand-200: #c3d5ff;
+  --color-brand-500: #2a5fe0;
+  --color-brand-600: #1748c2;
+  --color-brand-700: #123a9c;
+  --color-brand-800: #0f2f7a;
+  --color-brand-900: #0b2257;
+  --color-brand-950: #07163a;
+  --color-laurel-50: #fff2f2;
+  --color-laurel-500: #e0302f;
+  --color-laurel-600: #c62121;
+  --color-flame-100: #ffefc2;
+  --color-flame-400: #ffc226;
+  --color-flame-500: #f5a70a;
+  --color-leaf-50: #ecfaf5;
+  --color-leaf-500: #138a72;
+  --color-ink: #0e1a3a;
+  --color-ink-2: #3f4a66;
+  --color-mute: #6b7489;
+  --color-line: #e6eaf2;
+  --color-soft: #f5f7fb;
+
+  --font-sans: 'Plus Jakarta Sans Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-heading: 'Poppins', ui-sans-serif, system-ui, sans-serif;
+  --ease-spring: cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+@layer base {
+  body {
+    background: var(--color-soft);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-heading);
+    letter-spacing: -0.02em;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-brand-500);
+    outline-offset: 2px;
+  }
+}
+
+@layer components {
+  .a-card {
+    border-radius: 1.1rem;
+    background: #fff;
+    box-shadow:
+      0 0 0 1px var(--color-line),
+      0 6px 20px -12px rgb(14 26 58 / 0.18);
+  }
+  .a-input {
+    width: 100%;
+    border-radius: 0.7rem;
+    background: #fff;
+    padding: 0.65rem 0.85rem;
+    font-size: 14.5px;
+    box-shadow: inset 0 0 0 1px var(--color-line);
+    transition: box-shadow 0.2s;
+  }
+  .a-input:focus {
+    outline: none;
+    box-shadow:
+      inset 0 0 0 1.5px var(--color-brand-500),
+      0 0 0 4px var(--color-brand-100);
+  }
+  .a-input[aria-invalid='true'] {
+    box-shadow: inset 0 0 0 1.5px var(--color-laurel-500);
+  }
+  .a-label {
+    display: block;
+    margin-bottom: 0.4rem;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--color-ink);
+  }
+  .a-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+    border-radius: 0.7rem;
+    padding: 0.6rem 1rem;
+    font-size: 14px;
+    font-weight: 600;
+    white-space: nowrap;
+    transition:
+      background 0.2s,
+      transform 0.3s var(--ease-spring),
+      box-shadow 0.2s;
+  }
+  .a-btn:active {
+    transform: scale(0.97);
+  }
+  .a-btn:disabled {
+    opacity: 0.6;
+    pointer-events: none;
+  }
+  .a-btn-primary {
+    background: var(--color-brand-600);
+    color: #fff;
+    box-shadow: 0 8px 18px -10px rgb(23 72 194 / 0.8);
+  }
+  .a-btn-primary:hover {
+    background: var(--color-brand-700);
+  }
+  .a-btn-ghost {
+    background: #fff;
+    color: var(--color-ink);
+    box-shadow: inset 0 0 0 1px var(--color-line);
+  }
+  .a-btn-ghost:hover {
+    background: var(--color-soft);
+  }
+  .a-btn-danger {
+    background: var(--color-laurel-50);
+    color: var(--color-laurel-600);
+  }
+  .a-btn-danger:hover {
+    background: #ffe1e1;
+  }
+  .a-badge {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 999px;
+    padding: 0.2rem 0.6rem;
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  /* Rich text editor content */
+  .a-prose {
+    font-size: 15px;
+    line-height: 1.7;
+    min-height: 220px;
+    padding: 1rem;
+    outline: none;
+  }
+  .a-prose > * + * {
+    margin-top: 0.75em;
+  }
+  .a-prose h2 {
+    font-size: 1.4rem;
+    font-weight: 700;
+  }
+  .a-prose h3 {
+    font-size: 1.15rem;
+    font-weight: 700;
+  }
+  .a-prose ul {
+    list-style: disc;
+    padding-left: 1.4em;
+  }
+  .a-prose ol {
+    list-style: decimal;
+    padding-left: 1.4em;
+  }
+  .a-prose blockquote {
+    border-left: 3px solid var(--color-flame-500);
+    padding-left: 1em;
+    color: var(--color-ink-2);
+  }
+  .a-prose a {
+    color: var(--color-brand-600);
+    text-decoration: underline;
+  }
+  .a-prose p.is-editor-empty:first-child::before {
+    content: attr(data-placeholder);
+    float: left;
+    height: 0;
+    color: #9aa2b5;
+    pointer-events: none;
+  }
+}

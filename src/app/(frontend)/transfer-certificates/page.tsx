@@ -30,12 +30,12 @@ export default async function TCPage({ searchParams }: Args) {
 
           {res && (
             <div className="mt-8 space-y-4">
-              {res.docs.length === 0 ? (
+              {res.length === 0 ? (
                 <p className="card flex items-center gap-3 p-6 text-ink-2">
                   <WarningCircle size={22} weight="fill" className="text-laurel-600" /> No TC found for admission number “{admissionNo}”. Please contact the school office.
                 </p>
               ) : (
-                res.docs.map((tc) => {
+                res.map((tc) => {
                   const file = fileUrl(tc.file)
                   return (
                     <div key={tc.id} className="card flex flex-col gap-4 p-6 sm:flex-row sm:items-center">

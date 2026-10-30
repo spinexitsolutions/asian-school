@@ -171,14 +171,14 @@ export function Header({ schoolName, location, logoUrl, phone, altPhone, email, 
               <Image src={logoUrl} alt="" width={40} height={40} className="rounded-full object-contain" />
             </span>
           </Link>
-          <nav aria-label="Main" className="flex-1">
+          <nav aria-label="Main" className="min-w-0 flex-1">
             <ul className="flex items-center">
               {navItems.map((item) => (
                 <li key={item.label} className="group relative">
                   <Link
                     href={item.href}
                     className={clsx(
-                      'relative flex h-[58px] items-center gap-1 px-3.5 text-[15px] font-semibold transition-colors',
+                      'relative flex h-[58px] items-center gap-1 whitespace-nowrap px-3 text-[15px] font-semibold transition-colors 2xl:px-3.5',
                       isActive(item.href) ? 'bg-brand-900/40 text-flame-400' : 'text-white/90 hover:bg-brand-900/30 hover:text-white',
                     )}
                   >
@@ -214,7 +214,10 @@ export function Header({ schoolName, location, logoUrl, phone, altPhone, email, 
           </nav>
           <Link
             href="/admissions#enquiry"
-            className={clsx('btn btn-gold !px-5 !py-2.5 !text-[14px] transition-opacity duration-500', scrolled ? 'opacity-100' : 'pointer-events-none opacity-0')}
+            className={clsx(
+              'btn btn-gold shrink-0 !px-5 !py-2.5 !text-[14px] transition-all duration-500',
+              scrolled ? 'ml-3 max-w-[200px] opacity-100' : 'pointer-events-none ml-0 max-w-0 overflow-hidden !px-0 opacity-0',
+            )}
             tabIndex={scrolled ? 0 : -1}
           >
             Enquire Now

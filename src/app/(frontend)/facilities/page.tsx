@@ -5,7 +5,7 @@ import { PageBanner } from '@/components/PageBanner'
 import { Photo } from '@/components/Photo'
 import { defaultFacilities } from '@/content/defaults'
 import { getFacilities } from '@/lib/data'
-import type { Media } from '@/payload-types'
+import type { Media } from '@/cms/types'
 
 export const metadata = { title: 'Facilities' }
 

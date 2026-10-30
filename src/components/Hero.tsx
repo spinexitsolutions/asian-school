@@ -37,19 +37,25 @@ function HeroTitle({ text }: { text: string }) {
  * panel showcasing board toppers (or an admissions card when none are set).
  */
 export function Hero({ schoolName, logoUrl, established, title, points, stats, toppers, resultsYear, backgroundUrl, placeholder }: Props) {
-  const slant = '[clip-path:polygon(18%_0,100%_0,100%_100%,0_100%)]'
   return (
     <section className="relative overflow-hidden bg-white">
-      {/* Slanted campus photo (desktop) */}
-      <div className={`absolute inset-y-0 right-0 hidden w-[56%] bg-brand-700 lg:block ${slant}`}>
-        <Image src={backgroundUrl} alt={`${schoolName} campus`} fill priority sizes="56vw" className="object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-t from-brand-950/85 via-brand-950/10 to-transparent" />
-      </div>
-      <div className="absolute right-[44%] top-0 hidden h-full w-3 -skew-x-[10deg] bg-flame-400 lg:block" />
-      <div className="absolute right-[45.5%] top-0 hidden h-full w-1.5 -skew-x-[10deg] bg-laurel-500 lg:block" />
       <div className="dots-bg pointer-events-none absolute -left-10 top-10 h-60 w-72 opacity-70 [mask-image:radial-gradient(black,transparent_70%)]" />
 
-      <div className="container-x relative grid gap-10 py-12 lg:min-h-[640px] lg:grid-cols-12 lg:items-center lg:py-16">
+      {/* Slanted campus photo, kept inside the page container so the layout stays centred */}
+      <div className="pointer-events-none absolute inset-0 hidden lg:block" aria-hidden>
+        <div className="container-x relative h-full">
+          <div className="absolute inset-y-6 right-4 w-[58%] overflow-hidden rounded-r-[2rem] sm:right-6">
+            <div className="absolute inset-0 bg-flame-400 [clip-path:polygon(17%_0,100%_0,100%_100%,0_100%)]" />
+            <div className="absolute inset-0 bg-laurel-500 [clip-path:polygon(18.6%_0,100%_0,100%_100%,1.6%_100%)]" />
+            <div className="absolute inset-0 bg-brand-700 [clip-path:polygon(20%_0,100%_0,100%_100%,3%_100%)]">
+              <Image src={backgroundUrl} alt="" fill priority sizes="56vw" className="object-cover" />
+              <div className="absolute inset-0 bg-gradient-to-t from-brand-950/85 via-brand-950/10 to-transparent" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="container-x relative grid gap-10 py-12 lg:min-h-[660px] lg:grid-cols-12 lg:items-center lg:py-20">
         <div className="lg:col-span-5">
           <span className="label-pill" data-reveal>
             CBSE Affiliated · Est. {established || '2010'}
@@ -90,7 +96,7 @@ export function Hero({ schoolName, logoUrl, established, title, points, stats, t
           <div className="relative aspect-[16/10] overflow-hidden rounded-[2rem] lg:hidden" data-reveal="zoom">
             <Image src={backgroundUrl} alt={`${schoolName} campus`} fill priority sizes="100vw" className="object-cover" />
           </div>
-          <div className="rounded-[2rem] bg-brand-800 p-5 text-white shadow-2xl ring-1 ring-white/15 sm:p-6 lg:ml-auto lg:w-[92%] lg:bg-brand-950/75 lg:backdrop-blur-md" data-reveal="zoom">
+          <div className="rounded-[2rem] bg-brand-800 p-5 text-white shadow-2xl ring-1 ring-white/15 sm:p-6 lg:ml-auto lg:mr-6 lg:w-[86%] lg:bg-brand-950/75 lg:backdrop-blur-md" data-reveal="zoom">
             <div className="flex items-center justify-between">
               <p className="flex items-center gap-2 font-heading text-[18px] font-semibold">
                 <Medal size={24} weight="fill" className="text-flame-400" /> Board Toppers

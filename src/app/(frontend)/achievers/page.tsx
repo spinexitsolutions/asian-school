@@ -1,7 +1,7 @@
 import { PageBanner } from '@/components/PageBanner'
 import { Photo } from '@/components/Photo'
 import { getToppers } from '@/lib/data'
-import type { Media, Topper } from '@/payload-types'
+import type { Media, Topper } from '@/cms/types'
 
 export const metadata = { title: 'Achievements' }
 

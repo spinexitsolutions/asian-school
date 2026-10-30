@@ -2,7 +2,7 @@ import Image from 'next/image'
 import clsx from 'clsx'
 
 import { img } from '@/lib/media'
-import type { Media } from '@/payload-types'
+import type { Media } from '@/cms/types'
 
 /**
  * Renders an uploaded photo, else a static fallback image, else a soft

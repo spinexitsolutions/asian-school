@@ -1,7 +1,7 @@
 import { PageBanner } from '@/components/PageBanner'
 import { Photo } from '@/components/Photo'
 import { getFaculty } from '@/lib/data'
-import type { Media } from '@/payload-types'
+import type { Media } from '@/cms/types'
 
 export const metadata = { title: 'Our Faculty' }
 

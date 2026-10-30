@@ -5,7 +5,7 @@ import { PageBanner } from '@/components/PageBanner'
 import { Photo } from '@/components/Photo'
 import { getAlbums } from '@/lib/data'
 import { formatDate } from '@/lib/format'
-import type { Media } from '@/payload-types'
+import type { Media } from '@/cms/types'
 
 export const metadata = { title: 'Gallery' }
 
@@ -21,7 +21,7 @@ export default async function GalleryPage() {
           ) : (
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {docs.map((a, i) => {
-                const cover = (a.cover as Media) ?? ((a.photos ?? [])[0] as Media)
+                const cover = (a.photos ?? [])[0] as Media | undefined
                 return (
                   <Link key={a.id} href={`/gallery/${a.slug}`} className="card card-hover group block overflow-hidden" data-reveal style={{ ['--d' as string]: `${(i % 3) * 80}ms` }}>
                     <div className="relative">
