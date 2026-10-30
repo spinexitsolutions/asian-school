@@ -17,6 +17,7 @@ const preview: Record<string, string> = {
   'transport-page': '/transport',
   'school-info': '/school-info',
   'site-settings': '/',
+  'site-pages': '/',
 }
 
 export async function generateMetadata({ params }: Args) {
@@ -31,5 +32,7 @@ export default async function GlobalPage({ params }: Args) {
   // Never saved yet → start from the text currently shown on the website.
   const saved = await getGlobalDoc<Record<string, unknown>>(slug)
   const initial = { ...(globalDefaults[slug] ?? {}), ...(saved ?? {}) }
-  return <DocForm kind="global" slug={slug} sections={def.sections} initial={initial} title={def.label} previewHref={preview[slug]} />
+  return (
+    <DocForm kind="global" slug={slug} sections={def.sections} initial={initial} title={def.label} description={def.description} previewHref={preview[slug]} />
+  )
 }

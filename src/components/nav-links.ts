@@ -78,3 +78,21 @@ export const footerGroups = [
     ],
   },
 ]
+
+const pathOf = (href: string) => href.split('#')[0] || '/'
+
+/** True when a link points to a page that staff switched off. */
+export const isHidden = (href: string, hidden: string[]) => hidden.includes(pathOf(href))
+
+/** Drop links to switched-off pages; a menu with no links left is dropped too. */
+export function visibleNav(items: NavItem[], hidden: string[]): NavItem[] {
+  if (!hidden.length) return items
+  return items.flatMap((item) => {
+    if (!item.children) return isHidden(item.href, hidden) ? [] : [item]
+    const children = item.children.filter((c) => !isHidden(c.href, hidden))
+    if (!children.length) return []
+    return [{ ...item, href: isHidden(item.href, hidden) ? children[0].href : item.href, children }]
+  })
+}
+
+export const visibleLinks = <T extends { href: string }>(links: T[], hidden: string[]) => links.filter((l) => !isHidden(l.href, hidden))

@@ -1,7 +1,7 @@
 import { FilePdf } from '@phosphor-icons/react/dist/ssr'
 
 import { PageBanner } from '@/components/PageBanner'
-import { getNotices } from '@/lib/data'
+import { getNotices, getPage } from '@/lib/data'
 import { fileUrl } from '@/lib/media'
 
 export const metadata = { title: 'Notice Board' }
@@ -9,10 +9,11 @@ export const metadata = { title: 'Notice Board' }
 const labels: Record<string, string> = { general: 'General', admissions: 'Admissions', exams: 'Exams / Results', holidays: 'Holidays', events: 'Events' }
 
 export default async function NoticesPage() {
+  const page = await getPage('notices')
   const { docs } = await getNotices(200)
   return (
     <>
-      <PageBanner title="Notice Board" intro="Circulars, holidays, examination schedules and announcements." />
+      <PageBanner title={page.title} intro={page.intro} />
       <section className="py-16 md:py-24">
         <div className="container-x max-w-4xl">
           {docs.length === 0 ? (
@@ -35,7 +36,12 @@ export default async function NoticesPage() {
                       <h2 className="mt-1 font-heading text-[17px] font-semibold leading-snug">{n.title}</h2>
                       {n.details && <p className="mt-2 whitespace-pre-line text-[15px] text-ink-2">{n.details}</p>}
                       {file && (
-                        <a href={file} target="_blank" rel="noreferrer" className="mt-3 inline-flex items-center gap-1.5 text-[14px] font-semibold text-laurel-600 hover:underline">
+                        <a
+                          href={file}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="mt-3 inline-flex items-center gap-1.5 text-[14px] font-semibold text-laurel-600 hover:underline"
+                        >
                           <FilePdf size={18} weight="fill" /> Download attachment
                         </a>
                       )}

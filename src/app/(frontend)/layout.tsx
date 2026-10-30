@@ -14,7 +14,7 @@ import { RevealObserver } from '@/components/RevealObserver'
 import { SmoothScroll } from '@/components/SmoothScroll'
 import { WhatsAppButton } from '@/components/WhatsAppButton'
 import { fallbackImages } from '@/content/defaults'
-import { getSettings } from '@/lib/data'
+import { getHiddenPaths, getSettings } from '@/lib/data'
 import { img } from '@/lib/media'
 
 export const revalidate = 300
@@ -41,7 +41,7 @@ export async function generateMetadata(): Promise<Metadata> {
 export const viewport: Viewport = { themeColor: '#0b2257' }
 
 export default async function FrontendLayout({ children }: { children: React.ReactNode }) {
-  const s = await getSettings()
+  const [s, hidden] = await Promise.all([getSettings(), getHiddenPaths()])
   const logoUrl = img(s.logo)?.url ?? fallbackImages.logo
 
   const jsonLd = {
@@ -82,9 +82,10 @@ export default async function FrontendLayout({ children }: { children: React.Rea
           email={s.email}
           topbarText={s.topbarText}
           socials={{ facebook: s.facebook, instagram: s.instagram, youtube: s.youtube, x: s.x }}
+          hidden={hidden}
         />
         <main>{children}</main>
-        <Footer s={s} logoUrl={logoUrl} />
+        <Footer s={s} logoUrl={logoUrl} hidden={hidden} />
         <WhatsAppButton number={s.whatsapp} />
         {s.popupEnabled && (
           <AdmissionPopup

@@ -7,6 +7,8 @@
  * existing site. Items marked "To be updated" need real data from the school.
  */
 
+import { blockDefaults, sitePageDefaults } from '@/cms/blocks'
+
 export const fallbackImages = {
   logo: '/images/logo.png',
   campus: '/images/campus.webp',
@@ -83,6 +85,7 @@ export const defaultHeroToppers = [
 ]
 
 export const defaultHome = {
+  ...blockDefaults('home-page'),
   heroImage: campusMedia,
   aboutImage: stockPhotos.classroomHands,
   messagePhoto: directorMedia,
@@ -92,6 +95,41 @@ export const defaultHome = {
     { text: 'Science, Arts & Commerce up to Class XII' },
     { text: 'Smart classes & experienced faculty' },
   ],
+  quickBoxes: [
+    {
+      title: 'About Us',
+      links: [
+        { label: 'About School', href: '/about' },
+        { label: "Director's Message", href: '/about#message' },
+        { label: 'Our Faculty', href: '/faculty' },
+      ],
+    },
+    {
+      title: 'Admission',
+      links: [
+        { label: 'Admission Process', href: '/admissions' },
+        { label: 'Apply Online', href: '/admissions/apply' },
+        { label: 'Downloads', href: '/downloads' },
+      ],
+    },
+    {
+      title: 'Gallery',
+      links: [
+        { label: 'Photo Gallery', href: '/gallery' },
+        { label: 'News & Events', href: '/news' },
+        { label: 'Achievements', href: '/achievers' },
+      ],
+    },
+    {
+      title: 'CBSE Corner',
+      links: [
+        { label: 'Mandatory Disclosure', href: '/mandatory-disclosure' },
+        { label: 'Transfer Certificates', href: '/transfer-certificates' },
+        { label: 'Affiliation Details', href: '/affiliation-details' },
+      ],
+    },
+  ],
+  aboutPoints: [{ text: 'CBSE Affiliated' }, { text: 'Nursery to Class XII' }, { text: 'Science, Arts & Commerce' }, { text: 'Smart Classrooms' }],
   resultsYear: '2025–26',
   stats: [
     { value: '2400+', label: 'Students' },
@@ -103,13 +141,16 @@ export const defaultHome = {
   aboutText:
     'At The Asian International School, we are committed to providing a nurturing and inspiring learning environment where every student is encouraged to discover their true potential. As a CBSE-affiliated English Medium School, we focus on academic excellence while promoting creativity, critical thinking, discipline, and strong moral values.\n\nWe believe that education goes beyond textbooks. Through modern teaching methodologies, smart classrooms, experienced faculty, co-curricular activities, sports, cultural programs, and a safe campus environment, we ensure the holistic development of every child.',
   whyTitle: 'Why Parents Trust The Asian International School',
-  whyText:
-    'A safe, inspiring and student-focused environment where every child develops academically, socially and emotionally.',
+  whyText: 'A safe, inspiring and student-focused environment where every child develops academically, socially and emotionally.',
   pillars: [
     { title: 'CBSE Curriculum', text: 'Structured CBSE curriculum designed to build strong academic foundations and conceptual understanding.', icon: 'book' },
     { title: 'Qualified Faculty', text: "Experienced and passionate educators dedicated to every student's academic and personal growth.", icon: 'users' },
     { title: 'Smart Learning', text: 'Modern digital classrooms equipped with smart technology for interactive and effective learning.', icon: 'computer' },
-    { title: 'Safe & Secure Campus', text: 'A disciplined campus with CCTV surveillance, safety measures and a positive learning environment.', icon: 'shield' },
+    {
+      title: 'Safe & Secure Campus',
+      text: 'A disciplined campus with CCTV surveillance, safety measures and a positive learning environment.',
+      icon: 'shield',
+    },
     { title: 'Sports & Activities', text: 'Excellent sports facilities and co-curricular activities that encourage teamwork and leadership.', icon: 'trophy' },
     { title: 'Holistic Development', text: 'Equal focus on academics, life skills, values, creativity and personality development.', icon: 'heart' },
   ],
@@ -119,11 +160,11 @@ export const defaultHome = {
   messageText:
     'Welcome to The Asian International School. We believe that every child is unique and has the ability to achieve excellence when guided with the right values, knowledge and opportunities. Our aim is to provide an inspiring learning environment where students develop confidence, creativity, discipline and a lifelong love for learning.\n\nAt our school, education goes beyond academics. We focus on the overall development of every child by nurturing intellectual, physical, emotional and moral growth. Through experienced teachers, modern infrastructure and value-based education, we prepare our students to become responsible citizens and future leaders.\n\nI sincerely thank all parents for their trust and support. Together, let us continue to inspire young minds, encourage excellence and build a brighter future for every child.',
   ctaTitle: 'Give Your Child The Best Start For A Bright Future',
-  ctaText:
-    'Join The Asian International School and provide your child with quality education, modern facilities and holistic development opportunities.',
+  ctaText: 'Join The Asian International School and provide your child with quality education, modern facilities and holistic development opportunities.',
 }
 
 export const defaultAbout = {
+  ...blockDefaults('about-page'),
   heroImage: stockPhotos.seniorStudents,
   title: 'About Our School',
   intro:
@@ -150,16 +191,15 @@ export const defaultAbout = {
       name: 'Shri Kaajod Mal Revar',
       role: 'Director',
       photo: directorMedia,
-      message:
-        'Every child is unique and has the ability to achieve excellence when guided with the right values, knowledge and opportunities.',
+      message: 'Every child is unique and has the ability to achieve excellence when guided with the right values, knowledge and opportunities.',
     },
   ],
 }
 
 export const defaultAcademics = {
+  ...blockDefaults('academics-page'),
   title: 'Academics',
-  intro:
-    'We follow the CBSE curriculum from Nursery to Class XII, with Science, Arts and Commerce streams at the senior secondary level.',
+  intro: 'We follow the CBSE curriculum from Nursery to Class XII, with Science, Arts and Commerce streams at the senior secondary level.',
   stages: [
     {
       name: 'Pre-Primary',
@@ -213,9 +253,9 @@ export const defaultAcademics = {
 }
 
 export const defaultAdmissions = {
+  ...blockDefaults('admissions-page'),
   title: 'Admissions',
-  intro:
-    'Admissions are open from Nursery to Class XI. Fill the enquiry form and our admission team will call you back.',
+  intro: 'Admissions are open from Nursery to Class XI. Fill the enquiry form and our admission team will call you back.',
   session: '2027–28',
   steps: [
     { title: 'Enquiry', text: 'Fill the online enquiry form or visit the school office.' },
@@ -245,18 +285,67 @@ export const defaultAdmissions = {
 }
 
 export const defaultFacilities = [
-  { title: 'Smart Classrooms', image: stockPhotos.smartClassroom, summary: 'Spacious classrooms with digital smart boards for interactive learning.', icon: 'computer', points: ['Digital boards', 'Comfortable furniture', 'Well ventilated'] },
-  { title: 'Science Labs', image: stockPhotos.scienceLab, summary: 'Well-equipped Physics, Chemistry and Biology laboratories for practical learning.', icon: 'flask', points: ['Physics lab', 'Chemistry lab', 'Biology lab'] },
-  { title: 'Computer Lab', image: stockPhotos.computer, summary: 'Modern computer laboratories with the latest technology and high-speed internet.', icon: 'computer', points: ['Latest systems', 'Internet', 'Coding classes'] },
-  { title: 'Library', image: stockPhotos.library, summary: 'A rich library with books, journals, magazines and digital learning resources.', icon: 'library', points: ['Reference books', 'Magazines', 'Reading room'] },
-  { title: 'Sports Ground', image: stockPhotos.athletics, summary: 'Large playground for cricket, football, athletics and many more games.', icon: 'trophy', points: ['Outdoor games', 'Indoor games', 'Annual sports meet'] },
-  { title: 'Transport', summary: 'Safe school buses covering Chomu and nearby villages with trained staff.', icon: 'bus', points: ['Wide routes', 'Trained drivers', 'Attendants'] },
-  { title: 'CCTV Security', summary: 'Complete campus under CCTV surveillance for safety of every child.', icon: 'camera', points: ['CCTV campus', 'Guarded entry', 'Visitor register'] },
-  { title: 'Music & Dance', summary: 'Dedicated activity rooms for music, dance and cultural programmes.', icon: 'music', points: ['Instruments', 'Dance room', 'Annual function'] },
+  {
+    title: 'Smart Classrooms',
+    image: stockPhotos.smartClassroom,
+    summary: 'Spacious classrooms with digital smart boards for interactive learning.',
+    icon: 'computer',
+    points: ['Digital boards', 'Comfortable furniture', 'Well ventilated'],
+  },
+  {
+    title: 'Science Labs',
+    image: stockPhotos.scienceLab,
+    summary: 'Well-equipped Physics, Chemistry and Biology laboratories for practical learning.',
+    icon: 'flask',
+    points: ['Physics lab', 'Chemistry lab', 'Biology lab'],
+  },
+  {
+    title: 'Computer Lab',
+    image: stockPhotos.computer,
+    summary: 'Modern computer laboratories with the latest technology and high-speed internet.',
+    icon: 'computer',
+    points: ['Latest systems', 'Internet', 'Coding classes'],
+  },
+  {
+    title: 'Library',
+    image: stockPhotos.library,
+    summary: 'A rich library with books, journals, magazines and digital learning resources.',
+    icon: 'library',
+    points: ['Reference books', 'Magazines', 'Reading room'],
+  },
+  {
+    title: 'Sports Ground',
+    image: stockPhotos.athletics,
+    summary: 'Large playground for cricket, football, athletics and many more games.',
+    icon: 'trophy',
+    points: ['Outdoor games', 'Indoor games', 'Annual sports meet'],
+  },
+  {
+    title: 'Transport',
+    summary: 'Safe school buses covering Chomu and nearby villages with trained staff.',
+    icon: 'bus',
+    points: ['Wide routes', 'Trained drivers', 'Attendants'],
+  },
+  {
+    title: 'CCTV Security',
+    summary: 'Complete campus under CCTV surveillance for safety of every child.',
+    icon: 'camera',
+    points: ['CCTV campus', 'Guarded entry', 'Visitor register'],
+  },
+  {
+    title: 'Music & Dance',
+    summary: 'Dedicated activity rooms for music, dance and cultural programmes.',
+    icon: 'music',
+    points: ['Instruments', 'Dance room', 'Annual function'],
+  },
 ]
 
 export const defaultTestimonials = [
-  { quote: 'The teachers give personal attention to every child. My son’s confidence and results have improved a lot.', name: 'Parent', relation: 'Parent of a Class VI student' },
+  {
+    quote: 'The teachers give personal attention to every child. My son’s confidence and results have improved a lot.',
+    name: 'Parent',
+    relation: 'Parent of a Class VI student',
+  },
   { quote: 'Clean campus, smart classes and very caring staff. We are very happy with the school.', name: 'Parent', relation: 'Parent of a Class II student' },
   { quote: 'Discipline and values along with studies — this is what we wanted for our daughter.', name: 'Parent', relation: 'Parent of a Class IX student' },
 ]
@@ -412,10 +501,38 @@ export const defaultPages = [
 const campusPhoto = campusMedia
 
 export const defaultNotices = [
-  { id: 'n1', title: 'Admissions open for session 2027–28 (Nursery to Class XI)', date: '2026-10-28T00:00:00.000Z', category: 'admissions', details: 'Admission forms are available at the school office and online. Limited seats.', pinned: true },
-  { id: 'n2', title: 'Half-yearly examinations schedule released', date: '2026-10-20T00:00:00.000Z', category: 'exams', details: 'Students can collect the date sheet from their class teachers.', pinned: true },
-  { id: 'n3', title: 'School closed for Diwali holidays', date: '2026-10-15T00:00:00.000Z', category: 'holidays', details: 'The school will reopen after the Diwali break as per the academic calendar.', pinned: true },
-  { id: 'n4', title: 'Parent–Teacher Meeting on Saturday', date: '2026-10-10T00:00:00.000Z', category: 'general', details: 'Parents are requested to attend the PTM between 9:00 AM and 12:00 PM.', pinned: false },
+  {
+    id: 'n1',
+    title: 'Admissions open for session 2027–28 (Nursery to Class XI)',
+    date: '2026-10-28T00:00:00.000Z',
+    category: 'admissions',
+    details: 'Admission forms are available at the school office and online. Limited seats.',
+    pinned: true,
+  },
+  {
+    id: 'n2',
+    title: 'Half-yearly examinations schedule released',
+    date: '2026-10-20T00:00:00.000Z',
+    category: 'exams',
+    details: 'Students can collect the date sheet from their class teachers.',
+    pinned: true,
+  },
+  {
+    id: 'n3',
+    title: 'School closed for Diwali holidays',
+    date: '2026-10-15T00:00:00.000Z',
+    category: 'holidays',
+    details: 'The school will reopen after the Diwali break as per the academic calendar.',
+    pinned: true,
+  },
+  {
+    id: 'n4',
+    title: 'Parent–Teacher Meeting on Saturday',
+    date: '2026-10-10T00:00:00.000Z',
+    category: 'general',
+    details: 'Parents are requested to attend the PTM between 9:00 AM and 12:00 PM.',
+    pinned: false,
+  },
 ]
 
 export const defaultNews = [
@@ -438,7 +555,8 @@ export const defaultNews = [
     date: '2026-09-15T00:00:00.000Z',
     cover: stockPhotos.smartClassroom,
     excerpt: 'Every classroom is equipped with digital boards that make lessons visual and engaging.',
-    content: '<p>Our smart classrooms bring lessons to life with digital boards, videos and interactive activities, helping students understand concepts better.</p>',
+    content:
+      '<p>Our smart classrooms bring lessons to life with digital boards, videos and interactive activities, helping students understand concepts better.</p>',
   },
   {
     id: 'p3',
@@ -449,19 +567,35 @@ export const defaultNews = [
     venue: 'School Ground',
     cover: stockPhotos.athletics,
     excerpt: 'Students will compete in athletics, team games and fun events. Parents are welcome.',
-    content: '<p>The Annual Sports Meet celebrates fitness, teamwork and sportsmanship. Events include athletics, relay races, kabaddi, kho-kho and fun races for the little ones.</p>',
+    content:
+      '<p>The Annual Sports Meet celebrates fitness, teamwork and sportsmanship. Events include athletics, relay races, kabaddi, kho-kho and fun races for the little ones.</p>',
   },
 ]
 
 export const defaultAlbums = [
-  { id: 'g1', slug: 'our-campus', title: 'Our Campus', category: 'campus', date: '2026-10-01T00:00:00.000Z', photos: [campusPhoto, stockPhotos.smartClassroom, stockPhotos.library, stockPhotos.scienceLab], videos: [] },
+  {
+    id: 'g1',
+    slug: 'our-campus',
+    title: 'Our Campus',
+    category: 'campus',
+    date: '2026-10-01T00:00:00.000Z',
+    photos: [campusPhoto, stockPhotos.smartClassroom, stockPhotos.library, stockPhotos.scienceLab],
+    videos: [],
+  },
   {
     id: 'g2',
     slug: 'classroom-moments',
     title: 'Classroom Moments',
     category: 'academics',
     date: '2026-09-20T00:00:00.000Z',
-    photos: [stockPhotos.classroomKids, stockPhotos.classroomHands, stockPhotos.kidsWriting, stockPhotos.circleTime, stockPhotos.seniorStudents, stockPhotos.digitalLearning],
+    photos: [
+      stockPhotos.classroomKids,
+      stockPhotos.classroomHands,
+      stockPhotos.kidsWriting,
+      stockPhotos.circleTime,
+      stockPhotos.seniorStudents,
+      stockPhotos.digitalLearning,
+    ],
     videos: [],
   },
   {
@@ -520,11 +654,19 @@ export const defaultCareers = [
    school's real details from the admin panel. */
 
 export const defaultTransport = {
+  ...blockDefaults('transport-page'),
   intro:
     'Safe and comfortable school buses cover Chomu and nearby villages. Every bus has a trained driver and a lady attendant, and the routes are planned so that young children spend the least time on the road.',
   image: campusMedia,
   routes: [
-    { routeNo: 'Route 1', name: 'Chomu City', stops: 'Chomu Bus Stand\nRailway Station Road\nMain Market\nRadha Swami Bagh', pickup: '7:00 AM', drop: '2:10 PM', contact: '' },
+    {
+      routeNo: 'Route 1',
+      name: 'Chomu City',
+      stops: 'Chomu Bus Stand\nRailway Station Road\nMain Market\nRadha Swami Bagh',
+      pickup: '7:00 AM',
+      drop: '2:10 PM',
+      contact: '',
+    },
     { routeNo: 'Route 2', name: 'Samod side', stops: 'Samod\nHathnoda\nChomu Bypass', pickup: '6:40 AM', drop: '2:30 PM', contact: '' },
     { routeNo: 'Route 3', name: 'Kaladera side', stops: 'Kaladera\nJaitpura\nChomu Bypass', pickup: '6:35 AM', drop: '2:35 PM', contact: '' },
     { routeNo: 'Route 4', name: 'Govindgarh side', stops: 'Govindgarh\nMorija\nChomu Bypass', pickup: '6:30 AM', drop: '2:40 PM', contact: '' },
@@ -540,6 +682,7 @@ export const defaultTransport = {
 }
 
 export const defaultSchoolInfo = {
+  ...blockDefaults('school-info'),
   timings: [
     { label: 'Pre-Primary (Nursery – UKG)', summer: '7:30 AM – 12:00 PM', winter: '8:30 AM – 1:00 PM' },
     { label: 'Classes I – XII', summer: '7:30 AM – 1:30 PM', winter: '8:30 AM – 2:30 PM' },
@@ -568,26 +711,39 @@ export const defaultSchoolInfo = {
   ruleGroups: [
     {
       title: 'Attendance & punctuality',
-      items: 'Students must reach school before the first bell.\nLeave applications must be submitted in the school diary.\n75% attendance is compulsory to appear in the annual examination.\nStudents may leave school early only with a parent and the principal’s permission.',
+      items:
+        'Students must reach school before the first bell.\nLeave applications must be submitted in the school diary.\n75% attendance is compulsory to appear in the annual examination.\nStudents may leave school early only with a parent and the principal’s permission.',
     },
     {
       title: 'Discipline & conduct',
-      items: 'Students must be in complete and neat school uniform every day.\nRespect teachers, staff and fellow students at all times.\nMobile phones and valuables are not allowed on campus.\nDamage to school property must be made good by the student.',
+      items:
+        'Students must be in complete and neat school uniform every day.\nRespect teachers, staff and fellow students at all times.\nMobile phones and valuables are not allowed on campus.\nDamage to school property must be made good by the student.',
     },
     {
       title: 'Parents',
-      items: 'Check and sign the school diary every day.\nAttend parent–teacher meetings regularly.\nInform the office of any change of address or phone number.\nVisitors are allowed only through the main office.',
+      items:
+        'Check and sign the school diary every day.\nAttend parent–teacher meetings regularly.\nInform the office of any change of address or phone number.\nVisitors are allowed only through the main office.',
     },
   ],
 }
 
 export const defaultDownloads = [
-  { id: 'd1', title: 'Online Admission Form 2027–28', category: 'forms', classes: 'Nursery – XI', date: '2026-10-28T00:00:00.000Z', order: 1, link: '/admissions/apply' },
+  {
+    id: 'd1',
+    title: 'Online Admission Form 2027–28',
+    category: 'forms',
+    classes: 'Nursery – XI',
+    date: '2026-10-28T00:00:00.000Z',
+    order: 1,
+    link: '/admissions/apply',
+  },
   { id: 'd2', title: 'Syllabus 2027–28', category: 'syllabus', classes: 'All classes', order: 10 },
   { id: 'd3', title: 'Book list 2027–28', category: 'books', classes: 'All classes', order: 20 },
   { id: 'd4', title: 'Uniform list', category: 'uniform', classes: 'All classes', order: 30, link: '/school-info#uniform' },
   { id: 'd5', title: 'Holiday list 2027', category: 'holidays', classes: 'All classes', order: 40 },
 ]
+
+export const defaultSitePages = sitePageDefaults()
 
 /** Form defaults for each settings page in the admin panel. */
 export const globalDefaults: Record<string, Record<string, unknown>> = {
@@ -599,4 +755,5 @@ export const globalDefaults: Record<string, Record<string, unknown>> = {
   disclosure: defaultDisclosure,
   'transport-page': defaultTransport,
   'school-info': defaultSchoolInfo,
+  'site-pages': defaultSitePages,
 }

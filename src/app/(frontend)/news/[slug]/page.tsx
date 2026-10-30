@@ -5,7 +5,7 @@ import { ArrowLeft, CalendarBlank, MapPin } from '@phosphor-icons/react/dist/ssr
 
 import { PageBanner } from '@/components/PageBanner'
 import { Photo } from '@/components/Photo'
-import { getNewsBySlug } from '@/lib/data'
+import { getNewsBySlug, getPage } from '@/lib/data'
 import { formatDate } from '@/lib/format'
 import { img } from '@/lib/media'
 import type { Media } from '@/cms/types'
@@ -25,6 +25,7 @@ export async function generateMetadata({ params }: Args) {
 }
 
 export default async function NewsPost({ params }: Args) {
+  await getPage('news')
   const post = await getNewsBySlug((await params).slug)
   if (!post) notFound()
   return (
@@ -43,7 +44,9 @@ export default async function NewsPost({ params }: Args) {
               </span>
             )}
           </div>
-          {post.cover && <Photo media={post.cover as Media} className="mb-10 aspect-[16/9] rounded-[1.75rem]" priority sizes="(min-width:768px) 768px, 100vw" />}
+          {post.cover && (
+            <Photo media={post.cover as Media} className="mb-10 aspect-[16/9] rounded-[1.75rem]" priority sizes="(min-width:768px) 768px, 100vw" />
+          )}
           {post.excerpt && <p className="mb-6 text-[19px] leading-relaxed text-ink">{post.excerpt}</p>}
           {post.content && (
             <div className="prose-school">

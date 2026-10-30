@@ -4,6 +4,8 @@
  * generated from these definitions.
  */
 
+import { blockSection, sitePageSections } from './blocks'
+
 export type Option = { label: string; value: string }
 
 type Base = {
@@ -185,7 +187,17 @@ export const collections: CollectionDef[] = [
         fields: [
           { name: 'studentName', label: 'Student name', type: 'text', required: true, half: true },
           { name: 'dob', label: 'Date of birth', type: 'date', half: true },
-          { name: 'gender', label: 'Gender', type: 'select', half: true, options: [{ label: 'Male', value: 'male' }, { label: 'Female', value: 'female' }, { label: 'Other', value: 'other' }] },
+          {
+            name: 'gender',
+            label: 'Gender',
+            type: 'select',
+            half: true,
+            options: [
+              { label: 'Male', value: 'male' },
+              { label: 'Female', value: 'female' },
+              { label: 'Other', value: 'other' },
+            ],
+          },
           { name: 'bloodGroup', label: 'Blood group', type: 'text', half: true },
           { name: 'category', label: 'Category', type: 'text', half: true },
           { name: 'religion', label: 'Religion', type: 'text', half: true },
@@ -371,7 +383,13 @@ export const collections: CollectionDef[] = [
             ],
           },
           { name: 'photos', label: 'Photos', type: 'gallery', help: 'Select many photos at once. The first photo is the album cover.' },
-          { name: 'videos', label: 'YouTube videos', type: 'array', itemLabel: 'Video', fields: [{ name: 'url', label: 'YouTube link', type: 'url', required: true }] },
+          {
+            name: 'videos',
+            label: 'YouTube videos',
+            type: 'array',
+            itemLabel: 'Video',
+            fields: [{ name: 'url', label: 'YouTube link', type: 'url', required: true }],
+          },
           { name: 'slug', label: 'Page address', type: 'slug', from: 'title' },
         ],
       },
@@ -447,7 +465,13 @@ export const collections: CollectionDef[] = [
           { name: 'icon', label: 'Icon', type: 'icon', half: true },
           { name: 'summary', label: 'Summary', type: 'textarea', rows: 3, required: true },
           { name: 'image', label: 'Photo', type: 'image' },
-          { name: 'points', label: 'Highlights', type: 'array', itemLabel: 'Highlight', fields: [{ name: 'text', label: 'Text', type: 'text', required: true }] },
+          {
+            name: 'points',
+            label: 'Highlights',
+            type: 'array',
+            itemLabel: 'Highlight',
+            fields: [{ name: 'text', label: 'Text', type: 'text', required: true }],
+          },
           { name: 'order', label: 'Display order', type: 'number', half: true },
         ],
       },
@@ -605,83 +629,140 @@ export const collections: CollectionDef[] = [
 
 export const globals: GlobalDef[] = [
   {
+    slug: 'site-pages',
+    label: 'Pages & Menu',
+    group: 'Pages',
+    icon: 'list',
+    description:
+      'Turn whole pages on or off and change their heading and intro. A page that is off returns "Page not found" and disappears from the menu, footer and homepage links.',
+    sections: sitePageSections(),
+  },
+  {
     slug: 'home-page',
     label: 'Home Page',
     group: 'Pages',
     icon: 'house',
+    description: 'Every homepage section in order. Use the switch on a section to show or hide it on the website. Wrap words in *stars* to colour them.',
     sections: [
-      {
-        title: 'Hero',
-        description: 'Top of the homepage. Wrap words in *stars* for blue and _underscores_ for red.',
-        fields: [
-          { name: 'heroTitle', label: 'Headline', type: 'text', placeholder: 'Proud of our *achievers*, ready for _yours._' },
-          { name: 'heroPoints', label: 'Points', type: 'array', itemLabel: 'Point', max: 4, fields: [{ name: 'text', label: 'Text', type: 'text', required: true }] },
+      blockSection(
+        'home-page',
+        'hero',
+        [
+          {
+            name: 'heroTitle',
+            label: 'Headline',
+            type: 'text',
+            placeholder: 'Proud of our *achievers*, ready for _yours._',
+            help: '*stars* = blue, _underscores_ = red.',
+          },
+          {
+            name: 'heroPoints',
+            label: 'Points',
+            type: 'array',
+            itemLabel: 'Point',
+            max: 4,
+            fields: [{ name: 'text', label: 'Text', type: 'text', required: true }],
+          },
           { name: 'resultsYear', label: 'Results year (Board Toppers panel)', type: 'text', half: true, placeholder: '2025–26' },
           { name: 'heroImage', label: 'Background photo', type: 'image' },
         ],
-      },
-      {
-        title: 'Numbers',
-        fields: [
-          {
-            name: 'stats',
-            label: 'Counters',
-            type: 'array',
-            itemLabel: 'Counter',
-            max: 4,
-            fields: [
-              { name: 'value', label: 'Value', type: 'text', required: true, half: true, placeholder: '2400+' },
-              { name: 'label', label: 'Label', type: 'text', required: true, half: true },
-            ],
-          },
-        ],
-      },
-      {
-        title: 'About section',
-        fields: [
-          { name: 'aboutTitle', label: 'Heading', type: 'text' },
-          { name: 'aboutText', label: 'Text', type: 'textarea', rows: 6, help: 'Separate paragraphs with an empty line.' },
-          { name: 'aboutImage', label: 'Photo', type: 'image' },
-        ],
-      },
-      {
-        title: 'Why choose us',
-        fields: [
-          { name: 'whyTitle', label: 'Heading', type: 'text' },
-          { name: 'whyText', label: 'Intro', type: 'textarea', rows: 2 },
-          {
-            name: 'pillars',
-            label: 'Cards',
-            type: 'array',
-            itemLabel: 'Card',
-            max: 8,
-            fields: [
-              { name: 'title', label: 'Title', type: 'text', required: true, half: true },
-              { name: 'icon', label: 'Icon', type: 'icon', half: true },
-              { name: 'text', label: 'Text', type: 'textarea', rows: 2, required: true },
-            ],
-          },
-        ],
-      },
-      {
-        title: "Director's message",
-        fields: [
-          { name: 'messageHeading', label: 'Label', type: 'text', half: true },
+        'Board toppers shown here come from School → Achievers & Toppers ("Show in homepage hero").',
+      ),
+      blockSection('home-page', 'quick', [
+        {
+          name: 'quickBoxes',
+          label: 'Boxes',
+          type: 'array',
+          itemLabel: 'Box',
+          max: 4,
+          fields: [
+            { name: 'title', label: 'Title', type: 'text', required: true },
+            {
+              name: 'links',
+              label: 'Links',
+              type: 'array',
+              itemLabel: 'Link',
+              max: 5,
+              fields: [
+                { name: 'label', label: 'Text', type: 'text', required: true, half: true },
+                { name: 'href', label: 'Link', type: 'text', required: true, half: true, placeholder: '/about' },
+              ],
+            },
+          ],
+        },
+      ]),
+      blockSection('home-page', 'about', [
+        { name: 'aboutTitle', label: 'Heading', type: 'text', help: 'Wrap words in *stars* to colour them.' },
+        { name: 'aboutText', label: 'Text', type: 'textarea', rows: 6, help: 'Separate paragraphs with an empty line.' },
+        {
+          name: 'aboutPoints',
+          label: 'Tick points',
+          type: 'array',
+          itemLabel: 'Point',
+          max: 6,
+          fields: [{ name: 'text', label: 'Text', type: 'text', required: true }],
+        },
+        { name: 'aboutImage', label: 'Photo', type: 'image' },
+      ]),
+      blockSection('home-page', 'stats', [
+        {
+          name: 'stats',
+          label: 'Counters (also shown in the hero)',
+          type: 'array',
+          itemLabel: 'Counter',
+          max: 4,
+          fields: [
+            { name: 'value', label: 'Value', type: 'text', required: true, half: true, placeholder: '2400+' },
+            { name: 'label', label: 'Label', type: 'text', required: true, half: true },
+          ],
+        },
+      ]),
+      blockSection('home-page', 'why', [
+        { name: 'whyTitle', label: 'Heading', type: 'text', help: 'Wrap words in *stars* to colour them.' },
+        { name: 'whyText', label: 'Intro text', type: 'textarea', rows: 2 },
+        {
+          name: 'pillars',
+          label: 'Cards',
+          type: 'array',
+          itemLabel: 'Card',
+          max: 8,
+          fields: [
+            { name: 'title', label: 'Title', type: 'text', required: true, half: true },
+            { name: 'icon', label: 'Icon', type: 'icon', half: true },
+            { name: 'text', label: 'Text', type: 'textarea', rows: 2, required: true },
+          ],
+        },
+      ]),
+      blockSection(
+        'home-page',
+        'message',
+        [
           { name: 'messageName', label: 'Name', type: 'text', half: true },
           { name: 'messageRole', label: 'Designation', type: 'text', half: true },
           { name: 'messagePhoto', label: 'Photo', type: 'image' },
           { name: 'messageText', label: 'Message', type: 'textarea', rows: 8 },
         ],
-      },
-      {
-        title: 'Calendar & admission banner',
-        fields: [
-          { name: 'calendarImage', label: 'Calendar image (this month)', type: 'image' },
-          { name: 'calendarFile', label: 'Full calendar (PDF)', type: 'file', accept: 'application/pdf' },
-          { name: 'ctaTitle', label: 'Admission banner heading', type: 'text' },
-          { name: 'ctaText', label: 'Admission banner text', type: 'textarea', rows: 2 },
+        'The same message is shown on the About page.',
+      ),
+      blockSection('home-page', 'updates', [], 'Notices come from Updates → Notices, activities from Updates → News & Events.'),
+      blockSection('home-page', 'achievers', [], 'Shows achievers ticked "Featured" in School → Achievers & Toppers.'),
+      blockSection('home-page', 'facilities', [], 'Cards come from School → Facilities.'),
+      blockSection('home-page', 'gallery', [], 'Photos come from Updates → Gallery.'),
+      blockSection('home-page', 'testimonials', [], 'Quotes come from School → Testimonials.'),
+      blockSection('home-page', 'calendar', [
+        { name: 'calendarImage', label: 'Calendar image (this month)', type: 'image' },
+        { name: 'calendarFile', label: 'Full calendar (PDF)', type: 'file', accept: 'application/pdf' },
+      ]),
+      blockSection('home-page', 'faq', [], 'Questions come from Pages → Admissions Page → FAQs.'),
+      blockSection(
+        'home-page',
+        'cta',
+        [
+          { name: 'ctaTitle', label: 'Heading', type: 'text' },
+          { name: 'ctaText', label: 'Text', type: 'textarea', rows: 2 },
         ],
-      },
+        'The admission session (e.g. 2027–28) is added after the label automatically.',
+      ),
     ],
   },
   {
@@ -689,32 +770,46 @@ export const globals: GlobalDef[] = [
     label: 'About Page',
     group: 'Pages',
     icon: 'info',
+    description: 'Page heading and intro are in Settings → Pages & Menu.',
     sections: [
-      {
-        title: 'Content',
-        fields: [
-          { name: 'intro', label: 'Intro', type: 'textarea', rows: 3 },
-          { name: 'heroImage', label: 'Photo', type: 'image' },
-          { name: 'story', label: 'Our story', type: 'textarea', rows: 8, help: 'Separate paragraphs with an empty line.' },
-          { name: 'vision', label: 'Vision', type: 'textarea', rows: 3, half: true },
-          { name: 'mission', label: 'Mission', type: 'textarea', rows: 3, half: true },
-        ],
-      },
-      {
-        title: 'Values & milestones',
-        fields: [
-          { name: 'values', label: 'Core values', type: 'array', itemLabel: 'Value', fields: [{ name: 'title', label: 'Title', type: 'text', required: true, half: true }, { name: 'text', label: 'Text', type: 'text', half: true }] },
-          {
-            name: 'timeline',
-            label: 'Milestones',
-            type: 'array',
-            itemLabel: 'Milestone',
-            fields: [
-              { name: 'year', label: 'Year', type: 'text', required: true, half: true },
-              { name: 'title', label: 'Title', type: 'text', required: true, half: true },
-              { name: 'text', label: 'Text', type: 'textarea', rows: 2 },
-            ],
-          },
+      blockSection('about-page', 'story', [
+        { name: 'heroImage', label: 'Photo', type: 'image' },
+        { name: 'story', label: 'Our story', type: 'textarea', rows: 8, help: 'Separate paragraphs with an empty line.' },
+      ]),
+      blockSection('about-page', 'vision', [
+        { name: 'vision', label: 'Vision', type: 'textarea', rows: 3, half: true },
+        { name: 'mission', label: 'Mission', type: 'textarea', rows: 3, half: true },
+      ]),
+      blockSection('about-page', 'values', [
+        {
+          name: 'values',
+          label: 'Core values',
+          type: 'array',
+          itemLabel: 'Value',
+          fields: [
+            { name: 'title', label: 'Title', type: 'text', required: true, half: true },
+            { name: 'text', label: 'Text', type: 'text', half: true },
+          ],
+        },
+      ]),
+      blockSection('about-page', 'journey', [
+        {
+          name: 'timeline',
+          label: 'Milestones',
+          type: 'array',
+          itemLabel: 'Milestone',
+          fields: [
+            { name: 'year', label: 'Year', type: 'text', required: true, half: true },
+            { name: 'title', label: 'Title', type: 'text', required: true, half: true },
+            { name: 'text', label: 'Text', type: 'textarea', rows: 2 },
+          ],
+        },
+      ]),
+      blockSection('about-page', 'message', [], "Name, photo and message are edited in Pages → Home Page → Director's message."),
+      blockSection(
+        'about-page',
+        'leaders',
+        [
           {
             name: 'leaders',
             label: 'Leadership',
@@ -728,7 +823,9 @@ export const globals: GlobalDef[] = [
             ],
           },
         ],
-      },
+        'Shown only when more than one leader is listed.',
+      ),
+      blockSection('about-page', 'visit'),
     ],
   },
   {
@@ -736,38 +833,51 @@ export const globals: GlobalDef[] = [
     label: 'Academics Page',
     group: 'Pages',
     icon: 'graduation',
+    description: 'Page heading and intro are in Settings → Pages & Menu.',
     sections: [
-      {
-        title: 'Content',
-        fields: [
-          { name: 'intro', label: 'Intro', type: 'textarea', rows: 3 },
-          {
-            name: 'stages',
-            label: 'Stages',
-            type: 'array',
-            itemLabel: 'Stage',
-            fields: [
-              { name: 'name', label: 'Name', type: 'text', required: true, half: true },
-              { name: 'classes', label: 'Classes', type: 'text', required: true, half: true },
-              { name: 'text', label: 'Text', type: 'textarea', rows: 2 },
-              { name: 'image', label: 'Photo', type: 'image' },
-              { name: 'focus', label: 'Focus points', type: 'array', itemLabel: 'Point', fields: [{ name: 'text', label: 'Text', type: 'text', required: true }] },
-            ],
-          },
-          {
-            name: 'approach',
-            label: 'Teaching approach',
-            type: 'array',
-            itemLabel: 'Item',
-            fields: [
-              { name: 'title', label: 'Title', type: 'text', required: true, half: true },
-              { name: 'icon', label: 'Icon', type: 'icon', half: true },
-              { name: 'text', label: 'Text', type: 'text' },
-            ],
-          },
-          { name: 'cocurricular', label: 'Co-curricular activities', type: 'array', itemLabel: 'Activity', fields: [{ name: 'name', label: 'Name', type: 'text', required: true }] },
-        ],
-      },
+      blockSection('academics-page', 'stages', [
+        {
+          name: 'stages',
+          label: 'Stages',
+          type: 'array',
+          itemLabel: 'Stage',
+          fields: [
+            { name: 'name', label: 'Name', type: 'text', required: true, half: true },
+            { name: 'classes', label: 'Classes', type: 'text', required: true, half: true },
+            { name: 'text', label: 'Text', type: 'textarea', rows: 2 },
+            { name: 'image', label: 'Photo', type: 'image' },
+            {
+              name: 'focus',
+              label: 'Focus points',
+              type: 'array',
+              itemLabel: 'Point',
+              fields: [{ name: 'text', label: 'Text', type: 'text', required: true }],
+            },
+          ],
+        },
+      ]),
+      blockSection('academics-page', 'approach', [
+        {
+          name: 'approach',
+          label: 'Cards',
+          type: 'array',
+          itemLabel: 'Item',
+          fields: [
+            { name: 'title', label: 'Title', type: 'text', required: true, half: true },
+            { name: 'icon', label: 'Icon', type: 'icon', half: true },
+            { name: 'text', label: 'Text', type: 'text' },
+          ],
+        },
+      ]),
+      blockSection('academics-page', 'activities', [
+        {
+          name: 'cocurricular',
+          label: 'Activities',
+          type: 'array',
+          itemLabel: 'Activity',
+          fields: [{ name: 'name', label: 'Name', type: 'text', required: true }],
+        },
+      ]),
     ],
   },
   {
@@ -775,26 +885,60 @@ export const globals: GlobalDef[] = [
     label: 'Admissions Page',
     group: 'Pages',
     icon: 'pencil',
+    description: 'Page heading and intro are in Settings → Pages & Menu.',
     sections: [
       {
-        title: 'Content',
+        title: 'Session',
         fields: [
-          { name: 'session', label: 'Session', type: 'text', half: true, placeholder: '2027–28' },
-          { name: 'intro', label: 'Intro', type: 'textarea', rows: 3 },
-          { name: 'steps', label: 'Admission steps', type: 'array', itemLabel: 'Step', fields: [{ name: 'title', label: 'Title', type: 'text', required: true, half: true }, { name: 'text', label: 'Text', type: 'text', half: true }] },
           {
-            name: 'eligibility',
-            label: 'Age criteria',
-            type: 'array',
-            itemLabel: 'Row',
-            fields: [
-              { name: 'className', label: 'Class', type: 'text', required: true, half: true },
-              { name: 'age', label: 'Age', type: 'text', required: true, half: true },
-            ],
+            name: 'session',
+            label: 'Admission session',
+            type: 'text',
+            half: true,
+            placeholder: '2027–28',
+            help: 'Shown in the page heading, popup banner and online form.',
           },
-          { name: 'documentsRequired', label: 'Documents required', type: 'array', itemLabel: 'Document', fields: [{ name: 'text', label: 'Text', type: 'text', required: true }] },
-          { name: 'feeStructure', label: 'Fee structure (PDF)', type: 'file', accept: 'application/pdf', half: true },
-          { name: 'prospectus', label: 'Prospectus (PDF)', type: 'file', accept: 'application/pdf', half: true },
+        ],
+      },
+      blockSection('admissions-page', 'apply'),
+      blockSection('admissions-page', 'steps', [
+        {
+          name: 'steps',
+          label: 'Steps',
+          type: 'array',
+          itemLabel: 'Step',
+          fields: [
+            { name: 'title', label: 'Title', type: 'text', required: true, half: true },
+            { name: 'text', label: 'Text', type: 'text', half: true },
+          ],
+        },
+      ]),
+      blockSection('admissions-page', 'criteria', [
+        {
+          name: 'eligibility',
+          label: 'Age criteria',
+          type: 'array',
+          itemLabel: 'Row',
+          fields: [
+            { name: 'className', label: 'Class', type: 'text', required: true, half: true },
+            { name: 'age', label: 'Age', type: 'text', required: true, half: true },
+          ],
+        },
+        {
+          name: 'documentsRequired',
+          label: 'Documents required',
+          type: 'array',
+          itemLabel: 'Document',
+          fields: [{ name: 'text', label: 'Text', type: 'text', required: true }],
+        },
+        { name: 'feeStructure', label: 'Fee structure (PDF)', type: 'file', accept: 'application/pdf', half: true },
+        { name: 'prospectus', label: 'Prospectus (PDF)', type: 'file', accept: 'application/pdf', half: true },
+      ]),
+      blockSection('admissions-page', 'enquiry'),
+      blockSection(
+        'admissions-page',
+        'faq',
+        [
           {
             name: 'faqs',
             label: 'FAQs',
@@ -806,7 +950,8 @@ export const globals: GlobalDef[] = [
             ],
           },
         ],
-      },
+        'These questions are also shown on the homepage and the Rules page.',
+      ),
     ],
   },
   {
@@ -814,12 +959,11 @@ export const globals: GlobalDef[] = [
     label: 'Mandatory Disclosure',
     group: 'CBSE Corner',
     icon: 'clipboard',
-    description: 'CBSE Appendix-IX tables.',
+    description: 'CBSE Appendix-IX tables. Turn the page on/off in Settings → Pages & Menu.',
     sections: [
       {
         title: 'Disclosure',
         fields: [
-          { name: 'enabled', label: 'Show this page on the website', type: 'checkbox' },
           {
             name: 'sections',
             label: 'Tables',
@@ -849,30 +993,29 @@ export const globals: GlobalDef[] = [
     label: 'Transport Page',
     group: 'Pages',
     icon: 'bus',
+    description: 'Page heading and intro are in Settings → Pages & Menu.',
     sections: [
-      {
-        title: 'Transport',
-        fields: [
-          { name: 'intro', label: 'Intro', type: 'textarea', rows: 3 },
-          { name: 'image', label: 'Photo', type: 'image' },
-          {
-            name: 'routes',
-            label: 'Bus routes',
-            type: 'array',
-            itemLabel: 'Route',
-            fields: [
-              { name: 'routeNo', label: 'Route No.', type: 'text', required: true, half: true, placeholder: 'Route 1' },
-              { name: 'name', label: 'Route name / area', type: 'text', required: true, half: true },
-              { name: 'stops', label: 'Stops (one per line)', type: 'textarea', rows: 4 },
-              { name: 'pickup', label: 'Morning pickup starts', type: 'text', half: true, placeholder: '6:45 AM' },
-              { name: 'drop', label: 'Afternoon drop', type: 'text', half: true, placeholder: '2:00 PM' },
-              { name: 'contact', label: 'Route in-charge phone', type: 'text', half: true },
-            ],
-          },
-          { name: 'rules', label: 'Transport rules', type: 'array', itemLabel: 'Rule', fields: [{ name: 'text', label: 'Rule', type: 'text', required: true }] },
-          { name: 'feeNote', label: 'Fee note', type: 'textarea', rows: 2 },
-        ],
-      },
+      blockSection('transport-page', 'overview', [{ name: 'image', label: 'Photo', type: 'image' }]),
+      blockSection('transport-page', 'routes', [
+        {
+          name: 'routes',
+          label: 'Bus routes',
+          type: 'array',
+          itemLabel: 'Route',
+          fields: [
+            { name: 'routeNo', label: 'Route No.', type: 'text', required: true, half: true, placeholder: 'Route 1' },
+            { name: 'name', label: 'Route name / area', type: 'text', required: true, half: true },
+            { name: 'stops', label: 'Stops (one per line)', type: 'textarea', rows: 4 },
+            { name: 'pickup', label: 'Morning pickup starts', type: 'text', half: true, placeholder: '6:45 AM' },
+            { name: 'drop', label: 'Afternoon drop', type: 'text', half: true, placeholder: '2:00 PM' },
+            { name: 'contact', label: 'Route in-charge phone', type: 'text', half: true },
+          ],
+        },
+      ]),
+      blockSection('transport-page', 'rules', [
+        { name: 'rules', label: 'Transport rules', type: 'array', itemLabel: 'Rule', fields: [{ name: 'text', label: 'Rule', type: 'text', required: true }] },
+        { name: 'feeNote', label: 'Fee note', type: 'textarea', rows: 2 },
+      ]),
     ],
   },
   {
@@ -880,56 +1023,49 @@ export const globals: GlobalDef[] = [
     label: 'Rules, Timings & Uniform',
     group: 'Pages',
     icon: 'info',
+    description: 'Page heading and intro are in Settings → Pages & Menu.',
     sections: [
-      {
-        title: 'Timings',
-        fields: [
-          {
-            name: 'timings',
-            label: 'Timings table',
-            type: 'array',
-            itemLabel: 'Row',
-            fields: [
-              { name: 'label', label: 'Item', type: 'text', required: true },
-              { name: 'summer', label: 'Summer', type: 'text', half: true },
-              { name: 'winter', label: 'Winter', type: 'text', half: true },
-            ],
-          },
-          { name: 'timingNote', label: 'Note', type: 'textarea', rows: 2 },
-        ],
-      },
-      {
-        title: 'Uniform',
-        fields: [
-          {
-            name: 'uniforms',
-            label: 'Uniform',
-            type: 'array',
-            itemLabel: 'Uniform set',
-            fields: [
-              { name: 'title', label: 'Title', type: 'text', required: true, placeholder: 'Summer uniform' },
-              { name: 'boys', label: 'Boys (one item per line)', type: 'textarea', rows: 4, half: true },
-              { name: 'girls', label: 'Girls (one item per line)', type: 'textarea', rows: 4, half: true },
-            ],
-          },
-          { name: 'uniformNote', label: 'Note', type: 'textarea', rows: 2 },
-        ],
-      },
-      {
-        title: 'Rules',
-        fields: [
-          {
-            name: 'ruleGroups',
-            label: 'Rules',
-            type: 'array',
-            itemLabel: 'Rule group',
-            fields: [
-              { name: 'title', label: 'Heading', type: 'text', required: true },
-              { name: 'items', label: 'Rules (one per line)', type: 'textarea', rows: 5 },
-            ],
-          },
-        ],
-      },
+      blockSection('school-info', 'timings', [
+        {
+          name: 'timings',
+          label: 'Timings table',
+          type: 'array',
+          itemLabel: 'Row',
+          fields: [
+            { name: 'label', label: 'Item', type: 'text', required: true },
+            { name: 'summer', label: 'Summer', type: 'text', half: true },
+            { name: 'winter', label: 'Winter', type: 'text', half: true },
+          ],
+        },
+        { name: 'timingNote', label: 'Note', type: 'textarea', rows: 2 },
+      ]),
+      blockSection('school-info', 'uniform', [
+        {
+          name: 'uniforms',
+          label: 'Uniform',
+          type: 'array',
+          itemLabel: 'Uniform set',
+          fields: [
+            { name: 'title', label: 'Title', type: 'text', required: true, placeholder: 'Summer uniform' },
+            { name: 'boys', label: 'Boys (one item per line)', type: 'textarea', rows: 4, half: true },
+            { name: 'girls', label: 'Girls (one item per line)', type: 'textarea', rows: 4, half: true },
+          ],
+        },
+        { name: 'uniformNote', label: 'Note', type: 'textarea', rows: 2 },
+      ]),
+      blockSection('school-info', 'rules', [
+        {
+          name: 'ruleGroups',
+          label: 'Rules',
+          type: 'array',
+          itemLabel: 'Rule group',
+          fields: [
+            { name: 'title', label: 'Heading', type: 'text', required: true },
+            { name: 'items', label: 'Rules (one per line)', type: 'textarea', rows: 5 },
+          ],
+        },
+      ]),
+      blockSection('school-info', 'faq', [], 'Questions come from Pages → Admissions Page → FAQs.'),
     ],
   },
   {

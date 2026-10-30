@@ -4,7 +4,7 @@ import clsx from 'clsx'
 
 import { PageBanner } from '@/components/PageBanner'
 import { Photo } from '@/components/Photo'
-import { getNews } from '@/lib/data'
+import { getNews, getPage } from '@/lib/data'
 import { formatDate } from '@/lib/format'
 import type { Media } from '@/cms/types'
 
@@ -20,13 +20,14 @@ const filters = [
 type Args = { searchParams: Promise<{ type?: string; page?: string }> }
 
 export default async function NewsPage({ searchParams }: Args) {
+  const info = await getPage('news')
   const { type = '', page = '1' } = await searchParams
   const category = filters.some((f) => f.key === type) ? type : ''
   const res = await getNews({ limit: 9, category: category || undefined, page: Math.max(1, Number(page) || 1) })
 
   return (
     <>
-      <PageBanner title="News & Events" crumbs={[{ label: 'Notices', href: '/notices' }]} intro="Stories, events and achievements from our school community." />
+      <PageBanner title={info.title} crumbs={[{ label: 'Notices', href: '/notices' }]} intro={info.intro} />
       <section className="py-16 md:py-24">
         <div className="container-x">
           <div className="mb-10 flex flex-wrap justify-center gap-2" data-reveal>
@@ -34,7 +35,10 @@ export default async function NewsPage({ searchParams }: Args) {
               <Link
                 key={f.key}
                 href={f.key ? `/news?type=${f.key}` : '/news'}
-                className={clsx('rounded-full px-5 py-2.5 text-[14px] font-semibold ring-1 transition-colors', category === f.key ? 'bg-brand-600 text-white ring-brand-600' : 'bg-white text-ink-2 ring-line hover:text-brand-600')}
+                className={clsx(
+                  'rounded-full px-5 py-2.5 text-[14px] font-semibold ring-1 transition-colors',
+                  category === f.key ? 'bg-brand-600 text-white ring-brand-600' : 'bg-white text-ink-2 ring-line hover:text-brand-600',
+                )}
               >
                 {f.label}
               </Link>
@@ -45,8 +49,21 @@ export default async function NewsPage({ searchParams }: Args) {
           ) : (
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {res.docs.map((n, i) => (
-                <Link key={n.id} href={`/news/${n.slug}`} className="card card-hover group block overflow-hidden" data-reveal style={{ ['--d' as string]: `${(i % 3) * 80}ms` }}>
-                  <Photo media={n.cover as Media} size="card" label={n.category} className="aspect-[16/10]" imgClassName="transition-transform duration-[1.2s] group-hover:scale-105" sizes="(min-width:1024px) 33vw, 50vw" />
+                <Link
+                  key={n.id}
+                  href={`/news/${n.slug}`}
+                  className="card card-hover group block overflow-hidden"
+                  data-reveal
+                  style={{ ['--d' as string]: `${(i % 3) * 80}ms` }}
+                >
+                  <Photo
+                    media={n.cover as Media}
+                    size="card"
+                    label={n.category}
+                    className="aspect-[16/10]"
+                    imgClassName="transition-transform duration-[1.2s] group-hover:scale-105"
+                    sizes="(min-width:1024px) 33vw, 50vw"
+                  />
                   <div className="p-6">
                     <p className="flex items-center gap-1.5 text-[12.5px] font-semibold uppercase tracking-wide text-laurel-600">
                       <CalendarBlank size={14} weight="bold" /> {formatDate(n.date)} · {n.category}
@@ -64,7 +81,10 @@ export default async function NewsPage({ searchParams }: Args) {
                 <Link
                   key={i}
                   href={`/news?${new URLSearchParams({ ...(category ? { type: category } : {}), page: String(i + 1) })}`}
-                  className={clsx('flex h-11 w-11 items-center justify-center rounded-full font-semibold ring-1', res.page === i + 1 ? 'bg-brand-600 text-white ring-brand-600' : 'ring-line hover:text-brand-600')}
+                  className={clsx(
+                    'flex h-11 w-11 items-center justify-center rounded-full font-semibold ring-1',
+                    res.page === i + 1 ? 'bg-brand-600 text-white ring-brand-600' : 'ring-line hover:text-brand-600',
+                  )}
                 >
                   {i + 1}
                 </Link>

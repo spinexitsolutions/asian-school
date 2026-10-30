@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation'
 
 import { LightboxGrid } from '@/components/Lightbox'
 import { PageBanner } from '@/components/PageBanner'
-import { getAlbumBySlug } from '@/lib/data'
+import { getAlbumBySlug, getPage } from '@/lib/data'
 import { formatDate, youtubeId } from '@/lib/format'
 import { img } from '@/lib/media'
 import type { Media } from '@/cms/types'
@@ -15,6 +15,7 @@ export async function generateMetadata({ params }: Args) {
 }
 
 export default async function AlbumPage({ params }: Args) {
+  await getPage('gallery')
   const album = await getAlbumBySlug((await params).slug)
   if (!album) notFound()
 
@@ -30,7 +31,11 @@ export default async function AlbumPage({ params }: Args) {
 
   return (
     <>
-      <PageBanner title={album.title} crumbs={[{ label: 'Gallery', href: '/gallery' }]} intro={album.date ? formatDate(album.date, { month: 'long' }) : undefined} />
+      <PageBanner
+        title={album.title}
+        crumbs={[{ label: 'Gallery', href: '/gallery' }]}
+        intro={album.date ? formatDate(album.date, { month: 'long' }) : undefined}
+      />
       <section className="py-16 md:py-24">
         <div className="container-x space-y-12">
           {items.length > 0 && <LightboxGrid items={items} />}

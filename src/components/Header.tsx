@@ -5,20 +5,9 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import clsx from 'clsx'
-import {
-  ArrowRight,
-  CaretDown,
-  EnvelopeSimple,
-  FacebookLogo,
-  InstagramLogo,
-  List,
-  Phone,
-  X,
-  XLogo,
-  YoutubeLogo,
-} from '@phosphor-icons/react'
+import { ArrowRight, CaretDown, EnvelopeSimple, FacebookLogo, InstagramLogo, List, Phone, X, XLogo, YoutubeLogo } from '@phosphor-icons/react'
 
-import { navItems } from './nav-links'
+import { navItems, visibleNav } from './nav-links'
 
 type Props = {
   schoolName: string
@@ -29,11 +18,15 @@ type Props = {
   email?: string | null
   topbarText?: string | null
   socials: { facebook?: string | null; instagram?: string | null; youtube?: string | null; x?: string | null }
+  /** Paths of pages switched off in the admin panel. */
+  hidden?: string[]
 }
 
 const tel = (p: string) => `tel:${p.replace(/[^\d+]/g, '')}`
 
-export function Header({ schoolName, location, logoUrl, phone, altPhone, email, topbarText, socials }: Props) {
+export function Header({ schoolName, location, logoUrl, phone, altPhone, email, topbarText, socials, hidden = [] }: Props) {
+  const nav = visibleNav(navItems, hidden)
+  const applyHref = hidden.includes('/admissions/apply') ? '/admissions#enquiry' : '/admissions/apply'
   const pathname = usePathname()
   const [open, setOpen] = useState(false)
   const [expanded, setExpanded] = useState<string | null>(null)
@@ -116,7 +109,14 @@ export function Header({ schoolName, location, logoUrl, phone, altPhone, email, 
       <div className="relative z-40 bg-white print:hidden">
         <div className="container-x flex h-[84px] items-center justify-between gap-4 md:h-[104px]">
           <Link href="/" className="flex min-w-0 items-center gap-3 md:gap-4" aria-label={`${schoolName} – Home`}>
-            <Image src={logoUrl} alt={`${schoolName} logo`} width={88} height={88} priority className="h-14 w-14 shrink-0 object-contain md:h-[78px] md:w-[78px]" />
+            <Image
+              src={logoUrl}
+              alt={`${schoolName} logo`}
+              width={88}
+              height={88}
+              priority
+              className="h-14 w-14 shrink-0 object-contain md:h-[78px] md:w-[78px]"
+            />
             <span className="min-w-0 leading-tight">
               <span className="block font-heading text-[15px] font-bold uppercase text-brand-800 sm:text-[19px] md:text-[24px]">{schoolName}</span>
               {location && <span className="mt-0.5 block truncate text-[12px] text-mute sm:text-[14px]">{location}</span>}
@@ -135,7 +135,7 @@ export function Header({ schoolName, location, logoUrl, phone, altPhone, email, 
                 </span>
               </a>
             )}
-            <Link href="/admissions/apply" className="btn btn-red ml-3 hidden !px-6 !py-3.5 sm:inline-flex">
+            <Link href={applyHref} className="btn btn-red ml-3 hidden !px-6 !py-3.5 sm:inline-flex">
               Apply Now <ArrowRight size={16} weight="bold" />
             </Link>
             <button
@@ -173,7 +173,7 @@ export function Header({ schoolName, location, logoUrl, phone, altPhone, email, 
           </Link>
           <nav aria-label="Main" className="min-w-0 flex-1">
             <ul className="flex items-center">
-              {navItems.map((item) => (
+              {nav.map((item) => (
                 <li key={item.label} className="group relative">
                   <Link
                     href={item.href}
@@ -201,7 +201,10 @@ export function Header({ schoolName, location, logoUrl, phone, altPhone, email, 
                               className="group/item flex items-center justify-between rounded-xl px-4 py-2.5 text-[14px] font-medium text-ink-2 transition-colors hover:bg-brand-50 hover:text-brand-700"
                             >
                               {c.label}
-                              <ArrowRight size={14} className="-translate-x-1 opacity-0 transition-all duration-300 group-hover/item:translate-x-0 group-hover/item:opacity-100" />
+                              <ArrowRight
+                                size={14}
+                                className="-translate-x-1 opacity-0 transition-all duration-300 group-hover/item:translate-x-0 group-hover/item:opacity-100"
+                              />
                             </Link>
                           </li>
                         ))}
@@ -226,10 +229,7 @@ export function Header({ schoolName, location, logoUrl, phone, altPhone, email, 
       </header>
 
       {/* ─────────── Mobile drawer ─────────── */}
-      <div
-        className={clsx('fixed inset-0 z-50 overflow-hidden xl:hidden', open ? 'visible' : 'invisible')}
-        aria-hidden={!open}
-      >
+      <div className={clsx('fixed inset-0 z-50 overflow-hidden xl:hidden', open ? 'visible' : 'invisible')} aria-hidden={!open}>
         <div
           onClick={() => setOpen(false)}
           className={clsx('absolute inset-0 bg-brand-950/50 backdrop-blur-sm transition-opacity duration-500', open ? 'opacity-100' : 'opacity-0')}
@@ -242,13 +242,18 @@ export function Header({ schoolName, location, logoUrl, phone, altPhone, email, 
         >
           <div className="flex items-center justify-between border-b border-line px-5 py-4">
             <Image src={logoUrl} alt="" width={48} height={48} className="h-12 w-12 object-contain" />
-            <button type="button" onClick={() => setOpen(false)} aria-label="Close menu" className="flex h-10 w-10 items-center justify-center rounded-full bg-soft">
+            <button
+              type="button"
+              onClick={() => setOpen(false)}
+              aria-label="Close menu"
+              className="flex h-10 w-10 items-center justify-center rounded-full bg-soft"
+            >
               <X size={20} weight="bold" />
             </button>
           </div>
           <nav className="flex-1 overflow-y-auto px-3 py-4" aria-label="Mobile">
             <ul>
-              {navItems.map((item, i) => (
+              {nav.map((item, i) => (
                 <li
                   key={item.label}
                   className={clsx('transition-all duration-500 ease-[var(--ease-out-expo)]', open ? 'translate-x-0 opacity-100' : 'translate-x-6 opacity-0')}
@@ -266,11 +271,20 @@ export function Header({ schoolName, location, logoUrl, phone, altPhone, email, 
                         {item.label}
                         <CaretDown size={16} className={clsx('transition-transform duration-300', expanded === item.label && 'rotate-180')} />
                       </button>
-                      <div className={clsx('grid transition-[grid-template-rows] duration-500 ease-[var(--ease-spring)]', expanded === item.label ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]')}>
+                      <div
+                        className={clsx(
+                          'grid transition-[grid-template-rows] duration-500 ease-[var(--ease-spring)]',
+                          expanded === item.label ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]',
+                        )}
+                      >
                         <ul className="overflow-hidden pl-4">
                           {item.children.map((c) => (
                             <li key={c.href}>
-                              <Link href={c.href} tabIndex={open && expanded === item.label ? 0 : -1} className="block rounded-lg px-4 py-2.5 text-[15px] text-ink-2 hover:text-brand-600">
+                              <Link
+                                href={c.href}
+                                tabIndex={open && expanded === item.label ? 0 : -1}
+                                className="block rounded-lg px-4 py-2.5 text-[15px] text-ink-2 hover:text-brand-600"
+                              >
                                 {c.label}
                               </Link>
                             </li>
@@ -292,7 +306,7 @@ export function Header({ schoolName, location, logoUrl, phone, altPhone, email, 
             </ul>
           </nav>
           <div className="space-y-3 border-t border-line p-5">
-            <Link href="/admissions/apply" tabIndex={open ? 0 : -1} className="btn btn-primary w-full">
+            <Link href={applyHref} tabIndex={open ? 0 : -1} className="btn btn-primary w-full">
               Apply Now <ArrowRight size={16} weight="bold" />
             </Link>
             {phone && (

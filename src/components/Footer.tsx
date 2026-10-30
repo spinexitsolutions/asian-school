@@ -1,19 +1,9 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import {
-  CaretRight,
-  Clock,
-  EnvelopeSimple,
-  FacebookLogo,
-  InstagramLogo,
-  MapPin,
-  Phone,
-  XLogo,
-  YoutubeLogo,
-} from '@phosphor-icons/react/dist/ssr'
+import { CaretRight, Clock, EnvelopeSimple, FacebookLogo, InstagramLogo, MapPin, Phone, XLogo, YoutubeLogo } from '@phosphor-icons/react/dist/ssr'
 
 import { telHref } from '@/lib/format'
-import { footerGroups } from './nav-links'
+import { footerGroups, visibleLinks } from './nav-links'
 
 type Settings = {
   schoolName: string
@@ -32,7 +22,7 @@ type Settings = {
   x?: string | null
 }
 
-export function Footer({ s, logoUrl }: { s: Settings; logoUrl: string }) {
+export function Footer({ s, logoUrl, hidden = [] }: { s: Settings; logoUrl: string; hidden?: string[] }) {
   const socials = [
     { href: s.facebook, Icon: FacebookLogo, label: 'Facebook' },
     { href: s.youtube, Icon: YoutubeLogo, label: 'YouTube' },
@@ -82,7 +72,7 @@ export function Footer({ s, logoUrl }: { s: Settings; logoUrl: string }) {
             <h3 className="text-[16px] font-semibold">{g.title}</h3>
             <span className="mt-3 block h-[3px] w-10 rounded-full bg-flame-400" />
             <ul className="mt-5 space-y-2.5">
-              {g.links.map((l) => (
+              {visibleLinks(g.links, hidden).map((l) => (
                 <li key={l.href}>
                   <Link href={l.href} className="group inline-flex items-center gap-1.5 text-[14.5px] text-white/70 transition-colors hover:text-flame-400">
                     <CaretRight size={12} className="transition-transform duration-300 group-hover:translate-x-0.5" />
@@ -151,9 +141,11 @@ export function Footer({ s, logoUrl }: { s: Settings; logoUrl: string }) {
             <Link href="/privacy-policy" className="hover:text-white">
               Privacy Policy
             </Link>
-            <Link href="/mandatory-disclosure" className="hover:text-white">
-              Mandatory Disclosure
-            </Link>
+            {!hidden.includes('/mandatory-disclosure') && (
+              <Link href="/mandatory-disclosure" className="hover:text-white">
+                Mandatory Disclosure
+              </Link>
+            )}
             <Link href="/admin" className="hover:text-white">
               Staff Login
             </Link>

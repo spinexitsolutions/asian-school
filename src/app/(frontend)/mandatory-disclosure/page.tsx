@@ -1,18 +1,17 @@
-import { notFound } from 'next/navigation'
 import { FilePdf } from '@phosphor-icons/react/dist/ssr'
 
 import { PageBanner } from '@/components/PageBanner'
-import { getDisclosure } from '@/lib/data'
+import { getDisclosure, getPage } from '@/lib/data'
 import { fileUrl } from '@/lib/media'
 
 export const metadata = { title: 'Mandatory Public Disclosure' }
 
 export default async function DisclosurePage() {
+  const page = await getPage('disclosure')
   const d = await getDisclosure()
-  if (!d.enabled) notFound()
   return (
     <>
-      <PageBanner title="Mandatory Public Disclosure" crumbs={[{ label: 'CBSE Corner' }]} intro="Information as required under the CBSE affiliation bye-laws (Appendix IX)." />
+      <PageBanner title={page.title} crumbs={[{ label: 'CBSE Corner' }]} intro={page.intro} />
       <section className="py-16 md:py-24">
         <div className="container-x max-w-5xl space-y-10">
           {(d.sections ?? []).map((sec) => (
@@ -36,7 +35,12 @@ export default async function DisclosurePage() {
                           <td className="px-6 py-3.5 font-medium">{r.label}</td>
                           <td className="px-6 py-3.5 text-ink-2">
                             {file ? (
-                              <a href={file} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 font-semibold text-laurel-600 hover:underline">
+                              <a
+                                href={file}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="inline-flex items-center gap-1.5 font-semibold text-laurel-600 hover:underline"
+                              >
                                 <FilePdf size={18} weight="fill" /> View / Download
                               </a>
                             ) : (

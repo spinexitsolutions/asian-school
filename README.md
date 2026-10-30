@@ -23,7 +23,8 @@ Public website and content management system (CMS) for The Asian International S
 | **CBSE Corner → Transfer Certificates** | Upload TCs. Parents search them by admission number at `/transfer-certificates`. |
 | **Pages → Transport Page** | Bus routes, stops, timings, transport rules and fee note on `/transport`. |
 | **Pages → Rules, Timings & Uniform** | Timings table, uniform lists and school rules on `/school-info`. |
-| **Pages → Home / About / Academics / Admissions** | All text, numbers, photos, Director's message, calendar, fee PDF, FAQs. |
+| **Pages → Pages & Menu** | Turn any page on/off (it also disappears from the menu, footer and homepage links) and change each page's heading and intro. Contact page form/map/cards on/off. |
+| **Pages → Home / About / Academics / Admissions** | Every section of the page in order, each with a **Shown / Hidden** switch, its small label, heading and intro text, plus all text, numbers, photos, Director's message, calendar, fee PDF, FAQs. |
 | **CBSE Corner → Mandatory Disclosure** | CBSE Appendix-IX tables, with document links. |
 | **CBSE Corner → Extra Pages** | Any extra page at `/your-slug` (e.g. Information of the School, Affiliation Details). |
 | **Settings → Site Settings** | Logo, phones, email, address, WhatsApp, Google Map, social links, **admission popup**, top-bar slogan, SEO. |
@@ -119,6 +120,7 @@ src/
   app/api/admin/       upload, media library and Excel export endpoints
   app/media/           serves uploaded files (local storage mode)
   cms/schema.ts        every admin section and its fields — add a field here and it appears in the form
+  cms/blocks.ts        show/hide sections with their default headings, and the list of pages for Pages & Menu
   components/          website UI; components/admin/ = admin UI
   content/defaults.ts  starting content and fallbacks
   lib/                 database, auth, uploads, data access, enquiry action
