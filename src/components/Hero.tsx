@@ -40,34 +40,20 @@ export function Hero({ schoolName, logoUrl, established, title, points, stats, t
   const slant = '[clip-path:polygon(18%_0,100%_0,100%_100%,0_100%)]'
   return (
     <section className="relative overflow-hidden bg-white">
-      {/* Slanted blue panel (desktop) */}
-      <div className={`absolute inset-y-0 right-0 hidden w-[56%] bg-brand-700 lg:block ${slant}`} />
-      <div className={`absolute inset-y-0 right-0 hidden w-[56%] lg:block ${slant}`}>
-        <Image src={backgroundUrl} alt="" fill priority sizes="56vw" className="object-cover opacity-20 mix-blend-luminosity" />
+      {/* Slanted campus photo (desktop) */}
+      <div className={`absolute inset-y-0 right-0 hidden w-[56%] bg-brand-700 lg:block ${slant}`}>
+        <Image src={backgroundUrl} alt={`${schoolName} campus`} fill priority sizes="56vw" className="object-cover" />
+        <div className="absolute inset-0 bg-gradient-to-t from-brand-950/85 via-brand-950/10 to-transparent" />
       </div>
       <div className="absolute right-[44%] top-0 hidden h-full w-3 -skew-x-[10deg] bg-flame-400 lg:block" />
       <div className="absolute right-[45.5%] top-0 hidden h-full w-1.5 -skew-x-[10deg] bg-laurel-500 lg:block" />
       <div className="dots-bg pointer-events-none absolute -left-10 top-10 h-60 w-72 opacity-70 [mask-image:radial-gradient(black,transparent_70%)]" />
 
-      <div className="container-x relative grid items-center gap-12 py-12 lg:grid-cols-12 lg:py-16">
+      <div className="container-x relative grid gap-10 py-12 lg:min-h-[640px] lg:grid-cols-12 lg:items-center lg:py-16">
         <div className="lg:col-span-5">
-          <div className="hidden items-center gap-4 sm:flex" data-reveal>
-            <Image src={logoUrl} alt="" width={84} height={84} priority className="h-[68px] w-[68px] shrink-0 object-contain sm:h-[84px] sm:w-[84px]" />
-            <div className="leading-tight">
-              <p className="text-[12px] font-bold uppercase tracking-[0.2em] text-laurel-600">Welcome to</p>
-              <p className="mt-1 font-heading text-[clamp(1.25rem,2.3vw,1.9rem)] font-bold uppercase leading-[1.1] tracking-[-0.01em] text-brand-700">
-                {schoolName}
-              </p>
-              <p className="mt-1 text-[13.5px] font-medium text-mute">
-                Chomu, Jaipur · CBSE Affiliated{established && ` · Est. ${established}`}
-              </p>
-            </div>
-          </div>
-          <div className="tri-rule sm:mt-6" aria-hidden data-reveal>
-            <span />
-            <span />
-            <span />
-          </div>
+          <span className="label-pill" data-reveal>
+            CBSE Affiliated · Est. {established || '2010'}
+          </span>
           <h1
             className="mt-6 font-heading text-[clamp(2.2rem,4.2vw,3.6rem)] font-bold leading-[1.06] tracking-[-0.03em] text-ink"
             data-reveal
@@ -100,28 +86,28 @@ export function Hero({ schoolName, logoUrl, established, title, points, stats, t
           </div>
         </div>
 
-        <div className="relative z-10 lg:col-span-6 lg:col-start-7">
-          <div className="rounded-[2rem] bg-brand-800 p-6 text-white shadow-2xl ring-1 ring-white/10 sm:p-8 lg:bg-brand-900/70 lg:backdrop-blur-md" data-reveal="zoom">
-            <p className="mb-5 border-b border-white/10 pb-4 text-center font-heading text-[12.5px] font-semibold uppercase tracking-[0.18em] text-white/70">
-              {schoolName} · Chomu
-            </p>
+        <div className="relative z-10 flex flex-col gap-5 lg:col-span-6 lg:col-start-7 lg:h-full lg:justify-end">
+          <div className="relative aspect-[16/10] overflow-hidden rounded-[2rem] lg:hidden" data-reveal="zoom">
+            <Image src={backgroundUrl} alt={`${schoolName} campus`} fill priority sizes="100vw" className="object-cover" />
+          </div>
+          <div className="rounded-[2rem] bg-brand-800 p-5 text-white shadow-2xl ring-1 ring-white/15 sm:p-6 lg:ml-auto lg:w-[92%] lg:bg-brand-950/75 lg:backdrop-blur-md" data-reveal="zoom">
             <div className="flex items-center justify-between">
               <p className="flex items-center gap-2 font-heading text-[18px] font-semibold">
                 <Medal size={24} weight="fill" className="text-flame-400" /> Board Toppers
               </p>
               {resultsYear && <span className="rounded-full bg-flame-400 px-3 py-1 text-[12px] font-bold text-brand-950">{resultsYear}</span>}
             </div>
-            <div className={`mt-6 grid gap-4 ${toppers.length === 1 ? 'grid-cols-1' : toppers.length === 2 ? 'grid-cols-2' : 'grid-cols-3'}`}>
+            <div className={`mt-5 grid gap-4 ${toppers.length === 1 ? 'grid-cols-1' : toppers.length === 2 ? 'grid-cols-2' : 'grid-cols-3'}`}>
               {toppers.slice(0, 3).map((t, i) => (
-                <div key={`${t.name}-${i}`} className={`text-center ${toppers.length === 3 ? (i === 0 ? '-mt-2' : 'mt-4') : ''}`}>
-                  <div className="relative mx-auto aspect-square w-full max-w-[140px]">
+                <div key={`${t.name}-${i}`} className={`text-center ${''}`}>
+                  <div className="relative mx-auto aspect-square w-full max-w-[104px]">
                     <div className="absolute -inset-1 rounded-full bg-[conic-gradient(var(--color-flame-400),var(--color-laurel-500),var(--color-flame-400))]" />
                     <div className="relative h-full w-full overflow-hidden rounded-full bg-brand-50 ring-4 ring-brand-800">
                       {t.photo ? (
                         <Image src={t.photo} alt={t.name} fill sizes="140px" className="object-cover object-top" />
                       ) : (
                         <div className="dots-bg flex h-full w-full items-center justify-center">
-                          <Image src={logoUrl} alt="" width={56} height={56} className="opacity-30 mix-blend-multiply grayscale" />
+                          <Image src={logoUrl} alt="" width={44} height={44} className="opacity-30 mix-blend-multiply grayscale" />
                         </div>
                       )}
                     </div>
@@ -129,20 +115,20 @@ export function Hero({ schoolName, logoUrl, established, title, points, stats, t
                       <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-flame-400 px-2 py-0.5 text-[11px] font-bold text-brand-950">#1</span>
                     )}
                   </div>
-                  <p className="mt-4 font-heading text-[clamp(1.2rem,2vw,1.7rem)] font-bold text-flame-400">{t.score}</p>
+                  <p className="mt-3 font-heading text-[clamp(1.15rem,1.8vw,1.5rem)] font-bold text-flame-400">{t.score}</p>
                   <p className="text-[13px] font-semibold leading-tight">{t.name}</p>
                   <p className="mt-0.5 text-[12px] text-white/60">{t.className}</p>
                 </div>
               ))}
             </div>
             {placeholder ? (
-              <p className="mt-6 rounded-2xl bg-white/10 px-4 py-3 text-center text-[13.5px] text-white/80">
+              <p className="mt-5 rounded-2xl bg-white/10 px-4 py-2.5 text-center text-[12.5px] text-white/75">
                 Toppers&apos; photos &amp; results are updated from the admin panel every year.
               </p>
             ) : (
               <Link
                 href="/achievers"
-                className="mt-6 flex items-center justify-center gap-2 rounded-2xl bg-white/10 px-4 py-3 text-[14px] font-semibold text-white/90 transition-colors hover:bg-white/15"
+                className="mt-5 flex items-center justify-center gap-2 rounded-2xl bg-white/10 px-4 py-2.5 text-[14px] font-semibold text-white/90 transition-colors hover:bg-white/15"
               >
                 View all achievers <ArrowRight size={14} weight="bold" />
               </Link>
