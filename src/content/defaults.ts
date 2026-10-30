@@ -287,6 +287,8 @@ export const defaultPages = [
   {
     title: 'Information of the School',
     slug: 'information-of-the-school',
+    cbse: true,
+    content: '',
     intro: 'Key information about The Asian International School, Chomu.',
     rows: [
       ['Name of the school', 'The Asian International School'],
@@ -304,6 +306,8 @@ export const defaultPages = [
   {
     title: 'Affiliation Details',
     slug: 'affiliation-details',
+    cbse: true,
+    content: '',
     intro: 'Affiliation details of The Asian International School with CBSE, New Delhi.',
     rows: [
       ['Affiliated to', 'Central Board of Secondary Education, New Delhi'],
@@ -312,6 +316,50 @@ export const defaultPages = [
       ['Status of affiliation', 'To be updated'],
       ['Affiliation valid up to', 'To be updated'],
     ],
+  },
+  {
+    title: 'Privacy Policy',
+    slug: 'privacy-policy',
+    cbse: false,
+    intro: 'How The Asian International School collects, uses and protects the information you share with us through this website.',
+    rows: [] as [string, string][],
+    content: `<p><em>Last updated: October 2026</em></p>
+<p>The Asian International School, Chomu ("the School", "we", "us") respects the privacy of parents, students and every visitor to this website. This policy explains what information we collect, why we collect it and how we keep it safe.</p>
+<h2>1. Information we collect</h2>
+<p>We only collect information that you choose to give us when you fill a form on this website:</p>
+<ul>
+<li><strong>Admission enquiry form:</strong> student's name, parent / guardian's name, mobile number, email address (optional), class applying for and any message you write.</li>
+<li><strong>Contact form:</strong> your name, mobile number, email address, subject and message.</li>
+</ul>
+<p>We do not ask for sensitive information such as Aadhaar numbers, bank details or medical records through this website. Admission documents are collected only at the school office.</p>
+<h2>2. How we use your information</h2>
+<ul>
+<li>To call or message you back about your admission enquiry or question.</li>
+<li>To share information about admissions, campus visits and the admission process that you asked for.</li>
+<li>To keep a record of enquiries so our admission team can follow up properly.</li>
+</ul>
+<p>We <strong>do not sell, rent or trade</strong> your information to anyone, and we do not use it for advertising by other companies.</p>
+<h2>3. Who can see your information</h2>
+<p>Only authorised school staff who handle admissions and enquiries can see the information you submit. It is stored in a secure, password-protected admin panel. We may share information only if required by law or by an education authority.</p>
+<h2>4. How long we keep it</h2>
+<p>Enquiry details are kept for as long as needed to respond to you and to manage the admission session, normally not more than two academic sessions, after which they are deleted.</p>
+<h2>5. Cookies and similar technology</h2>
+<ul>
+<li>This website does <strong>not</strong> use advertising or tracking cookies.</li>
+<li>Your browser's session storage is used only to remember that you have already seen the opening animation and the admission popup during your visit.</li>
+<li>Staff who log in to the admin panel receive a secure login cookie.</li>
+<li>Pages that show a Google Map or a YouTube video load content from Google, which may set its own cookies under Google's privacy policy.</li>
+</ul>
+<h2>6. Children's information</h2>
+<p>Forms on this website are meant to be filled by parents or guardians. We collect a student's name and class only to respond to the parent's enquiry.</p>
+<h2>7. Your choices and rights</h2>
+<p>You may ask us at any time to see, correct or delete the information you have shared with us through this website. Contact us using the details below and we will act on your request within a reasonable time, in line with applicable Indian law.</p>
+<h2>8. Security</h2>
+<p>We use reasonable technical and organisational measures to protect your information, including secure connections (HTTPS), restricted staff access and encrypted passwords. No website can be completely secure, but we take care to protect what you share with us.</p>
+<h2>9. Changes to this policy</h2>
+<p>We may update this policy from time to time. The latest version will always be available on this page with the date it was last updated.</p>
+<h2>10. Contact us</h2>
+<p>For any question about this policy or your information, please contact:<br><strong>The Asian International School</strong><br>Near Barala Hospital, Radha Swami Bagh, Chomu, Rajasthan – 303704<br>Phone: <a href="tel:+919829751651">+91 98297 51651</a>, <a href="tel:+919929605547">+91 99296 05547</a><br>Email: <a href="mailto:asianchomu@gmail.com">asianchomu@gmail.com</a></p>`,
   },
 ]
 

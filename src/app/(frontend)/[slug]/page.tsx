@@ -22,7 +22,12 @@ async function load(slug: string) {
   // Built-in CBSE pages work even before they are created in the admin panel.
   const fallback = defaultPages.find((p) => p.slug === slug)
   if (!fallback) return null
-  return { title: fallback.title, intro: fallback.intro, rows: fallback.rows.map(([label, value]) => ({ label, value, file: null })), content: null }
+  return {
+    title: fallback.title,
+    intro: fallback.intro,
+    rows: fallback.rows.map(([label, value]) => ({ label, value, file: null })),
+    content: fallback.content || null,
+  }
 }
 
 export async function generateMetadata({ params }: Args) {
@@ -33,7 +38,7 @@ export async function generateMetadata({ params }: Args) {
 export default async function ExtraPage({ params }: Args) {
   const page = await load((await params).slug)
   if (!page) notFound()
-  const cbse = defaultPages.some((p) => p.title === page.title)
+  const cbse = defaultPages.some((p) => p.cbse && p.title === page.title)
 
   return (
     <>

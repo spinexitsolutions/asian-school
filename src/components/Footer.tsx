@@ -148,6 +148,9 @@ export function Footer({ s, logoUrl }: { s: Settings; logoUrl: string }) {
             © {new Date().getFullYear()} {s.schoolName}, Chomu. All Rights Reserved.
           </p>
           <div className="flex gap-5">
+            <Link href="/privacy-policy" className="hover:text-white">
+              Privacy Policy
+            </Link>
             <Link href="/mandatory-disclosure" className="hover:text-white">
               Mandatory Disclosure
             </Link>

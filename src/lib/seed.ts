@@ -44,10 +44,23 @@ export async function seedContent(log: (msg: string) => void = () => {}) {
       intro: p.intro,
       status: 'published',
       infoRows: p.rows.map(([label, value]) => ({ label, value })),
+      content: p.content,
     })),
   }
 
   for (const [collection, docs] of Object.entries(samples)) {
+    // Built-in pages (CBSE info, Privacy Policy) are added one by one if missing,
+    // so pages introduced in later versions also reach existing databases.
+    if (collection === 'pages') {
+      let added = 0
+      for (const doc of docs) {
+        if (await count('pages', { slug: doc.slug })) continue
+        await insertDoc('pages', doc)
+        added++
+      }
+      log(`pages: ${added} added`)
+      continue
+    }
     if ((await count(collection)) > 0) {
       log(`${collection}: has content, skipped`)
       continue

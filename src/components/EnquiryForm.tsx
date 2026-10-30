@@ -78,6 +78,13 @@ export function EnquiryForm({ type = 'admission', compact = false }: { type?: 'a
         <button type="submit" disabled={pending} className={clsx('btn w-full !py-4', compact ? 'btn-red' : 'btn-primary sm:w-auto', pending && 'opacity-70')}>
           {pending ? 'Sending…' : admission ? 'Submit Enquiry' : 'Send Message'} <PaperPlaneTilt size={18} weight="fill" />
         </button>
+        <p className="mt-2.5 text-[12px] leading-snug text-mute">
+          By submitting, you agree to our{' '}
+          <a href="/privacy-policy" target="_blank" className="underline hover:text-brand-600">
+            Privacy Policy
+          </a>
+          .
+        </p>
       </div>
     </form>
   )
