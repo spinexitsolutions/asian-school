@@ -21,6 +21,8 @@ import {
   Tray,
   UsersThree,
   ImageSquare,
+  Bus,
+  DownloadSimple,
   type Icon as PhosphorIcon,
 } from '@phosphor-icons/react'
 
@@ -45,6 +47,8 @@ const map: Record<string, PhosphorIcon> = {
   gear: Gear,
   dashboard: SquaresFour,
   media: ImageSquare,
+  bus: Bus,
+  download: DownloadSimple,
 }
 
 export function AdminIcon({ name, size = 20, className }: { name: string; size?: number; className?: string }) {

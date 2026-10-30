@@ -24,7 +24,7 @@ const str = (v: unknown, max = 10000) => (v == null ? '' : String(v)).trim().sli
 const media = (v: unknown) => {
   if (!v || typeof v !== 'object') return null
   const m = v as Record<string, unknown>
-  if (typeof m.url !== 'string' || !/^(\/media\/|\/images\/|https:\/\/)/.test(m.url)) return null
+  if (typeof m.url !== 'string' || !/^(\/media\/|\/images\/|\/api\/files\/|https:\/\/)/.test(m.url)) return null
   return {
     url: m.url,
     thumb: typeof m.thumb === 'string' ? m.thumb : undefined,

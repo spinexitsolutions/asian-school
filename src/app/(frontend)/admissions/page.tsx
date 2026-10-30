@@ -1,4 +1,5 @@
-import { CheckCircle, FilePdf, Phone } from '@phosphor-icons/react/dist/ssr'
+import Link from 'next/link'
+import { ArrowRight, CheckCircle, FilePdf, Phone } from '@phosphor-icons/react/dist/ssr'
 
 import { EnquiryForm } from '@/components/EnquiryForm'
 import { Faq } from '@/components/Faq'
@@ -17,7 +18,24 @@ export default async function AdmissionsPage() {
 
   return (
     <>
-      <PageBanner title={`Admissions ${a.session ?? ''}`.trim()} intro={a.intro} />
+      <PageBanner title={`Admissions ${a.session ?? ''}`.trim()} intro={a.intro}>
+      </PageBanner>
+      <div className="container-x relative z-10 -mt-8">
+        <div className="card flex flex-col items-start justify-between gap-4 p-6 sm:flex-row sm:items-center" data-reveal>
+          <div>
+            <p className="font-heading text-[19px] font-bold">Apply online in 5 minutes</p>
+            <p className="text-[14.5px] text-ink-2">Fill the full admission form, upload documents and print your application.</p>
+          </div>
+          <div className="flex flex-wrap gap-3">
+            <Link href="/admissions/apply" className="btn btn-red">
+              Apply Online <ArrowRight size={16} weight="bold" />
+            </Link>
+            <Link href="/downloads" className="btn btn-outline">
+              Downloads
+            </Link>
+          </div>
+        </div>
+      </div>
 
       {/* Steps */}
       <section className="py-20 md:py-28">

@@ -14,6 +14,8 @@ const preview: Record<string, string> = {
   'academics-page': '/academics',
   'admissions-page': '/admissions',
   disclosure: '/mandatory-disclosure',
+  'transport-page': '/transport',
+  'school-info': '/school-info',
   'site-settings': '/',
 }
 

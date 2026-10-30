@@ -515,6 +515,80 @@ export const defaultCareers = [
   },
 ]
 
+/* ───────────── Transport, school info & downloads ─────────────
+   Sample values — routes, stops and timings must be replaced with the
+   school's real details from the admin panel. */
+
+export const defaultTransport = {
+  intro:
+    'Safe and comfortable school buses cover Chomu and nearby villages. Every bus has a trained driver and a lady attendant, and the routes are planned so that young children spend the least time on the road.',
+  image: campusMedia,
+  routes: [
+    { routeNo: 'Route 1', name: 'Chomu City', stops: 'Chomu Bus Stand\nRailway Station Road\nMain Market\nRadha Swami Bagh', pickup: '7:00 AM', drop: '2:10 PM', contact: '' },
+    { routeNo: 'Route 2', name: 'Samod side', stops: 'Samod\nHathnoda\nChomu Bypass', pickup: '6:40 AM', drop: '2:30 PM', contact: '' },
+    { routeNo: 'Route 3', name: 'Kaladera side', stops: 'Kaladera\nJaitpura\nChomu Bypass', pickup: '6:35 AM', drop: '2:35 PM', contact: '' },
+    { routeNo: 'Route 4', name: 'Govindgarh side', stops: 'Govindgarh\nMorija\nChomu Bypass', pickup: '6:30 AM', drop: '2:40 PM', contact: '' },
+  ],
+  rules: [
+    { text: 'Students must be at their stop 5 minutes before the pickup time.' },
+    { text: 'Only students registered for transport may travel in the school bus.' },
+    { text: 'A parent or authorised person must receive young children at the drop point.' },
+    { text: 'Change of stop or address must be informed to the office in writing.' },
+    { text: 'Students must remain seated and follow the attendant’s instructions.' },
+  ],
+  feeNote: 'Transport fee depends on the distance of the stop from the school. Please contact the school office for the current fee.',
+}
+
+export const defaultSchoolInfo = {
+  timings: [
+    { label: 'Pre-Primary (Nursery – UKG)', summer: '7:30 AM – 12:00 PM', winter: '8:30 AM – 1:00 PM' },
+    { label: 'Classes I – XII', summer: '7:30 AM – 1:30 PM', winter: '8:30 AM – 2:30 PM' },
+    { label: 'School office', summer: '8:00 AM – 3:00 PM', winter: '8:00 AM – 3:00 PM' },
+    { label: 'Parents meet teachers (by appointment)', summer: 'Saturday 10:00 AM – 12:00 PM', winter: 'Saturday 11:00 AM – 1:00 PM' },
+  ],
+  timingNote: 'Summer timings apply from April to September and winter timings from October to March. Changes are announced on the Notice Board.',
+  uniforms: [
+    {
+      title: 'Summer uniform (Monday – Friday)',
+      boys: 'School shirt (half sleeves)\nSchool trousers / shorts (up to Class V)\nSchool belt and tie\nBlack shoes, grey socks\nSchool ID card',
+      girls: 'School shirt (half sleeves)\nSchool skirt / divided skirt\nSchool belt and tie\nBlack shoes, grey socks\nSchool ID card',
+    },
+    {
+      title: 'Winter uniform',
+      boys: 'Summer uniform with full sleeves\nSchool sweater / blazer\nSchool trousers\nBlack shoes, grey socks',
+      girls: 'Summer uniform with full sleeves\nSchool sweater / blazer\nSchool trousers / stockings\nBlack shoes, grey socks',
+    },
+    {
+      title: 'House uniform (Saturday & sports days)',
+      boys: 'House T-shirt\nSchool track pants\nWhite sports shoes, white socks',
+      girls: 'House T-shirt\nSchool track pants\nWhite sports shoes, white socks',
+    },
+  ],
+  uniformNote: 'Uniform is available at the school-approved shop. Please contact the office for details.',
+  ruleGroups: [
+    {
+      title: 'Attendance & punctuality',
+      items: 'Students must reach school before the first bell.\nLeave applications must be submitted in the school diary.\n75% attendance is compulsory to appear in the annual examination.\nStudents may leave school early only with a parent and the principal’s permission.',
+    },
+    {
+      title: 'Discipline & conduct',
+      items: 'Students must be in complete and neat school uniform every day.\nRespect teachers, staff and fellow students at all times.\nMobile phones and valuables are not allowed on campus.\nDamage to school property must be made good by the student.',
+    },
+    {
+      title: 'Parents',
+      items: 'Check and sign the school diary every day.\nAttend parent–teacher meetings regularly.\nInform the office of any change of address or phone number.\nVisitors are allowed only through the main office.',
+    },
+  ],
+}
+
+export const defaultDownloads = [
+  { id: 'd1', title: 'Online Admission Form 2027–28', category: 'forms', classes: 'Nursery – XI', date: '2026-10-28T00:00:00.000Z', order: 1, link: '/admissions/apply' },
+  { id: 'd2', title: 'Syllabus 2027–28', category: 'syllabus', classes: 'All classes', order: 10 },
+  { id: 'd3', title: 'Book list 2027–28', category: 'books', classes: 'All classes', order: 20 },
+  { id: 'd4', title: 'Uniform list', category: 'uniform', classes: 'All classes', order: 30, link: '/school-info#uniform' },
+  { id: 'd5', title: 'Holiday list 2027', category: 'holidays', classes: 'All classes', order: 40 },
+]
+
 /** Form defaults for each settings page in the admin panel. */
 export const globalDefaults: Record<string, Record<string, unknown>> = {
   'site-settings': defaultSettings,
@@ -523,4 +597,6 @@ export const globalDefaults: Record<string, Record<string, unknown>> = {
   'academics-page': defaultAcademics,
   'admissions-page': defaultAdmissions,
   disclosure: defaultDisclosure,
+  'transport-page': defaultTransport,
+  'school-info': defaultSchoolInfo,
 }

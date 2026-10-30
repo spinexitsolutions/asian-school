@@ -20,8 +20,8 @@ const boxes = [
     ring: 'text-laurel-600',
     links: [
       { label: 'Admission Process', href: '/admissions' },
-      { label: 'Enquiry Form', href: '/admissions#enquiry' },
-      { label: 'Fee & Documents', href: '/admissions#documents' },
+      { label: 'Apply Online', href: '/admissions/apply' },
+      { label: 'Downloads', href: '/downloads' },
     ],
   },
   {

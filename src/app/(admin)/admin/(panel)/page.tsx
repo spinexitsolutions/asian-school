@@ -26,7 +26,8 @@ const statusTone: Record<string, string> = {
 
 export default async function Dashboard() {
   const user = await requireUser()
-  const [enquiries, newEnquiries, notices, news, albums, toppers, recent] = await Promise.all([
+  const [applications, enquiries, newEnquiries, notices, news, albums, toppers, recent] = await Promise.all([
+    count('applications'),
     count('enquiries'),
     count('enquiries', { status: 'new' }),
     count('notices'),
@@ -38,6 +39,7 @@ export default async function Dashboard() {
 
   const stats = [
     { label: 'New enquiries', value: newEnquiries, icon: 'tray', href: '/admin/collections/enquiries', tone: 'text-laurel-600 bg-laurel-50' },
+    { label: 'Applications', value: applications, icon: 'clipboard', href: '/admin/collections/applications', tone: 'text-brand-600 bg-brand-50' },
     { label: 'Total enquiries', value: enquiries, icon: 'tray', href: '/admin/collections/enquiries', tone: 'text-brand-600 bg-brand-50' },
     { label: 'Notices', value: notices, icon: 'megaphone', href: '/admin/collections/notices', tone: 'text-flame-500 bg-flame-100' },
     { label: 'News & events', value: news, icon: 'newspaper', href: '/admin/collections/news', tone: 'text-leaf-500 bg-leaf-50' },
@@ -69,7 +71,7 @@ export default async function Dashboard() {
         </div>
       </section>
 
-      <section className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-6">
+      <section className="grid grid-cols-2 gap-4 md:grid-cols-4 xl:grid-cols-7">
         {stats.map((s) => (
           <Link key={s.label} href={s.href} className="a-card p-5 transition hover:-translate-y-0.5">
             <span className={`flex h-10 w-10 items-center justify-center rounded-xl ${s.tone}`}>

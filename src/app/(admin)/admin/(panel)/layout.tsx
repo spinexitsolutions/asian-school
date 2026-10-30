@@ -8,7 +8,10 @@ export const dynamic = 'force-dynamic'
 
 export default async function PanelLayout({ children }: { children: React.ReactNode }) {
   const user = await requireUser()
-  const newEnquiries = await count('enquiries', { status: 'new' }).catch(() => 0)
+  const [newEnquiries, newApplications] = await Promise.all([
+    count('enquiries', { status: 'new' }).catch(() => 0),
+    count('applications', { status: 'received' }).catch(() => 0),
+  ])
 
   const order = ['Inbox', 'Updates', 'School', 'Pages', 'CBSE Corner', 'Settings']
   const groups: NavGroup[] = [{ title: 'Overview', items: [{ href: '/admin', label: 'Dashboard', icon: 'dashboard' }] }]
@@ -16,7 +19,7 @@ export default async function PanelLayout({ children }: { children: React.ReactN
     const items: NavGroup['items'] = [
       ...collections
         .filter((c) => c.group === title && (!c.adminOnly || user.role === 'admin'))
-        .map((c) => ({ href: `/admin/collections/${c.slug}`, label: c.label, icon: c.icon, badge: c.slug === 'enquiries' ? newEnquiries : undefined })),
+        .map((c) => ({ href: `/admin/collections/${c.slug}`, label: c.label, icon: c.icon, badge: c.slug === 'enquiries' ? newEnquiries : c.slug === 'applications' ? newApplications : undefined })),
       ...globals.filter((g) => g.group === title).map((g) => ({ href: `/admin/globals/${g.slug}`, label: g.label, icon: g.icon })),
     ]
     if (title === 'Updates') items.push({ href: '/admin/media', label: 'Media Library', icon: 'media', badge: undefined })

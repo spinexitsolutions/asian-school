@@ -71,3 +71,33 @@ export async function storeUpload(file: File): Promise<Media> {
   const url = await put(buffer, `${base}${ext}`, file.type)
   return { url, name: file.name, size: file.size, type: file.type }
 }
+
+/* ───────────── Private documents (admission applications) ─────────────
+   Kept outside the public uploads area and served only through /api/files
+   to staff or to the parent holding the application's secret link. */
+
+export const PRIVATE_DIR = path.join(UPLOAD_DIR, 'private')
+const PRIVATE_MAX = 5 * 1024 * 1024
+
+export async function storePrivate(file: File, kind: string): Promise<Media> {
+  if (file.size > PRIVATE_MAX) throw new Error(`${kind}: file is larger than 5 MB`)
+  const okType = file.type.startsWith('image/') || file.type === 'application/pdf'
+  if (!okType || file.type === 'image/svg+xml') throw new Error(`${kind}: please upload a photo (JPG/PNG) or PDF`)
+  const buffer = Buffer.from(await file.arrayBuffer())
+  await mkdir(PRIVATE_DIR, { recursive: true })
+  const id = randomBytes(16).toString('hex')
+
+  if (file.type.startsWith('image/')) {
+    const out = await sharp(buffer, { failOn: 'none' })
+      .rotate()
+      .resize({ width: 1600, height: 1600, fit: 'inside', withoutEnlargement: true })
+      .webp({ quality: 80 })
+      .toBuffer({ resolveWithObject: true })
+    await writeFile(path.join(PRIVATE_DIR, `${id}.webp`), out.data)
+    return { url: `/api/files/${id}.webp`, name: file.name, size: out.data.length, type: 'image/webp', width: out.info.width, height: out.info.height }
+  }
+  // Check the PDF signature, not just the browser-reported type.
+  if (buffer.subarray(0, 5).toString() !== '%PDF-') throw new Error(`${kind}: this file is not a valid PDF`)
+  await writeFile(path.join(PRIVATE_DIR, `${id}.pdf`), buffer)
+  return { url: `/api/files/${id}.pdf`, name: file.name, size: file.size, type: 'application/pdf' }
+}

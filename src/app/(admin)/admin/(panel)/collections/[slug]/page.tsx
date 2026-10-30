@@ -48,7 +48,7 @@ export default async function ListPage({ params, searchParams }: Args) {
   const fields = fieldsOf(def)
   const fieldByName = (n: string) => fields.find((f) => f.name === n)
   const label = (n: string) => (n === 'createdAt' ? 'Received' : fieldByName(n)?.label ?? n)
-  const canDelete = slug === 'enquiries' ? user.role === 'admin' : true
+  const canDelete = slug === 'enquiries' || slug === 'applications' ? user.role === 'admin' : true
   const thumbField = fields.find((f) => f.type === 'image' || f.type === 'gallery')
 
   const pageHref = (p: number) => `?${new URLSearchParams({ ...(q ? { q } : {}), page: String(p) })}`

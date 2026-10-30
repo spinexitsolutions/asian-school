@@ -15,6 +15,8 @@ const initialFor = (slug: string): Record<string, unknown> => {
       return { date: today, category: 'news', status: 'published' }
     case 'gallery':
       return { date: today, category: 'events', photos: [] }
+    case 'downloads':
+      return { date: today, category: 'syllabus' }
     case 'careers':
       return { open: true, type: 'full-time' }
     case 'pages':

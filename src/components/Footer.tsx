@@ -41,7 +41,7 @@ export function Footer({ s, logoUrl }: { s: Settings; logoUrl: string }) {
   ]
 
   return (
-    <footer className="relative overflow-hidden bg-brand-950 text-white">
+    <footer className="relative overflow-hidden bg-brand-950 text-white print:hidden">
       <div className="h-1.5 w-full bg-[linear-gradient(90deg,var(--color-brand-500)_0_60%,var(--color-laurel-500)_60%_85%,var(--color-flame-400)_85%)]" />
       <div className="pointer-events-none absolute -left-32 top-10 h-96 w-96 rounded-full bg-brand-600/30 blur-[120px]" />
       <div className="container-x relative grid gap-12 py-16 md:grid-cols-2 lg:grid-cols-12 lg:py-20">

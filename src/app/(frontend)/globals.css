@@ -447,3 +447,14 @@ html.intro-seen .intro {
 html.intro-playing body {
   overflow: hidden;
 }
+
+@media print {
+  @page {
+    size: A4;
+    margin: 12mm;
+  }
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

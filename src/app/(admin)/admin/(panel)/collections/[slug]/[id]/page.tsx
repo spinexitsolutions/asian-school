@@ -9,6 +9,8 @@ type Args = { params: Promise<{ slug: string; id: string }> }
 
 const previewPath: Record<string, (d: Record<string, unknown>) => string> = {
   news: (d) => `/news/${d.slug}`,
+  applications: (d) => `/admissions/application/${d.applicationNo}?t=${d.token}`,
+  downloads: () => '/downloads',
   gallery: (d) => `/gallery/${d.slug}`,
   pages: (d) => `/${d.slug}`,
   notices: () => '/notices',
@@ -34,7 +36,7 @@ export default async function EditDocPage({ params }: Args) {
       initial={doc}
       title={String(doc[def.titleField] || def.singular)}
       backHref={`/admin/collections/${slug}`}
-      canDelete={(slug !== 'enquiries' || user.role === 'admin') && !(slug === 'users' && id === user.id)}
+      canDelete={(!['enquiries', 'applications'].includes(slug) || user.role === 'admin') && !(slug === 'users' && id === user.id)}
       previewHref={previewPath[slug]?.(doc)}
     />
   )

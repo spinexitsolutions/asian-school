@@ -68,7 +68,7 @@ export function Header({ schoolName, location, logoUrl, phone, altPhone, email, 
   return (
     <>
       {/* ─────────── Top bar ─────────── */}
-      <div className="relative z-50 hidden bg-brand-900 text-white md:block">
+      <div className="relative z-50 hidden bg-brand-900 text-white md:block print:!hidden">
         <div className="container-x flex h-11 items-center justify-between gap-6 text-[13px]">
           <p className="flex items-center gap-2 font-semibold">
             <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-flame-400" />
@@ -113,7 +113,7 @@ export function Header({ schoolName, location, logoUrl, phone, altPhone, email, 
       </div>
 
       {/* ─────────── Brand row ─────────── */}
-      <div className="relative z-40 bg-white">
+      <div className="relative z-40 bg-white print:hidden">
         <div className="container-x flex h-[84px] items-center justify-between gap-4 md:h-[104px]">
           <Link href="/" className="flex min-w-0 items-center gap-3 md:gap-4" aria-label={`${schoolName} – Home`}>
             <Image src={logoUrl} alt={`${schoolName} logo`} width={88} height={88} priority className="h-14 w-14 shrink-0 object-contain md:h-[78px] md:w-[78px]" />
@@ -135,7 +135,7 @@ export function Header({ schoolName, location, logoUrl, phone, altPhone, email, 
                 </span>
               </a>
             )}
-            <Link href="/admissions" className="btn btn-red ml-3 hidden !px-6 !py-3.5 sm:inline-flex">
+            <Link href="/admissions/apply" className="btn btn-red ml-3 hidden !px-6 !py-3.5 sm:inline-flex">
               Apply Now <ArrowRight size={16} weight="bold" />
             </Link>
             <button
@@ -153,7 +153,7 @@ export function Header({ schoolName, location, logoUrl, phone, altPhone, email, 
       {/* ─────────── Navigation bar (sticky) ─────────── */}
       <header
         className={clsx(
-          'sticky top-0 z-40 hidden bg-brand-700 text-white transition-shadow duration-500 xl:block',
+          'sticky top-0 z-40 hidden bg-brand-700 text-white transition-shadow duration-500 xl:block print:!hidden',
           scrolled && 'shadow-[0_10px_30px_-12px_rgba(7,22,58,0.6)]',
         )}
       >
@@ -292,7 +292,7 @@ export function Header({ schoolName, location, logoUrl, phone, altPhone, email, 
             </ul>
           </nav>
           <div className="space-y-3 border-t border-line p-5">
-            <Link href="/admissions" tabIndex={open ? 0 : -1} className="btn btn-primary w-full">
+            <Link href="/admissions/apply" tabIndex={open ? 0 : -1} className="btn btn-primary w-full">
               Apply Now <ArrowRight size={16} weight="bold" />
             </Link>
             {phone && (

@@ -12,13 +12,17 @@ Public website and content management system (CMS) for The Asian International S
 
 | Section | What it controls |
 | --- | --- |
+| **Inbox → Admission Applications** | Full online admission forms from `/admissions/apply` with uploaded documents. Open one to view/print it ("View on site") and update its status. |
 | **Inbox → Enquiries** | Admission and contact form submissions. **Download all as Excel (CSV)** button at the top. |
 | **Updates → Notices** | Notice Board: date, category, optional PDF. "Pinned" shows it on the homepage. |
 | **Updates → News & Events** | Posts with cover photo, rich text and draft/publish. |
 | **Updates → Gallery** | Photo albums (multi-upload, reorder, first photo = cover) and YouTube videos. |
+| **Updates → Downloads** | PDFs on `/downloads`: syllabus, book lists, uniform, holiday list, forms (or a link instead of a file). |
 | **Updates → Media Library** | Every uploaded photo/PDF, drag & drop upload, copy link. |
 | **School → Faculty / Achievers & Toppers / Testimonials / Facilities / Job Openings** | The matching website sections. Tick **Show in homepage hero** and set **Rank** 1–3 on toppers for the homepage Board Toppers panel. |
 | **CBSE Corner → Transfer Certificates** | Upload TCs. Parents search them by admission number at `/transfer-certificates`. |
+| **Pages → Transport Page** | Bus routes, stops, timings, transport rules and fee note on `/transport`. |
+| **Pages → Rules, Timings & Uniform** | Timings table, uniform lists and school rules on `/school-info`. |
 | **Pages → Home / About / Academics / Admissions** | All text, numbers, photos, Director's message, calendar, fee PDF, FAQs. |
 | **CBSE Corner → Mandatory Disclosure** | CBSE Appendix-IX tables, with document links. |
 | **CBSE Corner → Extra Pages** | Any extra page at `/your-slug` (e.g. Information of the School, Affiliation Details). |
@@ -130,3 +134,11 @@ public/images/         logo, campus and director photos
 from the admin panel (Gallery, Facilities, Home/About/Academics pages); uploaded photos take over
 automatically. `npm run seed` also adds these photos to empty photo fields of an existing install
 and to the Media Library.
+
+## Online admission documents
+
+Documents uploaded with the online admission form (photo, birth certificate, report card, TC,
+Aadhaar) are **private**: they are saved in `uploads/private/` on the server (never on Cloudinary)
+and can only be opened by signed-in staff or by the parent through the secret link shown after
+submitting. Back up the `uploads/` folder together with the database, and make sure the hosting
+keeps this folder between deployments.

@@ -44,3 +44,34 @@ export type Page = Doc & {
   content?: string
 }
 export type User = Doc & { name: string; email: string; role: 'admin' | 'editor' }
+export type Download = Doc & { title: string; category?: string; classes?: string; date?: string; order?: number; file?: FileRef | null; link?: string }
+export type Application = Doc & {
+  applicationNo: string
+  token: string
+  status?: string
+  session?: string
+  classApplying: string
+  studentName: string
+  dob?: string
+  gender?: string
+  bloodGroup?: string
+  category?: string
+  religion?: string
+  previousSchool?: string
+  previousClass?: string
+  transport?: boolean
+  transportStop?: string
+  fatherName: string
+  fatherOccupation?: string
+  fatherPhone: string
+  motherName?: string
+  motherOccupation?: string
+  motherPhone?: string
+  email?: string
+  address?: string
+  photo?: FileRef | null
+  birthCertificate?: FileRef | null
+  reportCard?: FileRef | null
+  transferCertificate?: FileRef | null
+  aadhaarCard?: FileRef | null
+}

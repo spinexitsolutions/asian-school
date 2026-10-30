@@ -9,6 +9,7 @@ import {
   logoMedia,
   stockPhotos,
   defaultAlbums,
+  defaultDownloads,
   defaultCareers,
   defaultFacilities,
   defaultFaculty,
@@ -46,6 +47,7 @@ export async function seedContent(log: (msg: string) => void = () => {}) {
     faculty: defaultFaculty.map(strip),
     toppers: defaultToppers.map(strip),
     careers: defaultCareers.map(strip),
+    downloads: defaultDownloads.map(strip),
     testimonials: defaultTestimonials,
     facilities: defaultFacilities.map((f, i) => ({ ...f, order: (i + 1) * 10, points: f.points.map((text) => ({ text })) })),
     pages: defaultPages.map((p) => ({

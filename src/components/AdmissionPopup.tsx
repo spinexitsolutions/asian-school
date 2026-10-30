@@ -63,7 +63,7 @@ export function AdmissionPopup({ badge, title, text, imageUrl, phone }: Props) {
       role="dialog"
       aria-modal="true"
       aria-labelledby="admission-popup-title"
-      className={clsx('fixed inset-0 z-[90] flex items-center justify-center p-4 transition-opacity duration-400', visible ? 'opacity-100' : 'opacity-0')}
+      className={clsx('fixed inset-0 z-[90] flex print:hidden items-center justify-center p-4 transition-opacity duration-400', visible ? 'opacity-100' : 'opacity-0')}
     >
       <div className="absolute inset-0 bg-brand-950/70 backdrop-blur-sm" onClick={close} />
       <div
@@ -116,6 +116,9 @@ export function AdmissionPopup({ badge, title, text, imageUrl, phone }: Props) {
               <Phone size={16} weight="fill" /> Or call {phone}
             </a>
           )}
+          <a href="/admissions/apply" onClick={close} className="mt-2 block text-center text-[13.5px] font-semibold text-laurel-600 hover:underline">
+            Ready to apply? Fill the full admission form →
+          </a>
         </div>
       </div>
     </div>

@@ -1,9 +1,8 @@
 'use server'
 
 import { headers } from 'next/headers'
-import nodemailer from 'nodemailer'
-
-import { getGlobalDoc, insertDoc } from '@/lib/db'
+import { insertDoc } from '@/lib/db'
+import { notifyStaff } from '@/lib/notify'
 
 export type EnquiryState = { ok: boolean; message: string; errors?: Record<string, string> }
 
@@ -19,34 +18,6 @@ function rateLimited(ip: string) {
 }
 
 const field = (data: FormData, name: string, max = 200) => String(data.get(name) ?? '').trim().slice(0, max)
-const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]!)
-
-async function notify(doc: Record<string, string>) {
-  if (!process.env.SMTP_HOST) return
-  try {
-    const settings = await getGlobalDoc<{ notificationEmail?: string; email?: string }>('site-settings')
-    const to = settings?.notificationEmail || settings?.email || process.env.SMTP_USER
-    if (!to) return
-    const port = Number(process.env.SMTP_PORT || 465)
-    const transport = nodemailer.createTransport({
-      host: process.env.SMTP_HOST,
-      port,
-      secure: port === 465,
-      auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
-    })
-    await transport.sendMail({
-      from: process.env.EMAIL_FROM || process.env.SMTP_USER,
-      to,
-      subject: `New ${doc.type} enquiry: ${doc.studentName}`,
-      html: Object.entries({ Name: doc.studentName, Parent: doc.parentName, Class: doc.classApplying, Phone: doc.phone, Email: doc.email, Message: doc.message })
-        .map(([k, v]) => `<p><b>${k}:</b> ${esc(v || '-')}</p>`)
-        .join(''),
-    })
-  } catch (err) {
-    console.error('[enquiry] email failed', err)
-  }
-}
-
 export async function submitEnquiry(_prev: EnquiryState, data: FormData): Promise<EnquiryState> {
   // Honeypot: real visitors never fill this hidden field.
   if (field(data, 'company')) return { ok: true, message: 'Thank you! We will contact you soon.' }
@@ -75,7 +46,14 @@ export async function submitEnquiry(_prev: EnquiryState, data: FormData): Promis
 
   try {
     await insertDoc('enquiries', doc)
-    await notify(doc)
+    await notifyStaff(`New ${doc.type} enquiry: ${doc.studentName}`, {
+      Name: doc.studentName,
+      Parent: doc.parentName,
+      Class: doc.classApplying,
+      Phone: doc.phone,
+      Email: doc.email,
+      Message: doc.message,
+    })
     return { ok: true, message: 'Thank you! Your enquiry has been received. Our team will call you soon.' }
   } catch (err) {
     console.error('[enquiry] save failed', err)

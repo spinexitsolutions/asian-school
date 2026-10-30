@@ -4,7 +4,7 @@ import { cache } from 'react'
 import type { Filter, Document, Sort } from 'mongodb'
 
 import { getCollection } from '@/cms/schema'
-import type { Album, Career, Facility, Faculty, News, Notice, Page, Testimonial, Topper, TransferCertificate } from '@/cms/types'
+import type { Album, Application, Career, Download, Facility, Faculty, News, Notice, Page, Testimonial, Topper, TransferCertificate } from '@/cms/types'
 import {
   defaultAbout,
   defaultAcademics,
@@ -12,6 +12,9 @@ import {
   defaultAlbums,
   defaultCareers,
   defaultDisclosure,
+  defaultDownloads,
+  defaultSchoolInfo,
+  defaultTransport,
   defaultFacilities,
   defaultFaculty,
   defaultHome,
@@ -122,3 +125,8 @@ export const getTransferCertificates = (admissionNo: string) =>
     async () => (await findMany<TransferCertificate>('transfer-certificates', { filter: { admissionNo: admissionNo.trim() }, limit: 5, sort: { issueDate: -1 } })).docs,
     [] as TransferCertificate[],
   )
+export const getTransport = cache(async () => withDefaults(await global('transport-page'), defaultTransport))
+export const getSchoolInfo = cache(async () => withDefaults(await global('school-info'), defaultSchoolInfo))
+export const getDownloads = () => list<Download>('downloads', defaultDownloads as Download[], { limit: 200 })
+export const getApplication = (applicationNo: string, token: string) =>
+  safe('application', () => findOne<Application>('applications', { applicationNo, token }), null)

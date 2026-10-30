@@ -5,7 +5,17 @@ import { CaretRight } from '@phosphor-icons/react/dist/ssr'
 import { fallbackImages } from '@/content/defaults'
 
 /** Blue banner at the top of every inner page with title and breadcrumb. */
-export function PageBanner({ title, intro, crumbs = [] }: { title: string; intro?: string | null; crumbs?: { label: string; href?: string }[] }) {
+export function PageBanner({
+  title,
+  intro,
+  crumbs = [],
+  children,
+}: {
+  title: string
+  intro?: string | null
+  crumbs?: { label: string; href?: string }[]
+  children?: React.ReactNode
+}) {
   return (
     <section className="relative overflow-hidden bg-brand-900 text-white">
       <Image src={fallbackImages.campus} alt="" fill priority sizes="100vw" className="object-cover opacity-25" />
@@ -46,6 +56,7 @@ export function PageBanner({ title, intro, crumbs = [] }: { title: string; intro
           <span />
           <span />
         </div>
+        {children}
       </div>
     </section>
   )

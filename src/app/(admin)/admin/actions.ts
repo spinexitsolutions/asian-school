@@ -116,7 +116,7 @@ export async function saveDocument(collection: string, id: string | null, input:
 export async function deleteDocument(collection: string, id: string): Promise<ActionResult> {
   const def = getCollection(collection)
   if (!def) return { ok: false, message: 'Unknown section' }
-  const user = await requireUser(def.adminOnly || collection === 'enquiries' ? 'admin' : undefined)
+  const user = await requireUser(def.adminOnly || collection === 'enquiries' || collection === 'applications' ? 'admin' : undefined)
   if (collection === 'users' && id === user.id) return { ok: false, message: 'You cannot delete your own account.' }
   try {
     await deleteDoc(collection, id)
