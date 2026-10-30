@@ -36,6 +36,7 @@ function matches(row: Row, filter: Record<string, unknown>): boolean {
     const value = key === '_id' ? String(row._id) : row[key]
     if (cond && typeof cond === 'object' && !Array.isArray(cond) && !(cond instanceof ObjectId)) {
       const c = cond as Record<string, unknown>
+      if ('$exists' in c) return (value !== undefined) === Boolean(c.$exists)
       if ('$ne' in c) return value !== c.$ne
       if ('$regex' in c) return new RegExp(String(c.$regex), String(c.$options ?? '')).test(String(value ?? ''))
       if ('$not' in c) return !new RegExp(String((c.$not as { $regex: string }).$regex)).test(String(value ?? ''))

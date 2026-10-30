@@ -13,7 +13,7 @@ export default async function LoginPage() {
   let dbError = false
   try {
     if (await currentUser()) redirect('/admin')
-    setup = (await count('users')) === 0
+    setup = (await count('users', { passwordHash: { $exists: true } })) === 0
   } catch (err) {
     if ((err as { digest?: string })?.digest?.startsWith('NEXT_REDIRECT')) throw err
     dbError = true

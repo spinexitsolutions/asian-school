@@ -45,8 +45,12 @@ export async function setupAdmin(_: ActionResult | null, form: FormData): Promis
   if (!name || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return { ok: false, message: 'Enter your name and a valid email.' }
   if (password.length < 8) return { ok: false, message: 'Password must be at least 8 characters.' }
   try {
-    if ((await count('users')) > 0) return { ok: false, message: 'An admin account already exists. Please log in.' }
-    const id = await insertDoc('users', { name, email, role: 'admin', passwordHash: await hashPassword(password) })
+    if ((await count('users', { passwordHash: { $exists: true } })) > 0) return { ok: false, message: 'An admin account already exists. Please log in.' }
+    const passwordHash = await hashPassword(password)
+    // An account left over from the old admin (same email, no password here) is reused.
+    const legacy = await findRaw('users', { email })
+    const id = legacy ? String(legacy._id) : await insertDoc('users', { name, email, role: 'admin', passwordHash })
+    if (legacy) await updateDoc('users', id, { name, role: 'admin', passwordHash })
     // Fresh install: load the starting content so everything is editable right away.
     await seedContent()
     refreshSite()

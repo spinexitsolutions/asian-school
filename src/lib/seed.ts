@@ -56,12 +56,22 @@ export async function seedContent(log: (msg: string) => void = () => {}) {
     log(`${collection}: ${docs.length} added`)
   }
 
+  // Helpful lookup indexes. A database used by an older version of the site may
+  // already have an index with the same name but different options (e.g. a
+  // unique slug index); that one works just as well, so conflicts are skipped.
   const database = await db()
-  await Promise.all([
-    database.collection('news').createIndex({ slug: 1 }),
-    database.collection('gallery').createIndex({ slug: 1 }),
-    database.collection('pages').createIndex({ slug: 1 }),
-    database.collection('users').createIndex({ email: 1 }, { unique: true }),
-    database.collection('transfer-certificates').createIndex({ admissionNo: 1 }),
-  ])
+  const indexes: [string, Record<string, 1>][] = [
+    ['news', { slug: 1 }],
+    ['gallery', { slug: 1 }],
+    ['pages', { slug: 1 }],
+    ['users', { email: 1 }],
+    ['transfer-certificates', { admissionNo: 1 }],
+  ]
+  for (const [collection, key] of indexes) {
+    try {
+      await database.collection(collection).createIndex(key)
+    } catch (err) {
+      log(`${collection}: index ${Object.keys(key)[0]} already exists, kept (${(err as { codeName?: string }).codeName ?? 'skipped'})`)
+    }
+  }
 }

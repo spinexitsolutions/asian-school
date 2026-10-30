@@ -18,7 +18,7 @@ await seedContent(log)
 
 const email = process.env.SEED_ADMIN_EMAIL?.toLowerCase()
 const password = process.env.SEED_ADMIN_PASSWORD
-if (email && password && (await count('users')) === 0) {
+if (email && password && (await count('users', { passwordHash: { $exists: true } })) === 0) {
   await insertDoc('users', { name: 'Administrator', email, role: 'admin', passwordHash: await bcrypt.hash(password, 12) })
   log(`admin user ${email} created`)
 }
