@@ -83,6 +83,30 @@ export const getHiddenPaths = cache(async () => {
   return sitePages.filter((x) => p[`${x.key}Enabled`] === false).map((x) => x.path)
 })
 
+const isImage = (v: unknown) => Boolean(v && typeof v === 'object' && 'url' in v && (v as { url: unknown }).url)
+const isBlank = (v: unknown) => v == null || v === '' || (Array.isArray(v) && v.length === 0)
+const sampleKey = (o: object) => {
+  const r = o as Record<string, unknown>
+  return String(r.slug ?? r.title ?? r.name ?? '')
+}
+
+/**
+ * Records created from the samples (by the seed or an older version) may have
+ * empty photo fields. Show the bundled sample photo there until staff upload one.
+ */
+function withSamplePhotos<T extends object>(docs: T[], samples: T[]): T[] {
+  return docs.map((doc) => {
+    const sample = samples.find((x) => sampleKey(x) && sampleKey(x) === sampleKey(doc)) as Record<string, unknown> | undefined
+    if (!sample) return doc
+    const out = { ...doc } as Record<string, unknown>
+    for (const [key, value] of Object.entries(sample)) {
+      const photoList = Array.isArray(value) && value.length > 0 && value.every(isImage)
+      if ((isImage(value) || photoList) && isBlank(out[key])) out[key] = value
+    }
+    return out as T
+  })
+}
+
 type ListOpts = { filter?: Filter<Document>; limit?: number; sort?: Sort; page?: number }
 
 /**
@@ -90,7 +114,7 @@ type ListOpts = { filter?: Filter<Document>; limit?: number; sort?: Sort; page?:
  * drafts). While a collection has never had anything added, sample records
  * are shown so the website never looks empty.
  */
-async function list<T>(slug: string, samples: T[], { filter = {}, limit = 100, sort, page = 1 }: ListOpts = {}) {
+async function list<T extends object>(slug: string, samples: T[], { filter = {}, limit = 100, sort, page = 1 }: ListOpts = {}) {
   const def = getCollection(slug)
   const where = { ...(def?.publicFilter ?? {}), ...filter }
   return safe(
@@ -98,13 +122,13 @@ async function list<T>(slug: string, samples: T[], { filter = {}, limit = 100, s
     async () => {
       const res = await findMany<T>(slug, { filter: where, sort: sort ?? def?.sort, limit, skip: (page - 1) * limit })
       if (res.total === 0 && (await count(slug)) === 0) return sampleResult(samples, limit, page)
-      return { docs: res.docs, totalPages: Math.max(1, Math.ceil(res.total / limit)), page }
+      return { docs: withSamplePhotos(res.docs, samples), totalPages: Math.max(1, Math.ceil(res.total / limit)), page }
     },
     sampleResult(samples, limit, page),
   )
 }
 
-function sampleResult<T>(samples: T[], limit: number, page: number) {
+function sampleResult<T extends object>(samples: T[], limit: number, page: number) {
   return { docs: samples.slice((page - 1) * limit, page * limit), totalPages: Math.max(1, Math.ceil(samples.length / limit)), page }
 }
 
@@ -117,13 +141,13 @@ export const getNews = (opts: { limit?: number; category?: string; page?: number
   )
 export const getNewsBySlug = cache(async (slug: string) => {
   const doc = await safe('news by slug', () => findOne<News>('news', { slug, status: { $ne: 'draft' } }), null)
-  if (doc) return doc
+  if (doc) return withSamplePhotos([doc], defaultNews as News[])[0]
   return (await getNews({ limit: 100 })).docs.find((n) => n.slug === slug) ?? null
 })
 export const getAlbums = (limit = 60) => list<Album>('gallery', defaultAlbums as Album[], { limit })
 export const getAlbumBySlug = cache(async (slug: string) => {
   const doc = await safe('album by slug', () => findOne<Album>('gallery', { slug }), null)
-  if (doc) return doc
+  if (doc) return withSamplePhotos([doc], defaultAlbums as Album[])[0]
   return (await getAlbums()).docs.find((a) => a.slug === slug) ?? null
 })
 export const getFaculty = () => list<Faculty>('faculty', defaultFaculty as Faculty[], { limit: 300 })

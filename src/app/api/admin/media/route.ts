@@ -1,10 +1,12 @@
 import { currentUser } from '@/lib/auth'
 import { findMany } from '@/lib/db'
+import { ensureBundledMedia } from '@/lib/seed'
 import type { Media } from '@/cms/types'
 
 /** Media library for the image picker. ?type=image|file&page=1 */
 export async function GET(request: Request) {
   if (!(await currentUser())) return Response.json({ error: 'Unauthorized' }, { status: 401 })
+  await ensureBundledMedia().catch((err) => console.error('[media] bundled photos:', (err as Error).message))
   const url = new URL(request.url)
   const page = Math.max(1, Number(url.searchParams.get('page')) || 1)
   const type = url.searchParams.get('type')

@@ -82,14 +82,7 @@ export async function seedContent(log: (msg: string) => void = () => {}) {
     log(`${collection}: ${docs.length} added`)
   }
 
-  // Bundled photos appear in the admin Media Library so they can be reused.
-  const bundled = [campusMedia, directorMedia, logoMedia, ...Object.values(stockPhotos)]
-  let libraryAdded = 0
-  for (const m of bundled) {
-    if (await count('media', { url: m.url })) continue
-    await insertDoc('media', { ...m, name: m.url.split('/').pop(), type: m.url.endsWith('.png') ? 'image/png' : 'image/webp' })
-    libraryAdded++
-  }
+  const libraryAdded = await addBundledMedia()
   if (libraryAdded) log(`media library: ${libraryAdded} photo(s) added`)
 
   // Helpful lookup indexes. A database used by an older version of the site may
@@ -170,4 +163,27 @@ async function addPhotosToSamples(collection: string, samples: Record<string, un
     }
   }
   return n
+}
+
+/** Puts the photos bundled with the website (logo, campus, director, stock photos) into the admin Media Library. */
+async function addBundledMedia() {
+  const bundled = [campusMedia, directorMedia, logoMedia, ...Object.values(stockPhotos)]
+  let added = 0
+  for (const m of bundled) {
+    if (await count('media', { url: m.url })) continue
+    await insertDoc('media', { ...m, name: m.url.split('/').pop(), type: m.url.endsWith('.png') ? 'image/png' : 'image/webp' })
+    added++
+  }
+  return added
+}
+
+let bundledMediaReady: Promise<number> | null = null
+
+/** Runs once per server start, so existing installs also see the bundled photos in the Media Library. */
+export function ensureBundledMedia() {
+  bundledMediaReady ??= addBundledMedia().catch((err) => {
+    bundledMediaReady = null
+    throw err
+  })
+  return bundledMediaReady
 }
