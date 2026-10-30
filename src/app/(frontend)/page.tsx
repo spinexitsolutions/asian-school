@@ -40,7 +40,7 @@ export default async function HomePage() {
 
   const facilityCards = facilities.docs.length
     ? facilities.docs.map((f) => ({ title: f.title, summary: f.summary, icon: f.icon, image: f.image as Media | null }))
-    : defaultFacilities.map((f) => ({ ...f, image: null }))
+    : defaultFacilities.map((f) => ({ ...f, image: ('image' in f ? f.image : null) as Media | null }))
 
   const photos = albums.docs.flatMap((a) => ((a.photos ?? []) as Media[]).slice(0, 3).map((p) => ({ photo: p, album: a })))
   const quotes = testimonials.docs.length ? testimonials.docs : defaultTestimonials

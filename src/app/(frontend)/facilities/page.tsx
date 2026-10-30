@@ -13,7 +13,7 @@ export default async function FacilitiesPage() {
   const res = await getFacilities()
   const items = res.docs.length
     ? res.docs.map((f) => ({ title: f.title, summary: f.summary, icon: f.icon, image: f.image as Media | null, points: (f.points ?? []).map((p) => p.text) }))
-    : defaultFacilities.map((f) => ({ ...f, image: null }))
+    : defaultFacilities.map((f) => ({ ...f, image: ('image' in f ? f.image : null) as Media | null }))
 
   return (
     <>

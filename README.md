@@ -122,3 +122,11 @@ src/
   seed/                content seeding script
 public/images/         logo, campus and director photos
 ```
+
+## Photos
+
+`public/images/stock/` holds free stock photos from [Unsplash](https://unsplash.com/license)
+(classrooms, library, labs, sports) used until the school's own photos are uploaded. Replace them
+from the admin panel (Gallery, Facilities, Home/About/Academics pages); uploaded photos take over
+automatically. `npm run seed` also adds these photos to empty photo fields of an existing install
+and to the Media Library.

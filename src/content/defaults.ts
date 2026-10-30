@@ -13,6 +13,37 @@ export const fallbackImages = {
   director: '/images/director.webp',
 }
 
+/** Uploaded-image shape for files bundled with the site (shown in the admin panel too). */
+const media = (url: string, alt: string, width: number, height: number, thumb?: string) => ({ url, thumb, alt, width, height })
+const stock = (name: string, alt: string, width: number, height: number) =>
+  media(`/images/stock/${name}.webp`, alt, width, height, `/images/stock/${name}-thumb.webp`)
+
+export const campusMedia = media('/images/campus.webp', 'The Asian International School campus', 1920, 1080)
+export const directorMedia = media('/images/director.webp', 'Shri Kaajod Mal Revar, Director', 800, 982)
+export const logoMedia = media('/images/logo.png', 'The Asian International School logo', 383, 383)
+
+/** Free stock photos from Unsplash (unsplash.com/license) used until the school's own photos are uploaded. */
+export const stockPhotos = {
+  art: stock('art', 'Paint brushes and colours in the art room', 1600, 1067),
+  athletics: stock('athletics', 'Athlete at the starting line on a running track', 1600, 1067),
+  books: stock('books', 'Books with an apple and alphabet blocks', 1600, 1130),
+  circleTime: stock('circle-time', 'Young students sitting together during class', 1600, 1065),
+  classroomHands: stock('classroom-hands', 'Students raising hands in class', 1600, 1067),
+  classroomKids: stock('classroom-kids', 'Students working in groups in a classroom', 1600, 996),
+  computer: stock('computer', 'Laptop in the computer lab', 1600, 1067),
+  cricket: stock('cricket', 'Cricket ball on the school ground', 1600, 1071),
+  digitalLearning: stock('digital-learning', 'Student learning on a tablet', 1600, 1067),
+  kidsWriting: stock('kids-writing', 'Children writing in a classroom', 1600, 1065),
+  libraryHall: stock('library-hall', 'Rows of books in the library', 1600, 1479),
+  libraryReading: stock('library-reading', 'Young student reading in the library', 1600, 1067),
+  library: stock('library', 'Library bookshelves', 1600, 1067),
+  littleArtist: stock('little-artist', 'Little girl with paint on her face', 1600, 2409),
+  scienceLab: stock('science-lab', 'Glassware in the science laboratory', 1600, 1067),
+  seniorStudents: stock('senior-students', 'Senior students studying together', 1600, 1067),
+  smartClassroom: stock('smart-classroom', 'Smart classroom with desks and board', 1600, 900),
+  yoga: stock('yoga', 'Yoga pose at sunrise', 1600, 1009),
+}
+
 export const defaultSettings = {
   schoolName: 'The Asian International School',
   location: 'Radha Swami Bagh, Chomu, Jaipur',
@@ -31,6 +62,8 @@ export const defaultSettings = {
   youtube: '',
   x: '',
   topbarText: 'Your Search Will End Here!',
+  logo: logoMedia,
+  popupImage: campusMedia,
   popupEnabled: true,
   popupBadge: 'Session 2027–28',
   popupTitle: 'Admissions Open',
@@ -50,6 +83,9 @@ export const defaultHeroToppers = [
 ]
 
 export const defaultHome = {
+  heroImage: campusMedia,
+  aboutImage: stockPhotos.classroomHands,
+  messagePhoto: directorMedia,
   heroTitle: 'Proud of our *achievers*, ready for _yours._',
   heroPoints: [
     { text: 'CBSE affiliated English medium school' },
@@ -88,6 +124,7 @@ export const defaultHome = {
 }
 
 export const defaultAbout = {
+  heroImage: stockPhotos.seniorStudents,
   title: 'About Our School',
   intro:
     'The Asian International School, Chomu is a CBSE-affiliated English medium school established in 2010, offering education from Nursery to Class XII in Science, Arts and Commerce.',
@@ -112,6 +149,7 @@ export const defaultAbout = {
     {
       name: 'Shri Kaajod Mal Revar',
       role: 'Director',
+      photo: directorMedia,
       message:
         'Every child is unique and has the ability to achieve excellence when guided with the right values, knowledge and opportunities.',
     },
@@ -125,24 +163,28 @@ export const defaultAcademics = {
   stages: [
     {
       name: 'Pre-Primary',
+      image: stockPhotos.littleArtist,
       classes: 'Nursery – UKG',
       text: 'Play-way and activity-based learning that builds language, numbers, motor skills and a love for school.',
       focus: [{ text: 'Phonics & rhymes' }, { text: 'Activity-based learning' }, { text: 'Art, music & play' }],
     },
     {
       name: 'Primary',
+      image: stockPhotos.kidsWriting,
       classes: 'Class I – V',
       text: 'Strong foundations in English, Hindi, Mathematics and EVS with projects that make concepts clear.',
       focus: [{ text: 'Reading & writing skills' }, { text: 'Concept-based maths' }, { text: 'Computer basics' }],
     },
     {
       name: 'Middle',
+      image: stockPhotos.classroomKids,
       classes: 'Class VI – VIII',
       text: 'Subject teachers, lab work and projects help students think independently and understand deeply.',
       focus: [{ text: 'Science labs' }, { text: 'Sanskrit / third language' }, { text: 'Computer & coding' }],
     },
     {
       name: 'Secondary & Senior Secondary',
+      image: stockPhotos.seniorStudents,
       classes: 'Class IX – XII',
       text: 'Focused CBSE board preparation with Science, Arts and Commerce streams and career guidance.',
       focus: [{ text: 'Board exam preparation' }, { text: 'Science · Arts · Commerce' }, { text: 'Career counselling' }],
@@ -203,11 +245,11 @@ export const defaultAdmissions = {
 }
 
 export const defaultFacilities = [
-  { title: 'Smart Classrooms', summary: 'Spacious classrooms with digital smart boards for interactive learning.', icon: 'computer', points: ['Digital boards', 'Comfortable furniture', 'Well ventilated'] },
-  { title: 'Science Labs', summary: 'Well-equipped Physics, Chemistry and Biology laboratories for practical learning.', icon: 'flask', points: ['Physics lab', 'Chemistry lab', 'Biology lab'] },
-  { title: 'Computer Lab', summary: 'Modern computer laboratories with the latest technology and high-speed internet.', icon: 'computer', points: ['Latest systems', 'Internet', 'Coding classes'] },
-  { title: 'Library', summary: 'A rich library with books, journals, magazines and digital learning resources.', icon: 'library', points: ['Reference books', 'Magazines', 'Reading room'] },
-  { title: 'Sports Ground', summary: 'Large playground for cricket, football, athletics and many more games.', icon: 'trophy', points: ['Outdoor games', 'Indoor games', 'Annual sports meet'] },
+  { title: 'Smart Classrooms', image: stockPhotos.smartClassroom, summary: 'Spacious classrooms with digital smart boards for interactive learning.', icon: 'computer', points: ['Digital boards', 'Comfortable furniture', 'Well ventilated'] },
+  { title: 'Science Labs', image: stockPhotos.scienceLab, summary: 'Well-equipped Physics, Chemistry and Biology laboratories for practical learning.', icon: 'flask', points: ['Physics lab', 'Chemistry lab', 'Biology lab'] },
+  { title: 'Computer Lab', image: stockPhotos.computer, summary: 'Modern computer laboratories with the latest technology and high-speed internet.', icon: 'computer', points: ['Latest systems', 'Internet', 'Coding classes'] },
+  { title: 'Library', image: stockPhotos.library, summary: 'A rich library with books, journals, magazines and digital learning resources.', icon: 'library', points: ['Reference books', 'Magazines', 'Reading room'] },
+  { title: 'Sports Ground', image: stockPhotos.athletics, summary: 'Large playground for cricket, football, athletics and many more games.', icon: 'trophy', points: ['Outdoor games', 'Indoor games', 'Annual sports meet'] },
   { title: 'Transport', summary: 'Safe school buses covering Chomu and nearby villages with trained staff.', icon: 'bus', points: ['Wide routes', 'Trained drivers', 'Attendants'] },
   { title: 'CCTV Security', summary: 'Complete campus under CCTV surveillance for safety of every child.', icon: 'camera', points: ['CCTV campus', 'Guarded entry', 'Visitor register'] },
   { title: 'Music & Dance', summary: 'Dedicated activity rooms for music, dance and cultural programmes.', icon: 'music', points: ['Instruments', 'Dance room', 'Annual function'] },
@@ -367,7 +409,7 @@ export const defaultPages = [
    Shown on the website until staff add their own in the admin panel
    (and inserted by `npm run seed` so they can be edited). */
 
-const campusPhoto = { url: fallbackImages.campus, alt: 'The Asian International School campus', width: 1920, height: 1080 }
+const campusPhoto = campusMedia
 
 export const defaultNotices = [
   { id: 'n1', title: 'Admissions open for session 2027–28 (Nursery to Class XI)', date: '2026-10-28T00:00:00.000Z', category: 'admissions', details: 'Admission forms are available at the school office and online. Limited seats.', pinned: true },
@@ -394,7 +436,7 @@ export const defaultNews = [
     title: 'Smart Classrooms for Interactive Learning',
     category: 'news',
     date: '2026-09-15T00:00:00.000Z',
-    cover: campusPhoto,
+    cover: stockPhotos.smartClassroom,
     excerpt: 'Every classroom is equipped with digital boards that make lessons visual and engaging.',
     content: '<p>Our smart classrooms bring lessons to life with digital boards, videos and interactive activities, helping students understand concepts better.</p>',
   },
@@ -405,14 +447,41 @@ export const defaultNews = [
     category: 'event',
     date: '2026-12-12T00:00:00.000Z',
     venue: 'School Ground',
-    cover: campusPhoto,
+    cover: stockPhotos.athletics,
     excerpt: 'Students will compete in athletics, team games and fun events. Parents are welcome.',
     content: '<p>The Annual Sports Meet celebrates fitness, teamwork and sportsmanship. Events include athletics, relay races, kabaddi, kho-kho and fun races for the little ones.</p>',
   },
 ]
 
 export const defaultAlbums = [
-  { id: 'g1', slug: 'our-campus', title: 'Our Campus', category: 'campus', date: '2026-10-01T00:00:00.000Z', photos: [campusPhoto], videos: [] },
+  { id: 'g1', slug: 'our-campus', title: 'Our Campus', category: 'campus', date: '2026-10-01T00:00:00.000Z', photos: [campusPhoto, stockPhotos.smartClassroom, stockPhotos.library, stockPhotos.scienceLab], videos: [] },
+  {
+    id: 'g2',
+    slug: 'classroom-moments',
+    title: 'Classroom Moments',
+    category: 'academics',
+    date: '2026-09-20T00:00:00.000Z',
+    photos: [stockPhotos.classroomKids, stockPhotos.classroomHands, stockPhotos.kidsWriting, stockPhotos.circleTime, stockPhotos.seniorStudents, stockPhotos.digitalLearning],
+    videos: [],
+  },
+  {
+    id: 'g3',
+    slug: 'sports-and-activities',
+    title: 'Sports & Activities',
+    category: 'sports',
+    date: '2026-09-05T00:00:00.000Z',
+    photos: [stockPhotos.athletics, stockPhotos.cricket, stockPhotos.yoga, stockPhotos.art, stockPhotos.littleArtist],
+    videos: [],
+  },
+  {
+    id: 'g4',
+    slug: 'library-and-labs',
+    title: 'Library & Labs',
+    category: 'academics',
+    date: '2026-08-25T00:00:00.000Z',
+    photos: [stockPhotos.libraryHall, stockPhotos.libraryReading, stockPhotos.books, stockPhotos.computer, stockPhotos.scienceLab],
+    videos: [],
+  },
 ]
 
 export const defaultFaculty = [
@@ -421,7 +490,7 @@ export const defaultFaculty = [
     name: 'Shri Kaajod Mal Revar',
     designation: 'Director',
     department: 'Management',
-    photo: { url: fallbackImages.director, alt: 'Shri Kaajod Mal Revar', width: 800, height: 982 },
+    photo: directorMedia,
     order: 1,
   },
 ]
