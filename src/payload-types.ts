@@ -369,6 +369,11 @@ export interface Topper {
   year: string;
   photo?: (string | null) | Media;
   featured?: boolean | null;
+  inHero?: boolean | null;
+  /**
+   * 1 = first. Used for ordering.
+   */
+  rank?: number | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -763,6 +768,8 @@ export interface ToppersSelect<T extends boolean = true> {
   year?: T;
   photo?: T;
   featured?: T;
+  inHero?: T;
+  rank?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -985,29 +992,23 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
 export interface HomePage {
   id: string;
   /**
-   * Large banner slider at the top of the homepage. Use wide photos (1920×900 or bigger).
+   * Wrap words in *stars* to colour them blue, and in _underscores_ for red. e.g. Proud of our *achievers*, ready for _yours._
    */
-  slides?:
+  heroTitle?: string | null;
+  heroPoints?:
     | {
-        image: string | Media;
-        /**
-         * Tick this for designed posters such as topper results or admission banners.
-         */
-        bannerOnly?: boolean | null;
-        /**
-         * Small label, e.g. CBSE Affiliated · Est. 2010
-         */
-        badge?: string | null;
-        /**
-         * Wrap words in *stars* to colour them, e.g. Nurturing *Bright* Minds
-         */
-        title?: string | null;
-        text?: string | null;
-        buttonLabel?: string | null;
-        buttonLink?: string | null;
+        text: string;
         id?: string | null;
       }[]
     | null;
+  /**
+   * Shown on the toppers panel, e.g. 2025–26
+   */
+  resultsYear?: string | null;
+  /**
+   * Background photo behind the blue panel
+   */
+  heroImage?: (string | null) | Media;
   stats?:
     | {
         /**
@@ -1309,18 +1310,15 @@ export interface SiteSetting {
  * via the `definition` "home-page_select".
  */
 export interface HomePageSelect<T extends boolean = true> {
-  slides?:
+  heroTitle?: T;
+  heroPoints?:
     | T
     | {
-        image?: T;
-        bannerOnly?: T;
-        badge?: T;
-        title?: T;
         text?: T;
-        buttonLabel?: T;
-        buttonLink?: T;
         id?: T;
       };
+  resultsYear?: T;
+  heroImage?: T;
   stats?:
     | T
     | {

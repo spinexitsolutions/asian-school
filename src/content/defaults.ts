@@ -38,26 +38,14 @@ export const defaultSettings = {
     'The Asian International School, Chomu (Jaipur) — CBSE affiliated English medium school from Nursery to Class XII with Science, Arts & Commerce. Est. 2010.',
 }
 
-export const defaultSlides = [
-  {
-    badge: 'CBSE Affiliated · Est. 2010',
-    title: 'Nurturing *Bright* Minds for a *Better* Tomorrow',
-    text: 'Empowering students with quality education, strong values, and modern learning experiences to achieve academic and personal excellence.',
-    buttonLabel: 'Apply for Admission',
-    buttonLink: '/admissions',
-    image: fallbackImages.campus,
-  },
-  {
-    badge: 'Admissions Open 2027–28',
-    title: 'Give your child the *best start* for a bright future',
-    text: 'Nursery to Class XII · Science, Arts & Commerce · Smart classrooms · Safe & secure campus.',
-    buttonLabel: 'Enquire Now',
-    buttonLink: '/admissions#enquiry',
-    image: fallbackImages.campus,
-  },
-]
-
 export const defaultHome = {
+  heroTitle: 'Proud of our *achievers*, ready for _yours._',
+  heroPoints: [
+    { text: 'CBSE affiliated English medium school' },
+    { text: 'Science, Arts & Commerce up to Class XII' },
+    { text: 'Smart classes & experienced faculty' },
+  ],
+  resultsYear: '2025–26',
   stats: [
     { value: '2400+', label: 'Students' },
     { value: '98%', label: 'Board Results' },

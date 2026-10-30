@@ -117,7 +117,7 @@ export const getAlbumBySlug = cache(async (slug: string) => {
 })
 export const getFaculty = () => list<Faculty>('faculty', { limit: 300, sort: 'order' })
 export const getToppers = (featuredOnly = false) =>
-  list<Topper>('toppers', { limit: 120, sort: '-year', where: featuredOnly ? { featured: { equals: true } } : undefined })
+  list<Topper>('toppers', { limit: 120, sort: 'rank', where: featuredOnly ? { featured: { equals: true } } : undefined })
 export const getTestimonials = () => list<Testimonial>('testimonials', { limit: 12 })
 export const getFacilities = () => list<Facility>('facilities', { limit: 50, sort: 'order' })
 export const getCareers = () => list<Career>('careers', { limit: 50, where: { open: { equals: true } } })

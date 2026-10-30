@@ -14,38 +14,26 @@ export const HomePage: GlobalConfig = {
       type: 'tabs',
       tabs: [
         {
-          label: 'Slider',
+          label: 'Hero',
+          description: 'Top section of the homepage. Toppers on the right come from "Achievers & Toppers" (tick "Show in homepage hero").',
           fields: [
             {
-              name: 'slides',
+              name: 'heroTitle',
+              type: 'text',
+              admin: { description: 'Wrap words in *stars* to colour them blue, and in _underscores_ for red. e.g. Proud of our *achievers*, ready for _yours._' },
+            },
+            {
+              name: 'heroPoints',
               type: 'array',
-              labels: { singular: 'Slide', plural: 'Slides' },
-              admin: { description: 'Large banner slider at the top of the homepage. Use wide photos (1920×900 or bigger).' },
+              maxRows: 4,
+              labels: { singular: 'Point', plural: 'Points' },
+              fields: [{ name: 'text', type: 'text', required: true }],
+            },
+            {
+              type: 'row',
               fields: [
-                { name: 'image', type: 'upload', relationTo: 'media', required: true },
-                {
-                  name: 'bannerOnly',
-                  type: 'checkbox',
-                  label: 'Ready-made banner / poster (show image only, no text on top)',
-                  admin: { description: 'Tick this for designed posters such as topper results or admission banners.' },
-                },
-                {
-                  type: 'collapsible',
-                  label: 'Text on slide',
-                  admin: { condition: (_, sibling) => !sibling?.bannerOnly },
-                  fields: [
-                    { name: 'badge', type: 'text', admin: { description: 'Small label, e.g. CBSE Affiliated · Est. 2010' } },
-                    { name: 'title', type: 'text', admin: { description: 'Wrap words in *stars* to colour them, e.g. Nurturing *Bright* Minds' } },
-                    { name: 'text', type: 'textarea' },
-                    {
-                      type: 'row',
-                      fields: [
-                        { name: 'buttonLabel', type: 'text' },
-                        { name: 'buttonLink', type: 'text' },
-                      ],
-                    },
-                  ],
-                },
+                { name: 'resultsYear', type: 'text', admin: { description: 'Shown on the toppers panel, e.g. 2025–26' } },
+                { name: 'heroImage', type: 'upload', relationTo: 'media', admin: { description: 'Background photo behind the blue panel' } },
               ],
             },
           ],

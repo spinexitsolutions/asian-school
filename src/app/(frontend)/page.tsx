@@ -4,7 +4,7 @@ import { ArrowRight, CalendarBlank, CheckCircle, FilePdf, Quotes } from '@phosph
 
 import { CountUp } from '@/components/CountUp'
 import { Faq } from '@/components/Faq'
-import { HeroSlider, type Slide } from '@/components/HeroSlider'
+import { Hero } from '@/components/Hero'
 import { Icon } from '@/components/Icon'
 import { NoticeBoard } from '@/components/NoticeBoard'
 import { Photo } from '@/components/Photo'
@@ -12,7 +12,7 @@ import { QuickLinks } from '@/components/QuickLinks'
 import { SectionHeading } from '@/components/SectionHeading'
 import { Paragraphs } from '@/components/Stars'
 import { Testimonials } from '@/components/Testimonials'
-import { defaultFacilities, defaultSlides, defaultTestimonials, fallbackImages } from '@/content/defaults'
+import { defaultFacilities, defaultTestimonials, fallbackImages } from '@/content/defaults'
 import { getAdmissions, getAlbums, getFacilities, getHome, getNews, getNotices, getSettings, getTestimonials, getToppers } from '@/lib/data'
 import { formatDate, telHref } from '@/lib/format'
 import { fileUrl, img } from '@/lib/media'
@@ -25,22 +25,18 @@ export default async function HomePage() {
     getAdmissions(),
     getNotices(20),
     getNews({ limit: 4 }),
-    getToppers(true),
+    getToppers(),
     getFacilities(),
     getAlbums(8),
     getTestimonials(),
   ])
 
   const logoUrl = img(s.logo)?.url ?? fallbackImages.logo
-  const cmsSlides: Slide[] = (h.slides ?? [])
-    .map((sl) => {
-      const image = img(sl.image as Media)
-      return image ? { ...sl, src: image.url, alt: image.alt } : null
-    })
-    .filter(Boolean) as Slide[]
-  const slides = cmsSlides.length
-    ? cmsSlides
-    : defaultSlides.map((d) => ({ ...d, src: d.image, alt: 'The Asian International School campus' }))
+  const featuredToppers = toppers.docs.filter((t) => t.featured)
+  const heroToppers = toppers.docs
+    .filter((t) => t.inHero)
+    .slice(0, 3)
+    .map((t) => ({ name: t.name, score: t.score, className: t.className, photo: img(t.photo as Media, 'card')?.url }))
 
   const facilityCards = facilities.docs.length
     ? facilities.docs.map((f) => ({ title: f.title, summary: f.summary, icon: f.icon, image: f.image as Media | null }))
@@ -54,8 +50,21 @@ export default async function HomePage() {
 
   return (
     <>
-      <HeroSlider slides={slides} stats={h.stats ?? []} schoolName={s.schoolName} logoUrl={logoUrl} established={s.established} />
-      <QuickLinks />
+      <Hero
+        schoolName={s.schoolName}
+        logoUrl={logoUrl}
+        established={s.established}
+        phone={s.phone}
+        title={h.heroTitle!}
+        points={(h.heroPoints ?? []).map((p) => p.text)}
+        stats={h.stats ?? []}
+        toppers={heroToppers}
+        resultsYear={h.resultsYear}
+        backgroundUrl={img(h.heroImage as Media)?.url ?? fallbackImages.campus}
+      />
+      <div className="pt-6 md:pt-8">
+        <QuickLinks />
+      </div>
 
       {/* ───────────── About ───────────── */}
       <section className="py-20 md:py-28">
@@ -193,7 +202,7 @@ export default async function HomePage() {
             text="Important announcements, events and happenings at The Asian International School."
           />
           <div className="grid gap-6 lg:grid-cols-12">
-            <div className="lg:col-span-5" data-reveal>
+            <div className="min-w-0 lg:col-span-5" data-reveal>
               <NoticeBoard
                 notices={notices.docs.map((n) => ({
                   id: String(n.id),
@@ -205,7 +214,7 @@ export default async function HomePage() {
                 }))}
               />
             </div>
-            <div className="lg:col-span-7" data-reveal style={{ ['--d' as string]: '120ms' }}>
+            <div className="min-w-0 lg:col-span-7" data-reveal style={{ ['--d' as string]: '120ms' }}>
               <div className="card flex h-full flex-col overflow-hidden">
                 <div className="flex items-center justify-between bg-laurel-600 px-6 py-4 text-white">
                   <h3 className="text-[19px] font-bold">News & Activities</h3>
@@ -244,7 +253,7 @@ export default async function HomePage() {
       </section>
 
       {/* ───────────── Achievers ───────────── */}
-      {toppers.docs.length > 0 && (
+      {featuredToppers.length > 0 && (
         <section className="relative overflow-hidden bg-gradient-to-br from-brand-900 via-brand-800 to-brand-700 py-20 text-white md:py-28">
           <div className="pointer-events-none absolute left-1/2 top-0 h-80 w-[60%] -translate-x-1/2 rounded-full bg-flame-400/20 blur-3xl" />
           <div className="container-x relative">
@@ -255,7 +264,7 @@ export default async function HomePage() {
               text="Students who made the school proud with their hard work and dedication."
             />
             <div className="grid grid-cols-2 gap-x-4 gap-y-10 sm:grid-cols-3 lg:grid-cols-5">
-              {toppers.docs.slice(0, 10).map((t, i) => (
+              {featuredToppers.slice(0, 10).map((t, i) => (
                 <article key={t.id} className="text-center" data-reveal style={{ ['--d' as string]: `${(i % 5) * 80}ms` }}>
                   <div className="relative mx-auto w-[78%]">
                     <div className="absolute -inset-1.5 rounded-full bg-[conic-gradient(var(--color-flame-400),var(--color-laurel-500),var(--color-flame-400))]" />

@@ -6,7 +6,7 @@ export const Toppers: CollectionConfig = {
   slug: 'toppers',
   labels: { singular: 'Achiever', plural: 'Achievers & Toppers' },
   admin: { group: 'School', useAsTitle: 'name', defaultColumns: ['name', 'className', 'score', 'year'] },
-  defaultSort: '-year',
+  defaultSort: 'rank',
   access: { read: anyone, create: loggedIn, update: loggedIn, delete: loggedIn },
   hooks: { afterChange: [revalidateAfterChange], afterDelete: [revalidateAfterDelete] },
   fields: [
@@ -21,5 +21,12 @@ export const Toppers: CollectionConfig = {
     },
     { name: 'photo', type: 'upload', relationTo: 'media' },
     { name: 'featured', type: 'checkbox', label: 'Show on homepage', defaultValue: true, admin: { position: 'sidebar' } },
+    {
+      name: 'inHero',
+      type: 'checkbox',
+      label: 'Show in homepage hero (top 3)',
+      admin: { position: 'sidebar' },
+    },
+    { name: 'rank', type: 'number', admin: { position: 'sidebar', description: '1 = first. Used for ordering.' } },
   ],
 }
