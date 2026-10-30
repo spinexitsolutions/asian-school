@@ -71,7 +71,8 @@ export default buildConfig({
   globals: [HomePage, AboutPage, AcademicsPage, AdmissionsPage, Disclosure, SiteSettings],
   editor: lexicalEditor(),
   db: mongooseAdapter({
-    url: process.env.DATABASE_URI || '',
+    // No link set yet → use MongoDB running on this computer (see npm run db:local).
+    url: process.env.DATABASE_URI || 'mongodb://127.0.0.1:27017/asian-school',
     // Some MongoDB-compatible servers (and Atlas free tier on rare occasions) lack transactions.
     ...(process.env.DB_DISABLE_TRANSACTIONS ? { transactionOptions: false as const } : {}),
   }),

@@ -9,7 +9,8 @@
     "start": "next start",
     "payload": "payload",
     "generate:types": "payload generate:types",
-    "seed": "payload run src/seed/index.ts"
+    "seed": "payload run src/seed/index.ts",
+    "db:local": "node scripts/local-db.mjs"
   },
   "engines": {
     "node": ">=20.9.0"
@@ -44,6 +45,7 @@
     "@types/node": "^26.6.6",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
+    "mongodb-memory-server-core": "^10.4.3",
     "postcss": "^8.5.32",
     "tailwindcss": "^4.3.3",
     "typescript": "^6.0.3"

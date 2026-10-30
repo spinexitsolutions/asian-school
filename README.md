@@ -26,15 +26,37 @@ Public website and content management system (CMS) for The Asian International S
 
 Changes appear on the website within seconds.
 
-## Run locally
+## Run locally (no MongoDB Atlas needed)
+
+Until the Atlas link is ready, the site uses a MongoDB database on your own computer.
+If `DATABASE_URI` is empty it automatically connects to `mongodb://127.0.0.1:27017/asian-school`.
 
 ```bash
-cp .env.example .env    # then fill in DATABASE_URI and PAYLOAD_SECRET
 npm install
+cp .env.example .env    # already points to the local database; just set PAYLOAD_SECRET
+```
+
+**Terminal 1** starts a local MongoDB. Nothing extra to install: the first run downloads the
+MongoDB server (~100 MB) once, and data is saved in the `.mongo-data` folder:
+
+```bash
+npm run db:local
+```
+
+**Terminal 2** starts the website:
+
+```bash
 npm run dev             # http://localhost:3000  and  http://localhost:3000/admin
 ```
 
+Already have MongoDB Community Server installed and running? Skip `npm run db:local`, because it
+uses the same port (27017).
+
 On first visit to `/admin` you will be asked to create the first admin user.
+
+**Switching to Atlas later:** put the Atlas link in `DATABASE_URI` in `.env` (or in Hostinger's
+environment variables) and restart. Local data is not copied automatically; run `npm run seed`
+on the new database, or copy it with `mongodump` / `mongorestore`.
 
 To fill the CMS with the school's starting content (settings, home/about/academics/admissions text, facilities, CBSE pages):
 
