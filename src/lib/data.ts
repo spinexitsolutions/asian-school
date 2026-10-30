@@ -28,6 +28,7 @@ import type {
   SiteSetting,
   Testimonial,
   Topper,
+  TransferCertificate,
 } from '@/payload-types'
 
 export const getPayloadClient = cache(() => getPayload({ config }))
@@ -125,3 +126,9 @@ export const getPageBySlug = cache(async (slug: string) => {
   const res = await list<Page>('pages', { where: { and: [published, { slug: { equals: slug } }] }, limit: 1 })
   return res.docs[0] ?? null
 })
+export const getTransferCertificates = (admissionNo: string) =>
+  list<TransferCertificate>('transfer-certificates', {
+    where: { admissionNo: { equals: admissionNo.trim() } },
+    limit: 5,
+    sort: '-issueDate',
+  })
