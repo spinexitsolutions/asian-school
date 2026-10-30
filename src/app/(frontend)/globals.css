@@ -1,0 +1,314 @@
+@import 'tailwindcss';
+
+/* ───────────────────────── Design tokens ───────────────────────── */
+@theme {
+  --color-paper: #ffffff;
+  --color-bone: #f7f5f0;
+  --color-sand: #efe9dd;
+  --color-ink: #0e1a33;
+  --color-ink-2: #3b4560;
+  --color-mute: #7a8195;
+  --color-gold: #b07d2b;
+  --color-gold-2: #c9a35b;
+  --color-gold-soft: #ecdfc4;
+  --color-line: rgb(14 26 51 / 0.09);
+
+  --font-display: 'Fraunces Variable', 'Fraunces', Georgia, 'Times New Roman', serif;
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.32, 0.72, 0, 1);
+
+  --radius-shell: 2rem;
+  --shadow-soft: 0 1px 2px rgb(14 26 51 / 0.04), 0 12px 40px -12px rgb(14 26 51 / 0.12);
+  --shadow-lift: 0 2px 4px rgb(14 26 51 / 0.04), 0 30px 60px -20px rgb(14 26 51 / 0.22);
+
+  --animate-marquee: marquee 40s linear infinite;
+  --animate-float: float 7s var(--ease-spring) infinite alternate;
+}
+
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+@keyframes float {
+  from {
+    transform: translateY(0) rotate(var(--r, 0deg));
+  }
+  to {
+    transform: translateY(-10px) rotate(var(--r, 0deg));
+  }
+}
+
+/* ───────────────────────── Base ───────────────────────── */
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    scroll-behavior: auto;
+  }
+  body {
+    background: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-feature-settings: 'ss01', 'cv11';
+  }
+  ::selection {
+    background: var(--color-gold-soft);
+    color: var(--color-ink);
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-gold);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+}
+
+/* ───────────────────────── Typography ───────────────────────── */
+@layer components {
+  .display {
+    font-family: var(--font-display);
+    font-optical-sizing: auto;
+    font-variation-settings: 'SOFT' 50, 'WONK' 0;
+    font-weight: 380;
+    letter-spacing: -0.035em;
+    line-height: 0.95;
+  }
+  .display em {
+    font-style: italic;
+    font-weight: 330;
+    font-variation-settings: 'SOFT' 100, 'WONK' 1;
+    color: var(--color-gold);
+  }
+  .t-hero {
+    font-size: clamp(3rem, 7.4vw, 7.6rem);
+  }
+  .t-1 {
+    font-size: clamp(2.6rem, 5.4vw, 5.4rem);
+  }
+  .t-2 {
+    font-size: clamp(2.1rem, 3.9vw, 3.8rem);
+    line-height: 1;
+  }
+  .t-3 {
+    font-size: clamp(1.5rem, 2.1vw, 2rem);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+  .lede {
+    font-size: clamp(1.05rem, 1.25vw, 1.25rem);
+    line-height: 1.65;
+    color: var(--color-ink-2);
+  }
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    border-radius: 999px;
+    padding: 0.4rem 0.85rem;
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--color-ink-2);
+    background: rgb(14 26 51 / 0.04);
+    box-shadow: inset 0 0 0 1px var(--color-line);
+  }
+  .eyebrow::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 99px;
+    background: var(--color-gold);
+  }
+  .eyebrow--dark {
+    color: rgb(255 255 255 / 0.75);
+    background: rgb(255 255 255 / 0.06);
+    box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.12);
+  }
+  .index-num {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: var(--color-mute);
+  }
+
+  /* Prose for rich text */
+  .prose-school {
+    font-size: 1.075rem;
+    line-height: 1.8;
+    color: var(--color-ink-2);
+  }
+  .prose-school > * + * {
+    margin-top: 1.1em;
+  }
+  .prose-school h2,
+  .prose-school h3 {
+    font-family: var(--font-display);
+    color: var(--color-ink);
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    margin-top: 1.8em;
+  }
+  .prose-school h2 {
+    font-size: 2rem;
+  }
+  .prose-school h3 {
+    font-size: 1.5rem;
+  }
+  .prose-school a {
+    color: var(--color-gold);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .prose-school ul {
+    list-style: disc;
+    padding-left: 1.3em;
+  }
+  .prose-school ol {
+    list-style: decimal;
+    padding-left: 1.3em;
+  }
+  .prose-school blockquote {
+    border-left: 2px solid var(--color-gold);
+    padding-left: 1.2em;
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    color: var(--color-ink);
+  }
+  .prose-school img {
+    border-radius: 1.25rem;
+  }
+
+  /* ─────────── Double-bezel shells ─────────── */
+  .shell {
+    border-radius: var(--radius-shell);
+    padding: 6px;
+    background: rgb(14 26 51 / 0.025);
+    box-shadow: inset 0 0 0 1px var(--color-line);
+  }
+  .core {
+    border-radius: calc(var(--radius-shell) - 6px);
+    background: var(--color-paper);
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.9),
+      var(--shadow-soft);
+  }
+  .shell--dark {
+    background: rgb(255 255 255 / 0.04);
+    box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.1);
+  }
+  .core--dark {
+    background: linear-gradient(160deg, #15244a 0%, #0e1a33 70%);
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.08);
+  }
+
+  /* Rajasthani jharokha arch mask — the site's signature shape. */
+  .arch {
+    border-radius: 999px 999px 1.75rem 1.75rem;
+    overflow: hidden;
+    isolation: isolate;
+  }
+
+  /* Hairline grid texture */
+  .grid-lines {
+    background-image:
+      linear-gradient(to right, var(--color-line) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--color-line) 1px, transparent 1px);
+    background-size: 88px 88px;
+    mask-image: radial-gradient(ellipse at 60% 30%, black 10%, transparent 70%);
+  }
+
+  .hairline {
+    height: 1px;
+    background: var(--color-line);
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+}
+
+/* ───────────────────────── Motion ───────────────────────── */
+[data-reveal] {
+  opacity: 0;
+  transform: translate3d(0, 48px, 0);
+  filter: blur(8px);
+  transition:
+    opacity 1s var(--ease-out-expo),
+    transform 1.1s var(--ease-out-expo),
+    filter 1s var(--ease-out-expo);
+  transition-delay: var(--d, 0ms);
+}
+[data-reveal].is-in {
+  opacity: 1;
+  transform: none;
+  filter: none;
+}
+[data-reveal='fade'] {
+  transform: none;
+}
+[data-reveal='scale'] {
+  transform: scale(0.94);
+}
+
+/* Line-by-line headline reveal */
+.split-line {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.08em;
+  margin-bottom: -0.08em;
+}
+.split-line > span {
+  display: block;
+  transform: translate3d(0, 105%, 0);
+  transition: transform 1.2s var(--ease-out-expo);
+  transition-delay: var(--d, 0ms);
+}
+.is-in .split-line > span,
+.split-line.is-in > span {
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal],
+  .split-line > span {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+    transition: none !important;
+  }
+  .animate-marquee,
+  .animate-float {
+    animation: none !important;
+  }
+}
+
+/* Fixed film grain — on a fixed, non-interactive layer only. */
+.grain {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Lenis */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
